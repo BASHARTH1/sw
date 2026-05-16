@@ -96,5 +96,15 @@
 }
 
 @media (max-width: 900px) {
-  .venue-grid { grid-template-columns: 1fr; }
+  .venue-grid { grid-template-columns: 1fr; gap: 20px; }
+  .venue-map { min-height: 280px; }
+  .venue-map iframe { min-height: 260px; }
+}
+
+@media (max-width: 480px) {
+  .venue-card { padding: 18px; gap: 14px; }
+  .venue-card:hover { transform: none; }
+  .venue-icon { width: 44px; height: 44px; font-size: 1.05rem; }
+  .venue-map { min-height: 240px; padding: 6px; }
+  .venue-map iframe { min-height: 228px; }
 }

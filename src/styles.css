@@ -255,3 +255,25 @@ img { max-width: 100%; display: block; }
   .section { padding: 72px 0; }
   .section-head { margin-bottom: 36px; }
 }
+
+@media (max-width: 480px) {
+  .container { padding: 0 18px; }
+  .section { padding: 60px 0; }
+  .section-head { margin-bottom: 28px; }
+  .section-head .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    padding: 5px 12px;
+  }
+  .btn { padding: 12px 22px; font-size: 0.9rem; }
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

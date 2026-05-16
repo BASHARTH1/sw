@@ -1,4 +1,4 @@
-<header class="site-header" [ngClass]="{ 'site-header--scrolled': scrolled() }">
+<header class="site-header" [ngClass]="{ 'site-header--scrolled': scrolled(), 'site-header--menu-open': menuOpen() }">
   <div class="container header-inner">
     <a class="brand" href="#home" (click)="closeMenu()">
       <div class="brand-mark">
@@ -10,15 +10,16 @@
       </div>
     </a>
 
-    <nav class="nav" [ngClass]="{ 'nav--open': menuOpen() }">
+    <nav class="nav" [ngClass]="{ 'nav--open': menuOpen() }" [attr.aria-hidden]="!menuOpen()">
       @for (link of navLinks; track link.href) {
         <a [href]="link.href" class="nav-link" (click)="closeMenu()">{{ link.label }}</a>
       }
       <a href="https://gulfuniversity.edu.bh/" target="_blank" rel="noopener noreferrer" class="btn btn--primary nav-cta" (click)="closeMenu()">Gulf University</a>
     </nav>
 
-    <button class="nav-toggle" (click)="toggleMenu()" aria-label="Toggle menu">
+    <button class="nav-toggle" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()" aria-label="Toggle menu" aria-controls="primary-nav">
       <i class="bi" [ngClass]="menuOpen() ? 'bi-x-lg' : 'bi-list'"></i>
     </button>
   </div>
+  <div class="nav-backdrop" (click)="closeMenu()" aria-hidden="true"></div>
 </header>

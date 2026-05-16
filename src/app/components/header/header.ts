@@ -27,9 +27,16 @@ export class HeaderComponent {
 
   toggleMenu() {
     this.menuOpen.update(v => !v);
+    this.syncBodyLock();
   }
 
   closeMenu() {
     this.menuOpen.set(false);
+    this.syncBodyLock();
+  }
+
+  private syncBodyLock() {
+    if (typeof document === 'undefined') return;
+    document.body.classList.toggle('nav-locked', this.menuOpen());
   }
 }
