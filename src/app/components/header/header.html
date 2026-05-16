@@ -14,6 +14,7 @@
       @for (link of navLinks; track link.href) {
         <a [href]="link.href" class="nav-link" (click)="closeMenu()">{{ link.label }}</a>
       }
+      <a href="https://gulfuniversity.edu.bh/" target="_blank" rel="noopener noreferrer" class="nav-link nav-link--gold" (click)="closeMenu()">Gulf University</a>
       <a href="#register" class="btn btn--primary nav-cta" (click)="closeMenu()">Register</a>
     </nav>
 
