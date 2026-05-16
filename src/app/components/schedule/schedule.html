@@ -1,0 +1,71 @@
+<section id="schedule" class="section schedule">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><i class="bi bi-calendar-event"></i> 5-Day Programme</span>
+      <h2>Sustainability Week 2026 Schedule</h2>
+      <p>Innovate. Collaborate. Sustain. — a five-day journey of workshops, panels, expert talks, competitions and community actions, each mapped to specific UN Sustainable Development Goals.</p>
+    </div>
+
+    <div class="day-tabs" role="tablist">
+      @for (day of days; track day.id) {
+        <button
+          class="day-tab"
+          role="tab"
+          [class.day-tab--active]="day.id === activeDayId()"
+          [attr.aria-selected]="day.id === activeDayId()"
+          (click)="selectDay(day.id)">
+          <span class="day-tab-label">{{ day.label }}</span>
+          <span class="day-tab-date">{{ day.date.split(',')[0] }}</span>
+        </button>
+      }
+    </div>
+
+    <div class="day-panel">
+      <div class="day-header">
+        <div class="day-header-text">
+          <div class="day-pill">Day 0{{ activeDay.id }} — {{ activeDay.date }}</div>
+          <h3>{{ activeDay.theme }}</h3>
+          <div class="day-sdgs">
+            <span class="day-sdgs-label">SDGs:</span>
+            @for (n of activeDay.sdgs; track n) {
+              <img class="sdg-img"
+                   [src]="sdgImage(n)"
+                   [alt]="'SDG ' + n + ': ' + sdgTitle(n)"
+                   [title]="'SDG ' + n + ': ' + sdgTitle(n)"
+                   loading="lazy" />
+            }
+          </div>
+        </div>
+        <a href="#register" class="btn btn--primary">
+          <i class="bi bi-pencil-square"></i>
+          Register Now
+        </a>
+      </div>
+
+      <ol class="timeline">
+        @for (item of activeDay.items; track item.title) {
+          <li class="timeline-item" [attr.data-type]="item.type">
+            <div class="timeline-time">{{ item.slot }}</div>
+            <div class="timeline-dot">
+              <i class="bi" [class]="iconFor(item.type)"></i>
+            </div>
+            <div class="timeline-card">
+              <h4>{{ item.title }}</h4>
+              @if (item.sdgs.length > 0) {
+                <div class="timeline-sdgs">
+                  @for (n of item.sdgs; track n) {
+                    <img class="sdg-img sdg-img--sm"
+                         [src]="sdgImage(n)"
+                         [alt]="'SDG ' + n + ': ' + sdgTitle(n)"
+                         [title]="'SDG ' + n + ': ' + sdgTitle(n)"
+                         loading="lazy" />
+                  }
+                </div>
+              }
+            </div>
+          </li>
+        }
+      </ol>
+    </div>
+  </div>
+</section>

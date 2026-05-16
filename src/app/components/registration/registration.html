@@ -1,0 +1,47 @@
+<section id="register" class="section section--soft registration">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Registration</span>
+      <h2>Join the conversation</h2>
+      <p>Choose how you'd like to be part of Sustainability Week and help us shape a more sustainable future together.</p>
+    </div>
+
+    <div class="reg-grid">
+      @for (opt of options; track opt.title) {
+        <article class="reg-card" [attr.data-accent]="opt.accent" [class.reg-card--featured]="opt.featured">
+          @if (opt.featured) {
+            <div class="reg-badge">Featured</div>
+          }
+          <div class="reg-icon">
+            <i class="bi" [class]="opt.icon"></i>
+          </div>
+          <h3>{{ opt.title }}</h3>
+          <p>{{ opt.description }}</p>
+          <a href="#register" class="reg-link">
+            Register <i class="bi bi-arrow-right"></i>
+          </a>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<section id="sponsors" class="section sponsors-cta">
+  <div class="container sponsors-inner">
+    <div>
+      <span class="eyebrow">Sponsors &amp; Partners</span>
+      <h2>Partner with Sustainability Week</h2>
+      <p>Align your brand with one of the region's most ambitious sustainability platforms. We offer sponsorship tiers tailored for industry leaders, NGOs and government entities.</p>
+    </div>
+    <div class="sponsors-actions">
+      <a href="mailto:sdmc@gulfuniversity.edu.bh" class="btn btn--primary">
+        <i class="bi bi-envelope-fill"></i>
+        Contact the Committee
+      </a>
+      <a href="#register" class="btn btn--outline">
+        <i class="bi bi-file-earmark-text"></i>
+        Sponsorship Packages
+      </a>
+    </div>
+  </div>
+</section>

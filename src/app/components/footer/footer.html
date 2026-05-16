@@ -1,0 +1,42 @@
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="footer-mark">
+        <i class="bi bi-tree-fill"></i>
+      </div>
+      <h3>Gulf University</h3>
+      <p>The 2<sup>nd</sup> Edition of Sustainability Week — co-innovating, leading and sustaining together with our GCC partner institutions.</p>
+      <div class="footer-socials">
+        <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        @for (link of links; track link.href) {
+          <li><a [href]="link.href">{{ link.label }}</a></li>
+        }
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul class="footer-contact">
+        <li><i class="bi bi-geo-alt"></i> Building 1964, Road 4363, Bahrain</li>
+        <li><i class="bi bi-telephone"></i> <a href="tel:+97317620092">+973 17620092</a></li>
+        <li><i class="bi bi-envelope"></i> <a href="mailto:sdmc@gulfuniversity.edu.bh">sdmc&#64;gulfuniversity.edu.bh</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <span>© {{ year }} Gulf University. All rights reserved.</span>
+      <span>GU Sustainability Week 2<sup>nd</sup> Edition — 16<sup>th</sup>-20<sup>th</sup> November 2025</span>
+    </div>
+  </div>
+</footer>

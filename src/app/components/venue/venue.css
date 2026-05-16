@@ -1,0 +1,100 @@
+.venue-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 32px;
+  align-items: stretch;
+}
+
+.venue-map {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  min-height: 380px;
+  box-shadow: var(--glass-shadow);
+  padding: 8px;
+}
+
+.venue-map iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  border: 0;
+  display: block;
+  border-radius: calc(var(--radius-lg) - 10px);
+}
+
+.venue-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.venue-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  transition: all 0.3s ease;
+  box-shadow: var(--glass-shadow);
+}
+
+.venue-card:hover {
+  transform: translateX(6px);
+  border-color: var(--blue-400);
+  box-shadow: var(--glass-shadow-lg);
+}
+
+.venue-icon {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--blue-700), var(--blue-900));
+  color: var(--gold-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 18px -8px rgba(30, 58, 138, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.venue-card h4 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.venue-card p {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.venue-card a {
+  color: var(--blue-800);
+  font-weight: 600;
+}
+
+.venue-card a:hover {
+  color: var(--gold-700);
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .venue-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,38 @@
+<section id="sdgs" class="section sdgs">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><i class="bi bi-globe2"></i> United Nations Goals</span>
+      <h2>Aligned with the 17 SDGs</h2>
+      <p>Every session, workshop and competition is mapped to one or more of the United Nations' 17 Sustainable Development Goals — driving measurable impact across environment, society and economy.</p>
+    </div>
+
+    <div class="sdg-grid">
+      @for (sdg of sdgs; track sdg.number) {
+        <figure class="sdg-tile" [style.--sdg-color]="sdg.color"
+                [attr.aria-label]="'SDG ' + sdg.number + ': ' + sdg.title">
+          <img [src]="sdg.image"
+               [alt]="'SDG ' + sdg.number + ': ' + sdg.title"
+               loading="lazy"
+               width="240" height="240" />
+        </figure>
+      }
+    </div>
+
+    <div class="sdg-marquee" aria-hidden="true">
+      <div class="sdg-marquee-track">
+        @for (sdg of sdgs; track sdg.number) {
+          <span class="sdg-chip" [style.background]="sdg.color">
+            <strong>{{ sdg.number }}</strong>
+            {{ sdg.title }}
+          </span>
+        }
+        @for (sdg of sdgs; track sdg.number) {
+          <span class="sdg-chip" [style.background]="sdg.color">
+            <strong>{{ sdg.number }}</strong>
+            {{ sdg.title }}
+          </span>
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,24 @@
+<header class="site-header" [ngClass]="{ 'site-header--scrolled': scrolled() }">
+  <div class="container header-inner">
+    <a class="brand" href="#home" (click)="closeMenu()">
+      <div class="brand-mark">
+        <i class="bi bi-tree-fill"></i>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">Gulf University</span>
+        <span class="brand-sub">Sustainability Week</span>
+      </div>
+    </a>
+
+    <nav class="nav" [ngClass]="{ 'nav--open': menuOpen() }">
+      @for (link of navLinks; track link.href) {
+        <a [href]="link.href" class="nav-link" (click)="closeMenu()">{{ link.label }}</a>
+      }
+      <a href="#register" class="btn btn--primary nav-cta" (click)="closeMenu()">Register</a>
+    </nav>
+
+    <button class="nav-toggle" (click)="toggleMenu()" aria-label="Toggle menu">
+      <i class="bi" [ngClass]="menuOpen() ? 'bi-x-lg' : 'bi-list'"></i>
+    </button>
+  </div>
+</header>
