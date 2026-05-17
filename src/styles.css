@@ -35,10 +35,10 @@
   --shadow-md: 0 12px 30px -14px rgba(11, 20, 55, 0.28);
   --shadow-lg: 0 30px 60px -16px rgba(11, 20, 55, 0.35);
 
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
 }
 
 * { box-sizing: border-box; }
@@ -127,7 +127,7 @@ img { max-width: 100%; display: block; }
 }
 
 .section {
-  padding: 110px 0;
+  padding: 60px 0;
   position: relative;
   z-index: 1;
 }
@@ -136,7 +136,7 @@ img { max-width: 100%; display: block; }
 
 .section-head {
   text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: 32px;
 }
 
 .section-head .eyebrow {
@@ -155,7 +155,7 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-radius: 999px;
+  border-radius: 8px;
 }
 
 .section-head h2 {
@@ -188,7 +188,7 @@ img { max-width: 100%; display: block; }
   justify-content: center;
   gap: 8px;
   padding: 13px 30px;
-  border-radius: 999px;
+  border-radius: 8px;
   font-weight: 600;
   font-size: 0.95rem;
   border: 1px solid transparent;
@@ -252,14 +252,14 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 768px) {
-  .section { padding: 72px 0; }
-  .section-head { margin-bottom: 36px; }
+  .section { padding: 44px 0; }
+  .section-head { margin-bottom: 24px; }
 }
 
 @media (max-width: 480px) {
   .container { padding: 0 18px; }
-  .section { padding: 60px 0; }
-  .section-head { margin-bottom: 28px; }
+  .section { padding: 36px 0; }
+  .section-head { margin-bottom: 20px; }
   .section-head .eyebrow {
     font-size: 0.7rem;
     letter-spacing: 0.18em;

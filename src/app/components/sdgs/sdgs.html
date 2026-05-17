@@ -9,11 +9,17 @@
     <div class="sdg-grid">
       @for (sdg of sdgs; track sdg.number) {
         <figure class="sdg-tile" [style.--sdg-color]="sdg.color"
+                tabindex="0"
                 [attr.aria-label]="'SDG ' + sdg.number + ': ' + sdg.title">
-          <img [src]="sdg.image"
+          <img class="sdg-tile-img"
+               [src]="sdg.image"
                [alt]="'SDG ' + sdg.number + ': ' + sdg.title"
                loading="lazy"
                width="240" height="240" />
+          <figcaption class="sdg-tile-overlay">
+            <span class="sdg-tile-num">{{ sdg.number < 10 ? '0' + sdg.number : sdg.number }}</span>
+            <span class="sdg-tile-title">{{ sdg.title }}</span>
+          </figcaption>
         </figure>
       }
     </div>

@@ -23,7 +23,7 @@
   min-height: 360px;
   border: 0;
   display: block;
-  border-radius: calc(var(--radius-lg) - 10px);
+  border-radius: calc(var(--radius-lg) - 6px);
 }
 
 .venue-cards {
@@ -56,7 +56,7 @@
   flex-shrink: 0;
   width: 50px;
   height: 50px;
-  border-radius: 14px;
+  border-radius: 6px;
   background: linear-gradient(135deg, var(--blue-700), var(--blue-900));
   color: var(--gold-400);
   display: flex;
