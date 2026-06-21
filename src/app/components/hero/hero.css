@@ -130,21 +130,81 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 9px 20px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border-radius: 8px;
+  padding: 0;
+  background: none;
+  border: none;
   font-size: 0.85rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   margin-bottom: 30px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
   animation: fadeUp 0.7s ease 0.05s both;
 }
 
 .hero-badge i { color: var(--gold-400); }
+
+.hero-badge-logo {
+  height: 56px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.hero-badge-logo[alt='Bahrain Polytechnic'] {
+  background: #fff;
+  border-radius: 5px;
+  padding: 3px 6px;
+}
+
+.hero-badge-divider {
+  width: 1px;
+  align-self: stretch;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.hero-badge-name {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+.hero-badge-en {
+  display: block;
+  white-space: nowrap;
+}
+
+.hero-badge-ar {
+  display: block;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.hero-invite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--gold-400);
+  margin-bottom: 12px;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+
+.hero-invite::before,
+.hero-invite::after {
+  content: '';
+  height: 1px;
+  width: clamp(28px, 6vw, 64px);
+  background: linear-gradient(90deg, transparent, var(--gold-400));
+}
+
+.hero-invite::after {
+  background: linear-gradient(90deg, var(--gold-400), transparent);
+}
 
 .hero-title {
   font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -158,18 +218,36 @@
 }
 
 .hero-edition {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
   font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: linear-gradient(135deg, var(--gold-300), var(--gold-500) 60%, var(--gold-700));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   font-style: normal;
   font-size: 0.5em;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-top: 6px;
+}
+
+.hero-edition-text {
+  background: linear-gradient(135deg, var(--gold-300), var(--gold-500) 60%, var(--gold-700));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-edition::before,
+.hero-edition::after {
+  content: '';
+  height: 1px;
+  width: clamp(28px, 6vw, 64px);
+  background: linear-gradient(90deg, transparent, var(--gold-500));
+}
+
+.hero-edition::after {
+  background: linear-gradient(90deg, var(--gold-500), transparent);
 }
 
 .hero-edition sup { font-size: 0.6em; vertical-align: super; }
