@@ -50,8 +50,8 @@
 .site-header--scrolled .brand { color: var(--ink); }
 
 .brand-mark {
-  width: 52px;
-  height: 52px;
+  width: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -250,6 +250,6 @@ body.nav-locked {
 
 @media (max-width: 420px) {
   .brand-text { display: none; }
-  .brand-mark { width: 44px; height: 44px; }
+  .brand-mark { width: 64px; height: 64px; }
   .header-inner { gap: 12px; }
 }
