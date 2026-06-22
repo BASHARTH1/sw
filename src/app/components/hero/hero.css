@@ -152,12 +152,6 @@
   object-fit: contain;
 }
 
-.hero-badge-logo[alt='Bahrain Polytechnic'] {
-  background: #fff;
-  border-radius: 5px;
-  padding: 3px 6px;
-}
-
 .hero-badge-divider {
   width: 1px;
   align-self: stretch;
