@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { RegistrationService } from '../registration/registration.service';
 
 @Component({
   selector: 'app-hero',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './hero.html',
   styleUrl: './hero.css'
 })
-export class HeroComponent {}
+export class HeroComponent {
+  protected readonly reg = inject(RegistrationService);
+}

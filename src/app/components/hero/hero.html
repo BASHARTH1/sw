@@ -29,13 +29,9 @@
 
   <div class="container hero-inner">
     <div class="hero-badge">
-      <img class="hero-badge-logo" src="main-logo-white.png" alt="Gulf University" />
-      <span class="hero-badge-divider" aria-hidden="true"></span>
-      <span class="hero-badge-name">
-        <span class="hero-badge-ar">بــــوليـــتكـــــنك البــــحــــريــــن</span>
-        <span class="hero-badge-en">Bahrain Polytechnic</span>
-      </span>
       <img class="hero-badge-logo" src="polytechnic-white.png" alt="Bahrain Polytechnic" />
+      <span class="hero-badge-divider" aria-hidden="true"></span>
+      <img class="hero-badge-logo" src="main-logo-white.png" alt="Gulf University" />
     </div>
 
     <span class="hero-invite">Proudly invite you to</span>
@@ -62,10 +58,10 @@
     </div>
 
     <div class="hero-cta">
-      <a href="#register" class="btn btn--primary">
+      <button type="button" class="btn btn--primary" (click)="reg.openChooser()">
         <i class="bi bi-pencil-square"></i>
         Register Now
-      </a>
+      </button>
       <a href="#about" class="btn btn--ghost">
         <i class="bi bi-info-circle"></i>
         Learn More

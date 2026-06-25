@@ -1,0 +1,119 @@
+@if (checking()) {
+  <div class="admin-center">
+    <i class="bi bi-arrow-repeat admin-spin"></i>
+  </div>
+} @else if (!authed()) {
+  <!-- ---------- login gate ---------- -->
+  <div class="admin-center">
+    <form class="admin-login" (ngSubmit)="login()">
+      <div class="admin-login__icon"><i class="bi bi-shield-lock-fill"></i></div>
+      <h1>Admin Access</h1>
+      <p>Sign in to view Sustainability Week registrations.</p>
+
+      <label class="admin-label">Email</label>
+      <input class="admin-input" type="email" name="email" [(ngModel)]="email" autocomplete="username" required />
+
+      <label class="admin-label">Password</label>
+      <input
+        class="admin-input"
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        autocomplete="current-password"
+        required
+      />
+
+      @if (loginError()) {
+        <p class="admin-error"><i class="bi bi-exclamation-triangle-fill"></i> {{ loginError() }}</p>
+      }
+
+      <button type="submit" class="admin-btn admin-btn--primary" [disabled]="loading()">
+        @if (loading()) {
+          <i class="bi bi-arrow-repeat admin-spin"></i> Signing in…
+        } @else {
+          Sign In
+        }
+      </button>
+    </form>
+  </div>
+} @else {
+  <!-- ---------- dashboard ---------- -->
+  <div class="admin">
+    <header class="admin-head">
+      <div>
+        <h1>Registrations</h1>
+        <span class="admin-sub">{{ subs().length }} total submissions</span>
+      </div>
+      <div class="admin-head__actions">
+        <button class="admin-btn" (click)="load()" [disabled]="loading()">
+          <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
+        <button class="admin-btn" (click)="exportCsv()" [disabled]="!filtered().length">
+          <i class="bi bi-download"></i> Export CSV
+        </button>
+        <button class="admin-btn admin-btn--ghost" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i> Sign out
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-filters">
+      @for (t of types; track t) {
+        <button
+          class="admin-chip"
+          [class.is-active]="filterType() === t"
+          (click)="filterType.set(t)"
+        >
+          {{ t }}
+          @if (t !== 'All' && counts()[t]) {
+            <span class="admin-chip__count">{{ counts()[t] }}</span>
+          }
+        </button>
+      }
+    </div>
+
+    @if (loading()) {
+      <div class="admin-center"><i class="bi bi-arrow-repeat admin-spin"></i></div>
+    } @else if (!filtered().length) {
+      <div class="admin-empty">
+        <i class="bi bi-inbox"></i>
+        <p>No submissions{{ filterType() === 'All' ? ' yet' : ' for ' + filterType() }}.</p>
+      </div>
+    } @else {
+      <div class="admin-table">
+        <div class="admin-row admin-row--head">
+          <span>Date</span>
+          <span>Type</span>
+          <span>Name</span>
+          <span>Email</span>
+          <span></span>
+        </div>
+
+        @for (s of filtered(); track s.id) {
+          <div class="admin-row" (click)="toggle(s.id)">
+            <span class="admin-date">{{ fmtDate(s.created_at) }}</span>
+            <span><span class="admin-badge" [attr.data-type]="s.type">{{ s.type }}</span></span>
+            <span>{{ s.full_name || '—' }}</span>
+            <span class="admin-email">{{ s.email || '—' }}</span>
+            <span class="admin-caret">
+              <i class="bi" [class.bi-chevron-down]="expandedId() !== s.id" [class.bi-chevron-up]="expandedId() === s.id"></i>
+            </span>
+          </div>
+
+          @if (expandedId() === s.id) {
+            <div class="admin-detail">
+              <dl>
+                @for (pair of entries(s.data); track pair[0]) {
+                  <div class="admin-detail__item">
+                    <dt>{{ pair[0] }}</dt>
+                    <dd>{{ pair[1] || '—' }}</dd>
+                  </div>
+                }
+              </dl>
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
+}

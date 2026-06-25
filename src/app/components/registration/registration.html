@@ -7,8 +7,13 @@
     </div>
 
     <div class="reg-grid">
-      @for (opt of options; track opt.title) {
-        <article class="reg-card" [attr.data-accent]="opt.accent" [class.reg-card--featured]="opt.featured">
+      @for (opt of reg.options; track opt.title) {
+        <article
+          class="reg-card"
+          [class.reg-card--featured]="opt.featured"
+          [style.--accent-color]="opt.color"
+          [style.--accent-soft]="opt.soft"
+        >
           @if (opt.featured) {
             <div class="reg-badge">Featured</div>
           }
@@ -17,9 +22,9 @@
           </div>
           <h3>{{ opt.title }}</h3>
           <p>{{ opt.description }}</p>
-          <a href="#register" class="reg-link">
+          <button type="button" class="reg-link" (click)="reg.openType(opt.title)">
             Register <i class="bi bi-arrow-right"></i>
-          </a>
+          </button>
         </article>
       }
     </div>
@@ -38,10 +43,10 @@
         <i class="bi bi-envelope-fill"></i>
         Contact the Committee
       </a>
-      <a href="#register" class="btn btn--outline">
+      <button type="button" class="btn btn--outline" (click)="reg.openType('Sponsor')">
         <i class="bi bi-file-earmark-text"></i>
         Sponsorship Packages
-      </a>
+      </button>
     </div>
   </div>
 
@@ -54,3 +59,191 @@
     </div>
   </div>
 </section>
+
+@if (reg.isOpen()) {
+  <div class="reg-modal" (click)="reg.close()" (keydown.escape)="reg.close()" tabindex="-1">
+    <div
+      class="reg-modal__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reg-modal-title"
+      [style.--rc]="(reg.currentOption?.color) || '#1e3a8a'"
+      [style.--rc-soft]="(reg.currentOption?.soft) || 'rgba(30, 58, 138, 0.1)'"
+      (click)="$event.stopPropagation()"
+    >
+      <button type="button" class="reg-modal__close" aria-label="Close" (click)="reg.close()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+
+      @if (reg.step() === 'choose') {
+        <header class="reg-modal__head">
+          <span class="eyebrow">Registration</span>
+          <h2 id="reg-modal-title">How would you like to join?</h2>
+        </header>
+
+        <div class="reg-chooser">
+          @for (opt of reg.options; track opt.title) {
+            <button
+              type="button"
+              class="reg-choice"
+              [style.--rc]="opt.color"
+              [style.--rc-soft]="opt.soft"
+              (click)="reg.selectType(opt.title)"
+            >
+              <span class="reg-choice__icon"><i class="bi" [class]="opt.icon"></i></span>
+              <span class="reg-choice__body">
+                <span class="reg-choice__title">{{ opt.title }}</span>
+                <span class="reg-choice__desc">{{ opt.description }}</span>
+              </span>
+              <i class="bi bi-arrow-right reg-choice__arrow"></i>
+            </button>
+          }
+        </div>
+      } @else if (!reg.submitted()) {
+        <header class="reg-modal__head reg-modal__head--form">
+          <button type="button" class="reg-back" (click)="reg.back()">
+            <i class="bi bi-arrow-left"></i> Change type
+          </button>
+          <span class="reg-modal__tag">
+            <i class="bi" [class]="reg.currentOption?.icon"></i>
+            {{ reg.selectedType() }}
+          </span>
+          @if (reg.currentForm) {
+            <div class="reg-steps" aria-hidden="true">
+              @for (section of reg.currentForm.sections; track section.title; let i = $index) {
+                <span
+                  class="reg-steps__dot"
+                  [class.is-active]="i === reg.sectionIndex()"
+                  [class.is-done]="i < reg.sectionIndex()"
+                ></span>
+              }
+            </div>
+          }
+          <h2 id="reg-modal-title">{{ reg.currentSection?.title }}</h2>
+          <span class="reg-step-label">Step {{ reg.sectionIndex() + 1 }} of {{ reg.sectionCount }}</span>
+
+          @if (reg.isFirstSection && reg.currentForm) {
+            <ul class="reg-notes">
+              @for (note of reg.currentForm.notes; track note) {
+                <li><i class="bi bi-info-circle"></i> {{ note }}</li>
+              }
+            </ul>
+          }
+        </header>
+
+        <form class="reg-form" (ngSubmit)="reg.next()" novalidate>
+          @if (reg.currentSection; as section) {
+            <div class="reg-fields">
+              @for (field of section.fields; track field.id) {
+                <div
+                  class="reg-field"
+                  [class.reg-field--full]="field.type === 'textarea' || field.type === 'radio' || field.type === 'checkbox'"
+                  [class.reg-field--invalid]="reg.showError(field)"
+                >
+                  <label class="reg-field__label">
+                    {{ field.label }}
+                    @if (field.required) {
+                      <span class="reg-req" aria-hidden="true">*</span>
+                    }
+                  </label>
+                  @if (field.hint) {
+                    <span class="reg-field__hint">{{ field.hint }}</span>
+                  }
+
+                  @switch (field.type) {
+                    @case ('textarea') {
+                      <textarea
+                        class="reg-input"
+                        rows="3"
+                        [name]="field.id"
+                        [required]="!!field.required"
+                        [(ngModel)]="reg.formData[field.id]"
+                        placeholder="Enter your answer"
+                      ></textarea>
+                    }
+                    @case ('radio') {
+                      <div class="reg-options">
+                        @for (option of field.options; track option) {
+                          <label class="reg-option">
+                            <input
+                              type="radio"
+                              [name]="field.id"
+                              [value]="option"
+                              [required]="!!field.required"
+                              [(ngModel)]="reg.formData[field.id]"
+                            />
+                            <span>{{ option }}</span>
+                          </label>
+                        }
+                      </div>
+                    }
+                    @case ('checkbox') {
+                      <div class="reg-options">
+                        @for (option of field.options; track option) {
+                          <label class="reg-option reg-option--check">
+                            <input
+                              type="checkbox"
+                              [checked]="reg.isChecked(field.id, option)"
+                              (change)="reg.toggleCheck(field, option)"
+                            />
+                            <span>{{ option }}</span>
+                          </label>
+                        }
+                      </div>
+                    }
+                    @default {
+                      <input
+                        class="reg-input"
+                        [type]="field.type"
+                        [name]="field.id"
+                        [required]="!!field.required"
+                        [(ngModel)]="reg.formData[field.id]"
+                        placeholder="Enter your answer"
+                      />
+                    }
+                  }
+
+                  @if (reg.showError(field)) {
+                    <span class="reg-field__error">This field is required.</span>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          @if (reg.errorMsg()) {
+            <p class="reg-submit-error"><i class="bi bi-exclamation-triangle-fill"></i> {{ reg.errorMsg() }}</p>
+          }
+
+          <div class="reg-form__actions">
+            <button type="button" class="btn btn--outline" (click)="reg.prev()" [disabled]="reg.saving()">
+              <i class="bi bi-arrow-left"></i>
+              {{ reg.isFirstSection ? 'Back' : 'Previous' }}
+            </button>
+            @if (reg.isLastSection) {
+              <button type="submit" class="btn reg-submit" [disabled]="reg.saving()">
+                @if (reg.saving()) {
+                  <i class="bi bi-arrow-repeat reg-spin"></i> Submitting…
+                } @else {
+                  Submit Registration
+                }
+              </button>
+            } @else {
+              <button type="submit" class="btn reg-submit">Next <i class="bi bi-arrow-right"></i></button>
+            }
+          </div>
+        </form>
+      } @else {
+        <div class="reg-success">
+          <div class="reg-success__icon"><i class="bi bi-check-lg"></i></div>
+          <h2 id="reg-modal-title">Thank you!</h2>
+          <p>
+            Your {{ reg.selectedType() }} registration has been received. A confirmation email will be sent
+            to you upon review.
+          </p>
+          <button type="button" class="btn reg-submit" (click)="reg.close()">Done</button>
+        </div>
+      }
+    </div>
+  </div>
+}
