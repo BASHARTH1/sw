@@ -22,11 +22,14 @@
           </div>
           <h3>{{ opt.title }}</h3>
           <p>{{ opt.description }}</p>
-          <button type="button" class="reg-link" (click)="reg.openType(opt.title)">
-            Register <i class="bi bi-arrow-right"></i>
-          </button>
         </article>
       }
+    </div>
+
+    <div class="reg-cta">
+      <button type="button" class="btn btn--gold reg-cta__btn" (click)="reg.openChooser()">
+        Register <i class="bi bi-arrow-right"></i>
+      </button>
     </div>
   </div>
 </section>
@@ -39,11 +42,11 @@
       <p>Align your brand with one of the region's most ambitious sustainability platforms. We offer sponsorship tiers tailored for industry leaders, NGOs and government entities.</p>
     </div>
     <div class="sponsors-actions">
-      <a href="mailto:sdmc@gulfuniversity.edu.bh" class="btn btn--primary">
+      <button type="button" class="btn btn--primary" (click)="reg.openType('Sponsor')">
         <i class="bi bi-envelope-fill"></i>
         Contact the Committee
-      </a>
-      <button type="button" class="btn btn--outline" (click)="reg.openType('Sponsor')">
+      </button>
+      <button type="button" class="btn btn--outline" (click)="openPackages()">
         <i class="bi bi-file-earmark-text"></i>
         Sponsorship Packages
       </button>
@@ -54,7 +57,7 @@
     <span class="sponsors-logos-label">In partnership with</span>
     <div class="sponsors-logos-grid">
       <a class="sponsor-logo" href="https://www.polytechnic.bh/" target="_blank" rel="noopener noreferrer" aria-label="Bahrain Polytechnic">
-        <img src="bahrain_polytechnic_logo.jpg" alt="Bahrain Polytechnic" />
+        <img src="polytechnic-white.png" alt="Bahrain Polytechnic" />
       </a>
     </div>
   </div>
@@ -244,6 +247,89 @@
           <button type="button" class="btn reg-submit" (click)="reg.close()">Done</button>
         </div>
       }
+    </div>
+  </div>
+}
+
+@if (packagesOpen()) {
+  <div
+    class="pkg-modal"
+    (click)="closePackages()"
+    (keydown.escape)="closePackages()"
+    (keydown.arrowRight)="nextSlide()"
+    (keydown.arrowLeft)="prevSlide()"
+    tabindex="0"
+  >
+    <div class="pkg-modal__dialog" role="dialog" aria-modal="true" aria-label="Sponsorship Packages" (click)="$event.stopPropagation()">
+      <header class="pkg-modal__bar">
+        <span class="pkg-modal__title">
+          Sponsorship Packages
+        </span>
+        <div class="pkg-modal__actions">
+          <span class="pkg-modal__counter">{{ packageIndex() + 1 }} / {{ packageSlides.length }}</span>
+          <button
+            type="button"
+            class="pkg-icon-btn"
+            [class.is-active]="packageZoomed()"
+            [attr.aria-label]="packageZoomed() ? 'Zoom out' : 'Zoom in'"
+            [attr.aria-pressed]="packageZoomed()"
+            (click)="toggleZoom()"
+          >
+            <i class="bi" [class.bi-zoom-in]="!packageZoomed()" [class.bi-zoom-out]="packageZoomed()"></i>
+          </button>
+          <a [href]="packagesPdf" download class="pkg-icon-btn" aria-label="Download PDF">
+            <i class="bi bi-download"></i>
+          </a>
+          <button type="button" class="pkg-icon-btn" aria-label="Close" (click)="closePackages()">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="pkg-stage">
+        <button
+          type="button"
+          class="pkg-nav pkg-nav--prev"
+          aria-label="Previous slide"
+          [disabled]="packageIndex() === 0"
+          (click)="prevSlide()"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <div class="pkg-stage__frame" [class.is-zoomed]="packageZoomed()">
+          <img
+            [src]="packageSlides[packageIndex()]"
+            [alt]="'Sponsorship package slide ' + (packageIndex() + 1)"
+            [class.is-zoomed]="packageZoomed()"
+            (click)="toggleZoom()"
+          />
+        </div>
+
+        <button
+          type="button"
+          class="pkg-nav pkg-nav--next"
+          aria-label="Next slide"
+          [disabled]="packageIndex() === packageSlides.length - 1"
+          (click)="nextSlide()"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+
+      <div class="pkg-thumbs">
+        @for (slide of packageSlides; track slide; let i = $index) {
+          <button
+            type="button"
+            class="pkg-thumb"
+            [class.is-active]="i === packageIndex()"
+            [attr.aria-label]="'Go to slide ' + (i + 1)"
+            (click)="goToSlide(i)"
+          >
+            <img [src]="slide" [alt]="'Slide ' + (i + 1) + ' thumbnail'" loading="lazy" />
+          </button>
+        }
+      </div>
     </div>
   </div>
 }

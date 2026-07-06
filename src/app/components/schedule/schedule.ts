@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { RegistrationService } from '../registration/registration.service';
 
 type SessionType = 'opening' | 'panel' | 'workshop' | 'session' | 'community' | 'competition' | 'awards' | 'exhibition';
 
@@ -42,6 +43,8 @@ const SDG_TITLES: Record<number, string> = {
   styleUrl: './schedule.css'
 })
 export class ScheduleComponent {
+  protected readonly reg = inject(RegistrationService);
+
   protected readonly days: ScheduleDay[] = [
     {
       id: 1,

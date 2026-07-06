@@ -22,7 +22,7 @@
 }
 
 .site-header--scrolled {
-  padding: 10px 0;
+  padding: 4px 0;
 }
 
 .site-header--scrolled::before {
@@ -50,12 +50,19 @@
 .site-header--scrolled .brand { color: var(--ink); }
 
 .brand-mark {
-  width: 104px;
-  height: 104px;
+  width: 132px;
+  height: 132px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-left: 72px;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.site-header--scrolled .brand-mark {
+  width: 56px;
+  height: 56px;
 }
 
 .brand-mark img {
