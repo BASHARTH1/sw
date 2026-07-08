@@ -105,17 +105,17 @@
 }
 
 /* positions, sizes, delays */
-.sdg-orb:nth-child(1) { top: 10%;   left: 4%;    width: 72px;  height: 72px;  --d: 9s;  animation-delay: 0s;   }
-.sdg-orb:nth-child(2) { top: 48%;   left: 16%;   width: 78px;  height: 78px;  --d: 11s; animation-delay: 1s;   }
-.sdg-orb:nth-child(3) { top: 58%;   left: 3%;    width: 96px;  height: 96px;  --d: 10s; animation-delay: 2s;   }
-.sdg-orb:nth-child(4) { bottom: 10%; left: 20%;  width: 72px;  height: 72px;  --d: 13s; animation-delay: 3s;   }
-.sdg-orb:nth-child(5) { top: 14%;   right: 6%;   width: 72px;  height: 72px;  --d: 12s; animation-delay: 1.5s; }
-.sdg-orb:nth-child(6) { top: 64%;   right: 4%;   width: 72px;  height: 72px;  --d: 10s; animation-delay: 2.5s; }
-.sdg-orb:nth-child(7) { bottom: 18%; right: 22%; width: 84px;  height: 84px;  --d: 14s; animation-delay: 0.5s; }
-.sdg-orb:nth-child(8) { top: 48%;   right: 16%;  width: 68px;  height: 68px;  --d: 11s; animation-delay: 3.5s; }
-.sdg-orb:nth-child(9) { top: 27%;   left: 26%;   width: 76px;  height: 76px;  --d: 12s; animation-delay: 2s;   }
-.sdg-orb:nth-child(10) { top: 27%;  right: 26%;  width: 76px;  height: 76px;  --d: 13s; animation-delay: 2.5s; }
-.sdg-orb:nth-child(11) { top: 84%;  left: 58%;   width: 76px;  height: 76px;  --d: 11s; animation-delay: 1.2s; }
+.sdg-orb:nth-child(1) { top: 10%;   left: 4%;    width: 56px;  height: 56px;  --d: 9s;  animation-delay: 0s;   }
+.sdg-orb:nth-child(2) { top: 48%;   left: 16%;   width: 60px;  height: 60px;  --d: 11s; animation-delay: 1s;   }
+.sdg-orb:nth-child(3) { top: 58%;   left: 3%;    width: 74px;  height: 74px;  --d: 10s; animation-delay: 2s;   }
+.sdg-orb:nth-child(4) { bottom: 10%; left: 20%;  width: 56px;  height: 56px;  --d: 13s; animation-delay: 3s;   }
+.sdg-orb:nth-child(5) { top: 14%;   right: 6%;   width: 56px;  height: 56px;  --d: 12s; animation-delay: 1.5s; }
+.sdg-orb:nth-child(6) { top: 64%;   right: 4%;   width: 56px;  height: 56px;  --d: 10s; animation-delay: 2.5s; }
+.sdg-orb:nth-child(7) { bottom: 18%; right: 22%; width: 66px;  height: 66px;  --d: 14s; animation-delay: 0.5s; }
+.sdg-orb:nth-child(8) { top: 48%;   right: 16%;  width: 54px;  height: 54px;  --d: 11s; animation-delay: 3.5s; }
+.sdg-orb:nth-child(9) { top: 27%;   left: 26%;   width: 60px;  height: 60px;  --d: 12s; animation-delay: 2s;   }
+.sdg-orb:nth-child(10) { top: 27%;  right: 26%;  width: 60px;  height: 60px;  --d: 13s; animation-delay: 2.5s; }
+.sdg-orb:nth-child(11) { top: 84%;  left: 58%;   width: 60px;  height: 60px;  --d: 11s; animation-delay: 1.2s; }
 
 @keyframes orbFloat {
   0%, 100% { transform: translateY(0) rotate(-3deg); }
