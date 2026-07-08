@@ -106,7 +106,7 @@
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  cursor: pointer;
+  cursor: var(--cursor-leaf-gold);
   transition: all 0.2s ease;
 }
 
@@ -165,7 +165,7 @@
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--line);
   border-radius: 999px;
-  cursor: pointer;
+  cursor: var(--cursor-leaf-gold);
   transition: all 0.2s ease;
 }
 
@@ -202,7 +202,7 @@
   padding: 13px 18px;
   font-size: 0.86rem;
   border-top: 1px solid var(--line);
-  cursor: pointer;
+  cursor: var(--cursor-leaf-gold);
   transition: background 0.15s ease;
 }
 

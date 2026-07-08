@@ -39,6 +39,10 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
+
+  /* Sustainability-themed leaf cursors (hotspot at the leaf tip). */
+  --cursor-leaf: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='30'%20height='30'%20viewBox='0%200%2032%2032'%3E%3Cpath%20d='M3%203C19%203%2029%2013%2029%2029%2013%2029%203%2019%203%203Z'%20fill='%234c9f38'%20stroke='%23ffffff'%20stroke-width='2'%20stroke-linejoin='round'/%3E%3Cpath%20d='M9%209%2022%2022'%20stroke='%23ffffff'%20stroke-width='2'%20stroke-linecap='round'/%3E%3C/svg%3E") 3 3, auto;
+  --cursor-leaf-gold: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='30'%20height='30'%20viewBox='0%200%2032%2032'%3E%3Cpath%20d='M3%203C19%203%2029%2013%2029%2029%2013%2029%203%2019%203%203Z'%20fill='%23d4a017'%20stroke='%23ffffff'%20stroke-width='2'%20stroke-linejoin='round'/%3E%3Cpath%20d='M9%209%2022%2022'%20stroke='%23ffffff'%20stroke-width='2'%20stroke-linecap='round'/%3E%3C/svg%3E") 3 3, pointer;
 }
 
 * { box-sizing: border-box; }
@@ -53,6 +57,23 @@ html, body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  /* Sustainability-themed leaf cursor. */
+  cursor: var(--cursor-leaf);
+}
+
+/* Clickable elements get a gold leaf to signal interactivity. */
+a,
+button,
+.btn,
+label,
+summary,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+input[type="radio"],
+input[type="checkbox"],
+select {
+  cursor: var(--cursor-leaf-gold);
 }
 
 body {
@@ -192,7 +213,7 @@ img { max-width: 100%; display: block; }
   font-weight: 600;
   font-size: 0.95rem;
   border: 1px solid transparent;
-  cursor: pointer;
+  cursor: var(--cursor-leaf-gold);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
   text-decoration: none;

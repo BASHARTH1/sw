@@ -158,7 +158,7 @@
 .hero-badge > a {
   display: inline-block;
   line-height: 0;
-  cursor: pointer;
+  cursor: var(--cursor-leaf-gold);
 }
 
 /* Nudge the Bahrain Polytechnic logo down so it aligns with the Gulf University logo.

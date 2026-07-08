@@ -1,1 +1,9 @@
+<div
+  class="cursor-spotlight"
+  [class.cursor-spotlight--visible]="visible()"
+  [class.cursor-spotlight--pressed]="pressed()"
+  [style.transform]="'translate3d(' + mx() + 'px,' + my() + 'px,0)'"
+  aria-hidden="true"
+></div>
+
 <router-outlet />
