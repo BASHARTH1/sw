@@ -221,6 +221,14 @@ img { max-width: 100%; display: block; }
   overflow: hidden;
 }
 
+.btn .btn-icon {
+  width: 1.2em;
+  height: 1.2em;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
 .btn--primary {
   background: linear-gradient(135deg, var(--blue-700), var(--blue-900));
   color: var(--white);
