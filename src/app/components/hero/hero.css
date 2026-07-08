@@ -164,7 +164,7 @@
 /* Nudge the Bahrain Polytechnic logo down so it aligns with the Gulf University logo.
    Transform moves the link box and image together, so the whole logo stays clickable. */
 .hero-badge > a:first-of-type {
-  transform: translateY(6px);
+  transform: translateY(12px);
 }
 
 .hero-badge-divider {
