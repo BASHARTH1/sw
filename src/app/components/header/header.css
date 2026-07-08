@@ -7,6 +7,9 @@
   padding: 14px 0;
   background: transparent;
   transition: all 0.35s ease;
+  /* Let clicks pass through the header's empty areas to content behind it
+     (e.g. the hero logos). Interactive children re-enable pointer events on their own rules. */
+  pointer-events: none;
 }
 
 .site-header::before {
@@ -45,6 +48,7 @@
   color: var(--white);
   font-weight: 700;
   transition: color 0.3s ease;
+  pointer-events: auto;
 }
 
 .site-header--scrolled .brand { color: var(--ink); }
@@ -94,6 +98,7 @@
   align-items: center;
   gap: 4px;
   padding: 4px;
+  pointer-events: auto;
 }
 
 .nav-link {
@@ -151,6 +156,7 @@
   justify-content: center;
   position: relative;
   z-index: 20;
+  pointer-events: auto;
   transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
 }
 

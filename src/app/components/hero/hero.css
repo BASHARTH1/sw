@@ -152,6 +152,21 @@
   object-fit: contain;
 }
 
+/* Each logo is a single image wrapped in one link.
+   inline-block anchor + block image => the link box is exactly the full logo box,
+   so the entire logo (text + icon) is clickable. */
+.hero-badge > a {
+  display: inline-block;
+  line-height: 0;
+  cursor: pointer;
+}
+
+/* Nudge the Bahrain Polytechnic logo down so it aligns with the Gulf University logo.
+   Transform moves the link box and image together, so the whole logo stays clickable. */
+.hero-badge > a:first-of-type {
+  transform: translateY(6px);
+}
+
 .hero-badge-divider {
   width: 1px;
   align-self: stretch;
