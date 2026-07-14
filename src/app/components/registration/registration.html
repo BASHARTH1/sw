@@ -223,6 +223,13 @@
             </div>
           }
 
+          @if (reg.showSectionError) {
+            <p class="reg-submit-error">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              Please fill in the required fields highlighted above before continuing.
+            </p>
+          }
+
           @if (reg.errorMsg()) {
             <p class="reg-submit-error"><i class="bi bi-exclamation-triangle-fill"></i> {{ reg.errorMsg() }}</p>
           }

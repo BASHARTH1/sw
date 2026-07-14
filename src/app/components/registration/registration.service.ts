@@ -539,6 +539,7 @@ export class RegistrationService {
     }
     this.attempted.set(true);
     if (this.sectionHasErrors()) {
+      this.scrollToFirstError();
       return;
     }
     if (this.isLastSection) {
@@ -649,9 +650,25 @@ export class RegistrationService {
     return this.attempted() && this.isMissing(field);
   }
 
-  private sectionHasErrors(): boolean {
+  sectionHasErrors(): boolean {
     const section = this.currentSection;
     return section ? section.fields.some((field) => this.isMissing(field)) : false;
+  }
+
+  /** True once the user has tried to advance and the section still has gaps. */
+  get showSectionError(): boolean {
+    return this.attempted() && this.sectionHasErrors();
+  }
+
+  /** Bring the first invalid field into view so the user sees what to fix. */
+  private scrollToFirstError(): void {
+    if (typeof document === 'undefined' || typeof requestAnimationFrame === 'undefined') {
+      return;
+    }
+    requestAnimationFrame(() => {
+      const el = document.querySelector('.reg-field--invalid');
+      el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
   }
 
   private reset(): void {
