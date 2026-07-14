@@ -98,6 +98,7 @@
   align-items: center;
   gap: 4px;
   padding: 4px;
+  margin-left: auto;
   pointer-events: auto;
 }
 
@@ -155,6 +156,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  margin-left: auto;
   z-index: 20;
   pointer-events: auto;
   transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
