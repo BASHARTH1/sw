@@ -135,7 +135,7 @@
 }
 
 .nav-cta:hover {
-  color: var(--gold-200);
+  color: var(--white);
   background: rgba(212, 160, 23, 0.12);
   border-color: rgba(212, 160, 23, 0.8);
   transform: translateY(-1px);
