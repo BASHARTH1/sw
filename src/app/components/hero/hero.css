@@ -275,7 +275,7 @@
 .hero-theme {
   font-size: clamp(1.05rem, 1.6vw, 1.3rem);
   max-width: 720px;
-  margin: 0 auto 38px;
+  margin: 0 auto 18px;
   color: rgba(255, 255, 255, 0.88);
   font-weight: 300;
   animation: fadeUp 0.7s ease 0.25s both;
