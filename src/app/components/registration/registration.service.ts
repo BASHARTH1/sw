@@ -480,6 +480,12 @@ export class RegistrationService {
     return this.sectionIndex() === 0;
   }
 
+  /** Options shown in the "Register" chooser modal. Excludes Keynote Speaker,
+     which is reachable only via the hero "Be A Keynote Speaker" button. */
+  get chooserOptions(): RegOption[] {
+    return this.options.filter((o) => o.title !== 'Keynote Speaker');
+  }
+
   get currentOption(): RegOption | null {
     const type = this.selectedType();
     return this.options.find((o) => o.title === type) ?? null;
