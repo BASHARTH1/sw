@@ -267,8 +267,8 @@
 .hero-logo {
   display: block;
   width: auto;
-  height: clamp(52px, 7vw, 92px);
-  margin: 10px auto 12px;
+  height: clamp(84px, 11vw, 150px);
+  margin: 14px auto 16px;
   filter: drop-shadow(0 14px 30px rgba(11, 20, 55, 0.45));
 }
 
