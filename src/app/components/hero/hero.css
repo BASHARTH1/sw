@@ -220,7 +220,7 @@
 
 .hero-title {
   font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  font-size: clamp(2.6rem, 7vw, 5.6rem);
+  font-size: clamp(2rem, 5.2vw, 4.2rem);
   line-height: 1.05;
   font-weight: 400;
   color: var(--white);
