@@ -8,6 +8,6 @@ import { createClient } from '@supabase/supabase-js';
  * INSERTs from anonymous visitors but cannot be read back by them.
  */
 export const supabase = createClient(
-  'https://vawpneyccqduprtapual.supabase.co',
-  'sb_publishable_8uYeYIQiVZJu-Cz5FTsYDQ_kUbh62sR'
+  'https://xgdtzkyhznxaebknfdkd.supabase.co',
+  'sb_publishable_RMgZgRhsoF4Sow5yvtfBNw_W9MRXDIn'
 );
