@@ -22,6 +22,8 @@ export interface FormField {
   options?: string[];
   hint?: string;
   maxSelect?: number;
+  /** When true and the "Other" option is selected, show a free-text input. */
+  allowOther?: boolean;
 }
 
 export interface FormSection {
@@ -363,13 +365,13 @@ export class RegistrationService {
               required: true,
               maxSelect: 3,
               hint: 'Select up to 3',
+              allowOther: true,
               options: [
-                'Keynote Talks',
-                'Panel Discussions',
-                'Interactive Workshops',
-                'Networking Sessions',
-                'Career & Opportunities Fair',
-                'Innovation Showcase',
+                'Advancing Sustainable Futures through Research and Innovation',
+                'Smart Cities, Innovative Engineering and Digital Transformation for Sustainability',
+                'Climate Action, Circular Economy Strategies in Design and Manufacturing',
+                'Community, Social Impact & Environmental Action',
+                'Future Visions & Closing',
                 'Other'
               ]
             },
@@ -615,7 +617,24 @@ export class RegistrationService {
     }
   }
 
+  /** Key under which the free-text value for a field's "Other" option is stored. */
+  otherKey(fieldId: string): string {
+    return `${fieldId}__other`;
+  }
+
+  /** True when "Other" is selected but its accompanying free-text is still empty. */
+  isOtherMissing(field: FormField): boolean {
+    if (!field.allowOther || !this.isChecked(field.id, 'Other')) {
+      return false;
+    }
+    const other = this.formData[this.otherKey(field.id)];
+    return typeof other !== 'string' || other.trim().length === 0;
+  }
+
   isMissing(field: FormField): boolean {
+    if (this.isOtherMissing(field)) {
+      return true;
+    }
     if (!field.required) {
       return false;
     }

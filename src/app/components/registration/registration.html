@@ -193,6 +193,15 @@
                           </label>
                         }
                       </div>
+                      @if (field.allowOther && reg.isChecked(field.id, 'Other')) {
+                        <input
+                          class="reg-input reg-input--other"
+                          type="text"
+                          [name]="reg.otherKey(field.id)"
+                          [(ngModel)]="reg.formData[reg.otherKey(field.id)]"
+                          placeholder="Please specify"
+                        />
+                      }
                     }
                     @default {
                       <input

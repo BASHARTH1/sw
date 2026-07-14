@@ -967,6 +967,10 @@ button.reg-link {
 
 .reg-input::placeholder { color: var(--muted); }
 
+.reg-input--other {
+  margin-top: 8px;
+}
+
 .reg-options {
   display: grid;
   gap: 6px;
