@@ -62,15 +62,26 @@
       </div>
     </div>
 
-    <div class="hero-cta">
-      <button type="button" class="btn btn--primary" (click)="reg.openChooser()">
-        <i class="bi bi-pencil-square"></i>
-        Register Now
-      </button>
-      <a href="https://icsdi.gulfuniversity.edu.bh/" target="_blank" rel="noopener noreferrer" class="btn btn--ghost">
-        <img src="icsdi-favicon.ico" alt="" class="btn-icon" aria-hidden="true" />
-        ICSDI Website
-      </a>
+    <div class="hero-cta-wrap">
+     <div class="hero-cta-group">
+      <div class="hero-cta">
+        <button type="button" class="btn btn--primary" (click)="reg.openChooser()">
+          <i class="bi bi-pencil-square"></i>
+          Register Now
+        </button>
+        <a href="https://icsdi.gulfuniversity.edu.bh/" target="_blank" rel="noopener noreferrer" class="btn btn--ghost">
+          <img src="icsdi-favicon.ico" alt="" class="btn-icon" aria-hidden="true" />
+          ICSDI Website
+        </a>
+      </div>
+
+      <div class="hero-cta hero-cta--secondary">
+        <button type="button" class="btn btn--keynote" (click)="reg.openType('Keynote Speaker')">
+          <i class="bi bi-mic-fill"></i>
+          Be A Keynote Speaker
+        </button>
+      </div>
+     </div>
     </div>
   </div>
 
