@@ -301,11 +301,10 @@
 }
 
 .hero-theme-sdg {
-  display: block;
-  margin-top: 4px;
+  margin-left: 6px;
   font-weight: 600;
   letter-spacing: 0.03em;
-  color: var(--gold-400);
+  color: var(--white);
 }
 
 .hero-meta {
