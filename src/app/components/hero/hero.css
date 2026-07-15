@@ -264,6 +264,19 @@
 
 .hero-edition sup { font-size: 0.6em; vertical-align: super; }
 
+.hero-dates {
+  display: block;
+  margin: 10px auto 0;
+  font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.9);
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+
+.hero-dates sup { font-size: 0.6em; vertical-align: super; }
+
 .hero-logo {
   display: block;
   width: auto;
