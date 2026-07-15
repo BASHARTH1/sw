@@ -300,6 +300,14 @@
   font-weight: 500;
 }
 
+.hero-theme-sdg {
+  display: block;
+  margin-top: 4px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--gold-400);
+}
+
 .hero-meta {
   display: inline-flex;
   align-items: center;

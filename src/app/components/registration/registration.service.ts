@@ -343,6 +343,7 @@ export class RegistrationService {
               options: [
                 'Student',
                 'Faculty/Staff (Gulf University)',
+                'Faculty/Staff (Bahrain Polytechnic)',
                 'Government Representative',
                 'Industry Professional',
                 'NGO/NPO Representative',
