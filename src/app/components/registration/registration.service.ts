@@ -93,7 +93,7 @@ export class RegistrationService {
       notes: [
         'Deadline to register: 30th September 2026',
         'A confirmation email will be sent upon review',
-        'Event Date: 16th to 20th November 2026'
+        'Event Date: 15th to 19th November 2026'
       ],
       sections: [
         {
@@ -168,8 +168,8 @@ export class RegistrationService {
       notes: [
         'Deadline to register: 30th September 2026',
         'A confirmation email will be sent upon review',
-        'Sponsor Booth Setup Date: 15 November 2026',
-        'Event Date: 16th to 20th November 2026'
+        'Sponsor Booth Setup Date: 14 November 2026',
+        'Event Date: 15th to 19th November 2026'
       ],
       sections: [
         {
@@ -254,8 +254,8 @@ export class RegistrationService {
 
     Exhibitor: {
       notes: [
-        'Setup Date: 15 November 2026',
-        'Event Date — The Art Hotel & Resort: 16th–17th November 2026 | Gulf University Campus: 18th to 20th November 2026'
+        'Setup Date: 14 November 2026',
+        'Event Date — The Art Hotel & Resort: 15th November 2026 | Gulf University Campus: 16th to 19th November 2026'
       ],
       sections: [
         {
@@ -320,7 +320,7 @@ export class RegistrationService {
       notes: [
         'Deadline to register: 30th September 2026',
         'A confirmation email will be sent upon review',
-        'Event Date: 16th to 20th November 2026'
+        'Event Date: 15th to 19th November 2026'
       ],
       sections: [
         {
@@ -394,7 +394,7 @@ export class RegistrationService {
     },
 
     Guest: {
-      notes: ['Deadline to register: 15th November 2026', 'Event Date: 16th to 20th November 2026'],
+      notes: ['Deadline to register: 14th November 2026', 'Event Date: 15th to 19th November 2026'],
       sections: [
         {
           title: 'Personal Information',
