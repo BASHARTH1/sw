@@ -60,6 +60,15 @@
         <img src="polytechnic-white.png" alt="Bahrain Polytechnic" />
       </a>
     </div>
+
+    <span class="sponsors-logos-label">Our Partners</span>
+    <div class="partners-grid">
+      @for (p of partners; track p.logo) {
+        <div class="partner-tile" [class.partner-tile--wide]="p.wide">
+          <img [src]="p.logo" [alt]="p.name" loading="lazy" />
+        </div>
+      }
+    </div>
   </div>
 </section>
 

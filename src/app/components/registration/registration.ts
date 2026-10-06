@@ -23,6 +23,16 @@ export class RegistrationComponent {
 
   protected readonly packagesPdf = 'SW2026-SponsorshipPackages.pdf';
 
+  protected readonly partners = [
+    { name: 'Supreme Council for Environment', logo: 'partners/supreme-council-for-environment.png' },
+    { name: 'Ministry of Information', logo: 'partners/ministry-of-information.png' },
+    { name: 'UNIDO Investment and Technology Promotion Office, Bahrain', logo: 'partners/unido-itpo-bahrain.png', wide: true },
+    { name: 'Bahrain Intellectual Property Society', logo: 'partners/bips.png' },
+    { name: 'Bahrain Smart City Society', logo: 'partners/bahrain-smart-city-society.png' },
+    { name: 'Bahrain Library & Information Association', logo: 'partners/bahrain-library-information-association.png' },
+    { name: 'Ebdaa for Microfinance', logo: 'partners/ebdaa-microfinance.png' }
+  ];
+
   protected openPackages(): void {
     this.packageIndex.set(0);
     this.packageZoomed.set(false);

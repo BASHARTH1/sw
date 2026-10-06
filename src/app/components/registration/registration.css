@@ -315,8 +315,56 @@
   border-radius: 6px;
 }
 
+.sponsors-logos-grid + .sponsors-logos-label {
+  margin-top: 18px;
+}
+
+.partners-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  width: 100%;
+}
+
+.partner-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 190px;
+  height: 130px;
+  padding: 16px 18px;
+  background: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-md);
+  box-shadow: 0 18px 36px -18px rgba(0, 0, 0, 0.55);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* UNIDO + ITPO marks must stay side by side, so give the lockup more room */
+.partner-tile--wide {
+  width: 320px;
+}
+
+.partner-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 44px -18px rgba(0, 0, 0, 0.65);
+}
+
+.partner-tile img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
 @media (max-width: 720px) {
   .sponsor-logo img { max-height: 140px; }
+  .partners-grid { gap: 12px; }
+  .partner-tile { width: calc(50% - 6px); height: 110px; padding: 12px; }
+  .partner-tile--wide { width: 100%; }
 }
 
 /* ---------- sponsorship packages gallery ---------- */
