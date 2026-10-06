@@ -63,9 +63,13 @@
 
     <span class="sponsors-logos-label">Our Partners</span>
     <div class="partners-grid">
-      @for (p of partners; track p.logo) {
-        <div class="partner-tile" [class.partner-tile--wide]="p.wide">
-          <img [src]="p.logo" [alt]="p.name" loading="lazy" />
+      @for (group of partners; track group[0].logo) {
+        <div class="partner-group" [class.partner-group--pair]="group.length > 1">
+          @for (p of group; track p.logo) {
+            <div class="partner-tile">
+              <img [src]="p.logo" [alt]="p.name" loading="lazy" />
+            </div>
+          }
         </div>
       }
     </div>
