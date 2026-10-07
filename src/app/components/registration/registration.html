@@ -54,20 +54,17 @@
   </div>
 
   <div class="container sponsors-logos">
-    <span class="sponsors-logos-label">In partnership with</span>
-    <div class="sponsors-logos-grid">
-      <a class="sponsor-logo" href="https://www.polytechnic.bh/" target="_blank" rel="noopener noreferrer" aria-label="Bahrain Polytechnic">
-        <img src="polytechnic-white.png" alt="Bahrain Polytechnic" />
-      </a>
-    </div>
-
     <span class="sponsors-logos-label">Our Partners</span>
-    <div class="partners-grid">
-      @for (group of partners; track group[0].logo) {
-        <div class="partner-group" [class.partner-group--pair]="group.length > 1">
-          @for (p of group; track p.logo) {
-            <div class="partner-tile">
-              <img [src]="p.logo" [alt]="p.name" loading="lazy" />
+    <div class="partners-rows">
+      @for (row of partnerRows; track $index) {
+        <div class="partners-grid">
+          @for (group of row; track group[0].logo) {
+            <div class="partner-group" [class.partner-group--pair]="group.length > 1">
+              @for (p of group; track p.logo) {
+                <div class="partner-tile">
+                  <img [src]="p.logo" [alt]="p.name" loading="lazy" />
+                </div>
+              }
             </div>
           }
         </div>
