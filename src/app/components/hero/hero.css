@@ -117,6 +117,23 @@
 .sdg-orb:nth-child(10) { top: 27%;  right: 26%;  width: 60px;  height: 60px;  --d: 13s; animation-delay: 2.5s; }
 .sdg-orb:nth-child(11) { top: 84%;  left: 58%;   width: 60px;  height: 60px;  --d: 11s; animation-delay: 1.2s; }
 
+.sdg-orb:nth-child(12) { top: 76%;  left: 34%;   width: 64px;  height: 64px;  --d: 12s; animation-delay: 0.8s; }
+.sdg-orb:nth-child(13) { top: 6%;   right: 30%;  width: 60px;  height: 60px;  --d: 10s; animation-delay: 3s;   }
+
+/* SDG 9.5 target boxes (no official icon, styled in SDG 9 orange) */
+.sdg-orb--target {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fd6925;
+  color: #fff;
+  line-height: 1;
+  font-family: inherit;
+}
+.sdg-orb--target b { font-size: 1.35rem; font-weight: 800; }
+.sdg-orb--target small { font-size: 0.42rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+
 @keyframes orbFloat {
   0%, 100% { transform: translateY(0) rotate(-3deg); }
   50%      { transform: translateY(-22px) rotate(4deg); }

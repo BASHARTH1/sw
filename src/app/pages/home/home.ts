@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header';
 import { HeroComponent } from '../../components/hero/hero';
+import { PartnersComponent } from '../../components/partners/partners';
 import { AboutComponent } from '../../components/about/about';
 import { SdgsComponent } from '../../components/sdgs/sdgs';
 import { RegistrationComponent } from '../../components/registration/registration';
@@ -14,6 +15,7 @@ import { FooterComponent } from '../../components/footer/footer';
   imports: [
     HeaderComponent,
     HeroComponent,
+    PartnersComponent,
     AboutComponent,
     SdgsComponent,
     RegistrationComponent,
