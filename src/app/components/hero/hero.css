@@ -63,7 +63,7 @@
   top: 18px;
   left: 24px;
   z-index: 4;
-  width: 104px;
+  width: 76px;
   height: auto;
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
 }
@@ -507,7 +507,7 @@
 }
 
 @media (max-width: 600px) {
-  .hero-corner-logo { top: 12px; left: 12px; width: 72px; }
+  .hero-corner-logo { top: 12px; left: 12px; width: 56px; }
   .hero-meta { gap: 12px; flex-direction: column; padding: 16px 22px; }
   .hero-meta-divider { display: none; }
   .hero-inner { padding: 120px 18px 90px; }
