@@ -13,7 +13,9 @@ export class PartnersComponent {
       [{ name: 'Supreme Council for Environment', logo: 'partners/supreme-council-for-environment.png' }],
       [{ name: 'Ministry of Information', logo: 'partners/ministry-of-information.png' }],
       [{ name: 'Ministry of Works', logo: 'partners/ministry-of-works.png' }],
-      [{ name: 'Ministry of Transportation and Telecommunications', logo: 'partners/ministry-of-transportation-and-telecommunications.png' }]
+      [{ name: 'Ministry of Transportation and Telecommunications', logo: 'partners/ministry-of-transportation-and-telecommunications.png' }],
+      [{ name: 'Ministry of Health', logo: 'partners/ministry-of-health.png' }],
+      [{ name: 'Southern Governorate', logo: 'partners/southern-governorate.png' }]
     ],
     [
       [
