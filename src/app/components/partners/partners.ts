@@ -9,19 +9,19 @@ import { Component } from '@angular/core';
 export class PartnersComponent {
   // Rows of partner tiles; each innermost array is a group that must stay side by side.
   protected readonly partnerRows = [
-    // Government row. Requested order reads right-to-left (Supreme Council on the far right,
+    // Government row. Requested order reads right-to-left (Ministry of Interior on the far right,
     // Bahrainuna on the far left), so the array is listed left-to-right in reverse.
     [
       [{ name: 'Bahrainuna', logo: 'partners/bahrainuna.png' }],
       [{ name: 'Southern Governorate', logo: 'partners/southern-governorate.png' }],
-      [{ name: 'Ministry of Housing and Urban Planning', logo: 'partners/ministry-of-housing-and-urban-planning.png' }],
+      [{ name: 'Ministry of Youth and Sport Affairs', logo: 'partners/ministry-of-youth-and-sport-affairs.png' }],
       [{ name: 'Ministry of Information', logo: 'partners/ministry-of-information.png' }],
       [{ name: 'Ministry of Transportation and Telecommunications', logo: 'partners/ministry-of-transportation-and-telecommunications.png' }],
-      [{ name: 'Ministry of Interior', logo: 'partners/ministry-of-interior.png' }],
-      [{ name: 'Ministry of Youth and Sport Affairs', logo: 'partners/ministry-of-youth-and-sport-affairs.png' }],
       [{ name: 'Ministry of Health', logo: 'partners/ministry-of-health.png' }],
+      [{ name: 'Ministry of Housing and Urban Planning', logo: 'partners/ministry-of-housing-and-urban-planning.png' }],
       [{ name: 'Ministry of Works', logo: 'partners/ministry-of-works.png' }],
-      [{ name: 'Supreme Council for Environment', logo: 'partners/supreme-council-for-environment.png' }]
+      [{ name: 'Supreme Council for Environment', logo: 'partners/supreme-council-for-environment.png' }],
+      [{ name: 'Ministry of Interior', logo: 'partners/ministry-of-interior.png' }]
     ],
     [
       [
