@@ -34,7 +34,7 @@ export class PartnersComponent {
       [{ name: 'Ebdaa for Microfinance', logo: 'partners/ebdaa-microfinance.png' }],
       [{ name: 'RAM Clinics', logo: 'partners/ram-clinics.png' }],
       [{ name: 'stc Bahrain', logo: 'partners/stc.png' }],
-      [{ name: 'Zain Bahrain', logo: 'partners/zain.png' }]
+      [{ name: 'Zain Bahrain', logo: 'partners/zain.svg' }]
     ]
   ];
 }
