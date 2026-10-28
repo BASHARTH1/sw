@@ -33,8 +33,11 @@ export class PartnersComponent {
       [{ name: 'Bahrain Library & Information Association', logo: 'partners/bahrain-library-information-association.png' }],
       [{ name: 'Ebdaa for Microfinance', logo: 'partners/ebdaa-microfinance.png' }],
       [{ name: 'RAM Clinics', logo: 'partners/ram-clinics.png' }],
-      [{ name: 'stc Bahrain', logo: 'partners/stc.png' }],
-      [{ name: 'Zain Bahrain', logo: 'partners/zain.svg' }]
+      [{ name: 'Zain Bahrain', logo: 'partners/zain.svg' }],
+      [{ name: 'Emirates Strategic Planning and Foresight Future Association', logo: 'partners/espa.png' }],
+      [{ name: 'Emirates Intellectual Property Association', logo: 'partners/eipa.png' }],
+      [{ name: 'Nasser Centre for Science & Technology', logo: 'partners/ncst.png' }],
+      [{ name: 'Bahrain Science Center for SDGs', logo: 'partners/bahrain-science-center.png' }]
     ]
   ];
 }
