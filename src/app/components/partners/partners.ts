@@ -34,6 +34,7 @@ export class PartnersComponent {
       [{ name: 'Ebdaa for Microfinance', logo: 'partners/ebdaa-microfinance.png' }],
       [{ name: 'RAM Clinics', logo: 'partners/ram-clinics.png' }],
       [{ name: 'Zain Bahrain', logo: 'partners/zain.svg' }],
+      [{ name: 'stc Bahrain', logo: 'partners/stc.png' }],
       [{ name: 'Emirates Strategic Planning and Foresight Future Association', logo: 'partners/espa.png' }],
       [{ name: 'Emirates Intellectual Property Association', logo: 'partners/eipa.png' }],
       [{ name: 'Nasser Centre for Science & Technology', logo: 'partners/ncst.png' }],
