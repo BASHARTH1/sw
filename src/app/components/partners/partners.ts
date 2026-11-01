@@ -38,7 +38,8 @@ export class PartnersComponent {
       [{ name: 'Emirates Strategic Planning and Foresight Future Association', logo: 'partners/espa.png' }],
       [{ name: 'Emirates Intellectual Property Association', logo: 'partners/eipa.png' }],
       [{ name: 'Nasser Centre for Science & Technology', logo: 'partners/ncst.png' }],
-      [{ name: 'Bahrain Science Center for SDGs', logo: 'partners/bahrain-science-center.png' }]
+      [{ name: 'Bahrain Science Center for SDGs', logo: 'partners/bahrain-science-center.png' }],
+      [{ name: 'Almanhal by Kezana', logo: 'partners/almanhal.png' }]
     ]
   ];
 }
