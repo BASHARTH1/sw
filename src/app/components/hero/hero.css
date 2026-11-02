@@ -384,6 +384,7 @@
 .hero-cta-group {
   display: inline-flex;
   flex-direction: column;
+  gap: 12px;
   margin-bottom: 44px;
 }
 
@@ -392,12 +393,24 @@
 }
 
 .hero-cta--secondary {
-  margin-top: 12px;
   animation: fadeUp 0.7s ease 0.5s both;
 }
 
-.hero-cta--secondary .btn--keynote {
+.hero-cta--secondary .btn {
   width: 100%;
+}
+
+.hero-cta .btn--ecobot {
+  background: linear-gradient(135deg, #0891b2, #1d4ed8);
+  border: 1px solid rgba(103, 232, 249, 0.55);
+  color: var(--white);
+  box-shadow: 0 14px 34px -10px rgba(8, 145, 178, 0.7);
+}
+
+.hero-cta .btn--ecobot:hover {
+  background: linear-gradient(135deg, #06b6d4, #2563eb);
+  color: var(--white);
+  box-shadow: 0 18px 40px -10px rgba(8, 145, 178, 0.95);
 }
 
 .hero-cta .btn--keynote {

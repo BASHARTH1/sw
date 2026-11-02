@@ -88,6 +88,15 @@ export class RegistrationService {
     }
   ];
 
+  /** Reached only from the EcoBot pop-up, so it stays out of the cards and the chooser. */
+  private readonly ecobotOption: RegOption = {
+    title: 'EcoBot Challenge',
+    description: 'Register your team for the EcoBot Challenge 2026.',
+    icon: 'bi-robot',
+    color: '#0e7490',
+    soft: 'rgba(14, 116, 144, 0.12)'
+  };
+
   private readonly forms: Record<string, RegForm> = {
     'Keynote Speaker': {
       notes: [
@@ -443,6 +452,78 @@ export class RegistrationService {
           ]
         }
       ]
+    },
+
+    'EcoBot Challenge': {
+      notes: [
+        'Registration and proposal deadline: 5th November 2026',
+        'Final presentations and jury: 19th November 2026',
+        'No physical robot or working prototype is required'
+      ],
+      sections: [
+        {
+          title: 'Team Information',
+          fields: [
+            { id: 'teamName', label: 'Team Name', type: 'text', required: true },
+            { id: 'projectTitle', label: 'Project Title', type: 'text', required: true },
+            {
+              id: 'institutions',
+              label: 'Institution(s)',
+              type: 'text',
+              required: true,
+              hint: 'Mixed-institution teams are welcome.'
+            },
+            {
+              id: 'members',
+              label: 'Team Members',
+              type: 'textarea',
+              required: true,
+              hint: 'List the names of all 3–5 students.'
+            }
+          ]
+        },
+        {
+          title: 'Team Leader & Faculty Mentor',
+          fields: [
+            { id: 'fullName', label: 'Team Leader Name', type: 'text', required: true },
+            { id: 'email', label: 'Team Leader Email', type: 'email', required: true },
+            { id: 'phone', label: 'Team Leader Phone', type: 'tel', required: true },
+            { id: 'mentorName', label: 'Faculty Mentor Name', type: 'text', required: true },
+            { id: 'mentorEmail', label: 'Faculty Mentor Email', type: 'email', required: true }
+          ]
+        },
+        {
+          title: 'Your Robotics Concept',
+          fields: [
+            {
+              id: 'primarySdg',
+              label: 'Primary SDG',
+              type: 'radio',
+              required: true,
+              options: [
+                'SDG 2 · Zero Hunger',
+                'SDG 3 · Good Health',
+                'SDG 6 · Clean Water',
+                'SDG 7 · Clean Energy',
+                'SDG 9 · Innovation',
+                'SDG 11 · Sustainable Cities',
+                'SDG 12 · Responsible Consumption',
+                'SDG 13 · Climate Action',
+                'SDG 14 · Life Below Water',
+                'SDG 15 · Life on Land',
+                'Other SDG (name it in your concept below)'
+              ]
+            },
+            {
+              id: 'concept',
+              label: 'Brief Robotics Concept',
+              type: 'textarea',
+              required: true,
+              hint: 'Identify the sustainability challenge and the relevant SDG(s).'
+            }
+          ]
+        }
+      ]
     }
   };
 
@@ -491,7 +572,7 @@ export class RegistrationService {
 
   get currentOption(): RegOption | null {
     const type = this.selectedType();
-    return this.options.find((o) => o.title === type) ?? null;
+    return [...this.options, this.ecobotOption].find((o) => o.title === type) ?? null;
   }
 
   /** Open with the type chooser first (e.g. hero "Register Now"). */

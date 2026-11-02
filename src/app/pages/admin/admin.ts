@@ -30,7 +30,7 @@ export class AdminComponent {
   protected readonly filterType = signal('All');
   protected readonly expandedId = signal<string | null>(null);
 
-  protected readonly types = ['All', 'Keynote Speaker', 'Sponsor', 'Exhibitor', 'Participant', 'Guest'];
+  protected readonly types = ['All', 'Keynote Speaker', 'Sponsor', 'Exhibitor', 'Participant', 'Guest', 'EcoBot Challenge'];
 
   protected readonly filtered = computed(() => {
     const t = this.filterType();

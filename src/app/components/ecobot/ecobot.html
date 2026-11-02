@@ -1,0 +1,150 @@
+@if (ecobot.isOpen()) {
+  <div class="eco-modal" (click)="ecobot.close()">
+    <div
+      #dialog
+      class="eco-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="eco-title"
+      tabindex="-1"
+      (click)="$event.stopPropagation()"
+    >
+      <button type="button" class="eco-close" aria-label="Close" (click)="ecobot.close()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+
+      <div class="eco-scroll">
+        <header class="eco-hero">
+          <img
+            class="eco-hero__img"
+            src="ecobot-concept.jpg"
+            alt="Concept illustration of a floating robot collecting plastic bottles from the sea while a tethered underwater robot inspects the seabed."
+          />
+          <div class="eco-hero__text">
+            <span class="eco-hero__eyebrow">Robotics in action for the SDGs</span>
+            <h2 id="eco-title">EcoBot Challenge 2026</h2>
+            <p>Sustainability Week 2026 &nbsp;|&nbsp; Gulf University × Bahrain Polytechnic</p>
+            <span class="eco-hero__badge"><i class="bi bi-check-circle-fill"></i> No prototype required</span>
+          </div>
+        </header>
+        <p class="eco-caption">
+          Example: Concept illustration: ocean-cleaning robotics (SDG 14). A conceptual illustration, not a real deployed system.
+        </p>
+
+        <ul class="eco-deadlines" aria-label="Key deadlines">
+          @for (d of deadlines; track d.date) {
+            <li><strong>{{ d.date }}</strong><span>{{ d.label }}</span></li>
+          }
+        </ul>
+
+        <div class="eco-body">
+          <section>
+            <h3>The challenge</h3>
+            <p>
+              Design a robot concept that could help solve a real sustainability problem. Explain how it would work
+              and which UN Sustainable Development Goal (SDG) it supports. Present your idea to a jury. No robot
+              construction or working prototype is needed.
+            </p>
+          </section>
+
+          <section>
+            <h3>Who can participate?</h3>
+            <ul class="eco-list">
+              @for (item of participation; track item) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          </section>
+
+          <section>
+            <h3>Choose your sustainability challenge</h3>
+            <p>Select one primary SDG. You may connect your idea to additional SDGs when relevant. Examples:</p>
+            <ul class="eco-sdgs">
+              @for (sdg of sdgs; track sdg.name) {
+                <li>
+                  <img [src]="sdg.icon" alt="" loading="lazy" />
+                  <span><strong>{{ sdg.name }}</strong>{{ sdg.example }}</span>
+                </li>
+              }
+            </ul>
+            <p class="eco-note">Other SDGs are also eligible if the robotics application and sustainability connection are clear.</p>
+          </section>
+
+          <section>
+            <h3>What do you need to submit?</h3>
+            <p>Prepare ONE presentation (maximum 5 slides, submitted as PDF). Keep it visual, simple and specific:</p>
+            <ol class="eco-slides">
+              @for (slide of slides; track slide.title) {
+                <li><strong>{{ slide.title }}</strong> {{ slide.text }}</li>
+              }
+            </ol>
+            <p class="eco-note">
+              Include your team name, members, institution(s), team leader, faculty mentor and project title. Credit
+              any external images, sources or AI-assisted content.
+            </p>
+          </section>
+
+          <div class="eco-columns">
+            <section>
+              <h3>How will presentations work?</h3>
+              <table class="eco-table">
+                <thead><tr><th scope="col">Activity</th><th scope="col">Time</th></tr></thead>
+                <tbody>
+                  @for (row of presentation; track row.activity) {
+                    <tr><td>{{ row.activity }}</td><td>{{ row.time }}</td></tr>
+                  }
+                </tbody>
+              </table>
+              <p class="eco-note">
+                A physical robot, prototype, live demonstration or simulation is NOT required. You may use conceptual
+                visuals or CAD images.
+              </p>
+            </section>
+
+            <section>
+              <h3>How will your idea be judged?</h3>
+              <table class="eco-table">
+                <thead><tr><th scope="col">Criterion</th><th scope="col">Points</th></tr></thead>
+                <tbody>
+                  @for (row of criteria; track row.name) {
+                    <tr><td>{{ row.name }}</td><td>{{ row.points }}</td></tr>
+                  }
+                </tbody>
+                <tfoot><tr><th scope="row">Total</th><td>100</td></tr></tfoot>
+              </table>
+            </section>
+          </div>
+
+          <section>
+            <h3>How to participate</h3>
+            <ol class="eco-steps">
+              @for (step of steps; track step; let i = $index) {
+                <li><span class="eco-steps__num" aria-hidden="true">{{ i + 1 }}</span>{{ step }}</li>
+              }
+            </ol>
+          </section>
+
+          <section>
+            <h3>Proposed schedule &amp; key dates</h3>
+            <ol class="eco-timeline">
+              @for (row of schedule; track row.milestone) {
+                <li>
+                  <span class="eco-timeline__date">{{ row.date }}</span>
+                  <strong>{{ row.milestone }}</strong>
+                  <span>{{ row.action }}</span>
+                </li>
+              }
+            </ol>
+          </section>
+        </div>
+      </div>
+
+      <footer class="eco-footer">
+        <span class="eco-footer__note"><i class="bi bi-calendar-event"></i> Register by 5 November 2026</span>
+        <button type="button" class="btn eco-register" (click)="register()">
+          Register your team <i class="bi bi-arrow-right"></i>
+        </button>
+      </footer>
+    </div>
+  </div>
+}

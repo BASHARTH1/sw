@@ -68,6 +68,12 @@
 
     <div class="hero-cta-wrap">
      <div class="hero-cta-group">
+      <div class="hero-cta hero-cta--secondary">
+        <button type="button" class="btn btn--keynote" (click)="reg.openType('Keynote Speaker')">
+          <i class="bi bi-mic-fill"></i>
+          Be A Keynote Speaker
+        </button>
+      </div>
       <div class="hero-cta">
         <button type="button" class="btn btn--primary" (click)="reg.openChooser()">
           <i class="bi bi-pencil-square"></i>
@@ -80,9 +86,9 @@
       </div>
 
       <div class="hero-cta hero-cta--secondary">
-        <button type="button" class="btn btn--keynote" (click)="reg.openType('Keynote Speaker')">
-          <i class="bi bi-mic-fill"></i>
-          Be A Keynote Speaker
+        <button type="button" class="btn btn--ecobot" (click)="ecobot.open()">
+          <i class="bi bi-robot"></i>
+          EcoBot Challenge 2026
         </button>
       </div>
      </div>

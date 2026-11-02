@@ -8,6 +8,7 @@ import { RegistrationComponent } from '../../components/registration/registratio
 import { ScheduleComponent } from '../../components/schedule/schedule';
 import { VenueComponent } from '../../components/venue/venue';
 import { FooterComponent } from '../../components/footer/footer';
+import { EcobotComponent } from '../../components/ecobot/ecobot';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ import { FooterComponent } from '../../components/footer/footer';
     RegistrationComponent,
     ScheduleComponent,
     VenueComponent,
-    FooterComponent
+    FooterComponent,
+    EcobotComponent
   ],
   templateUrl: './home.html'
 })
