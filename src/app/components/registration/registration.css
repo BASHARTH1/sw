@@ -968,6 +968,65 @@ button.reg-link {
   border-color: #dc2626;
 }
 
+.reg-list {
+  display: grid;
+  gap: 8px;
+}
+
+.reg-list__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reg-list__num {
+  flex-shrink: 0;
+  width: 18px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.reg-field--invalid .reg-input--filled { border-color: var(--line); }
+
+.reg-list__remove {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--muted);
+  transition: all 0.2s ease;
+}
+
+.reg-list__remove:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+.reg-list__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 0 26px;
+  padding: 7px 14px;
+  border: 1px dashed var(--rc);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--rc);
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.reg-list__add:hover { background: var(--rc-soft); }
+
 .reg-field__error {
   display: block;
   margin-top: 6px;

@@ -131,7 +131,7 @@
               @for (field of section.fields; track field.id) {
                 <div
                   class="reg-field"
-                  [class.reg-field--full]="field.type === 'textarea' || field.type === 'radio' || field.type === 'checkbox'"
+                  [class.reg-field--full]="field.type === 'textarea' || field.type === 'radio' || field.type === 'checkbox' || field.type === 'list'"
                   [class.reg-field--invalid]="reg.showError(field)"
                 >
                   <label class="reg-field__label">
@@ -194,6 +194,39 @@
                         />
                       }
                     }
+                    @case ('list') {
+                      <div class="reg-list">
+                        @for (item of reg.listItems(field); track $index; let i = $index) {
+                          <div class="reg-list__row">
+                            <span class="reg-list__num" aria-hidden="true">{{ i + 1 }}</span>
+                            <input
+                              class="reg-input"
+                              type="text"
+                              [class.reg-input--filled]="item.trim()"
+                              [value]="item"
+                              [attr.aria-label]="field.label + ': ' + field.itemLabel + ' ' + (i + 1)"
+                              placeholder="Full name"
+                              (input)="reg.setListItem(field, i, $any($event.target).value)"
+                            />
+                            @if (i >= (field.minItems ?? 1)) {
+                              <button
+                                type="button"
+                                class="reg-list__remove"
+                                [attr.aria-label]="'Remove ' + field.itemLabel + ' ' + (i + 1)"
+                                (click)="reg.removeListItem(field, i)"
+                              >
+                                <i class="bi bi-trash3"></i>
+                              </button>
+                            }
+                          </div>
+                        }
+                      </div>
+                      @if (reg.listItems(field).length < (field.maxItems ?? 1)) {
+                        <button type="button" class="reg-list__add" (click)="reg.addListItem(field)">
+                          <i class="bi bi-plus-lg"></i> Add {{ field.itemLabel }}
+                        </button>
+                      }
+                    }
                     @default {
                       <input
                         class="reg-input"
@@ -207,7 +240,13 @@
                   }
 
                   @if (reg.showError(field)) {
-                    <span class="reg-field__error">This field is required.</span>
+                    <span class="reg-field__error">
+                      @if (field.type === 'list') {
+                        Please enter a name in every field.
+                      } @else {
+                        This field is required.
+                      }
+                    </span>
                   }
                 </div>
               }

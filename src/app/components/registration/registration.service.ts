@@ -12,7 +12,7 @@ export interface RegOption {
   featured?: boolean;
 }
 
-export type FieldType = 'text' | 'email' | 'tel' | 'textarea' | 'radio' | 'checkbox';
+export type FieldType = 'text' | 'email' | 'tel' | 'textarea' | 'radio' | 'checkbox' | 'list';
 
 export interface FormField {
   id: string;
@@ -24,6 +24,11 @@ export interface FormField {
   maxSelect?: number;
   /** When true and the "Other" option is selected, show a free-text input. */
   allowOther?: boolean;
+  /** For 'list' fields: how many inputs are always shown, and the most that can be added. */
+  minItems?: number;
+  maxItems?: number;
+  /** For 'list' fields: name of one entry, e.g. "member". */
+  itemLabel?: string;
 }
 
 export interface FormSection {
@@ -476,9 +481,12 @@ export class RegistrationService {
             {
               id: 'members',
               label: 'Team Members',
-              type: 'textarea',
+              type: 'list',
               required: true,
-              hint: 'List the names of all 3–5 students.'
+              hint: 'Enter the names of all 3–5 students, including the team leader.',
+              minItems: 3,
+              maxItems: 5,
+              itemLabel: 'member'
             }
           ]
         },
@@ -700,6 +708,40 @@ export class RegistrationService {
     }
   }
 
+  /** Current entries of a 'list' field, starting with the minimum number of empty inputs. */
+  listItems(field: FormField): string[] {
+    const value = this.formData[field.id];
+    if (Array.isArray(value)) {
+      return value;
+    }
+    const items = Array.from({ length: field.minItems ?? 1 }, () => '');
+    this.formData[field.id] = items;
+    return items;
+  }
+
+  setListItem(field: FormField, index: number, value: string): void {
+    this.listItems(field)[index] = value;
+  }
+
+  addListItem(field: FormField): void {
+    const items = this.listItems(field);
+    if (field.maxItems && items.length >= field.maxItems) {
+      return;
+    }
+    items.push('');
+    // Wait for the new input to render, then move the cursor into it.
+    if (typeof document !== 'undefined') {
+      setTimeout(() => document.querySelector<HTMLInputElement>('.reg-list__row:last-child input')?.focus(), 50);
+    }
+  }
+
+  removeListItem(field: FormField, index: number): void {
+    const items = this.listItems(field);
+    if (items.length > (field.minItems ?? 1)) {
+      items.splice(index, 1);
+    }
+  }
+
   /** Key under which the free-text value for a field's "Other" option is stored. */
   otherKey(fieldId: string): string {
     return `${fieldId}__other`;
@@ -722,6 +764,9 @@ export class RegistrationService {
       return false;
     }
     const value = this.formData[field.id];
+    if (field.type === 'list') {
+      return !Array.isArray(value) || value.some((item) => item.trim().length === 0);
+    }
     if (field.type === 'checkbox') {
       return !Array.isArray(value) || value.length === 0;
     }
