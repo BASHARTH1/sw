@@ -1,14 +1,6 @@
 @if (intro() !== 'done') {
   <div class="intro" [class.intro--leaving]="intro() === 'leaving'" (click)="leaveIntro()">
     <img class="intro__logo" src="sw2026-logo.png" alt="Bahrain Polytechnic, Sustainability Week 2026 and Gulf University" />
-    <div class="intro__wheel-wrap">
-      <svg class="intro__wheel" viewBox="0 0 200 200" aria-hidden="true">
-        @for (segment of wheel; track $index) {
-          <path [attr.d]="segment.path" [attr.fill]="segment.color" [style.--i]="$index" />
-        }
-      </svg>
-      <span class="intro__year">SW<strong>2026</strong></span>
-    </div>
     <h1 class="intro__title">Sustainability Week</h1>
     <p class="intro__dates">Agenda &nbsp;·&nbsp; November 15<sup>th</sup> – 19<sup>th</sup>, 2026</p>
     <button type="button" class="intro__skip">Skip <i class="bi bi-chevron-right"></i></button>
