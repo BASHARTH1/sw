@@ -565,7 +565,7 @@ sup { font-size: 0.62em; line-height: 0; }
 }
 
 .tiles { display: grid; flex: 1; gap: 3mm 4mm; min-height: 0; }
-.tiles--gov { direction: rtl; grid-template-columns: repeat(5, 1fr); }
+.tiles--gov { direction: rtl; grid-template-columns: repeat(6, 1fr); }
 .tiles--other { grid-template-columns: repeat(7, 1fr); }
 .tiles--gov { padding-bottom: 3mm; border-bottom: 0.25mm solid var(--line); }
 

@@ -7,13 +7,18 @@ import { Component } from '@angular/core';
   styleUrl: './partners.css'
 })
 export class PartnersComponent {
+  // Logos too wide to read in a normal tile get a double-width one.
+  protected readonly wideLogos = new Set(['partners/king-hamad-global-center.png']);
+
   // Rows of partner tiles; each innermost array is a group that must stay side by side.
   protected readonly partnerRows = [
     // Government row. Requested order reads right-to-left (Ministry of Interior on the far right,
     // Bahrainuna on the far left), so the array is listed left-to-right in reverse.
     [
       [{ name: 'Bahrainuna', logo: 'partners/bahrainuna.png' }],
+      [{ name: 'King Hamad Global Center for Coexistence and Tolerance', logo: 'partners/king-hamad-global-center.png' }],
       [{ name: 'Southern Governorate', logo: 'partners/southern-governorate.png' }],
+      [{ name: 'Ministry of Municipalities Affairs and Agriculture', logo: 'partners/ministry-of-municipalities-affairs-and-agriculture.png' }],
       [{ name: 'Ministry of Youth and Sport Affairs', logo: 'partners/ministry-of-youth-and-sport-affairs.png' }],
       [{ name: 'Ministry of Information', logo: 'partners/ministry-of-information.png' }],
       [{ name: 'Ministry of Transportation and Telecommunications', logo: 'partners/ministry-of-transportation-and-telecommunications.png' }],
