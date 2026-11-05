@@ -76,8 +76,7 @@ sup { font-size: 0.62em; line-height: 0; }
 .cover > *:not(.cover__ghost, .cover__glow, .cover__ribbon) { position: relative; }
 
 .cover__logos { display: flex; align-items: center; gap: 7mm; }
-.cover__logos img { display: block; height: 13mm; width: auto; }
-.cover__logos span { width: 0.3mm; height: 11mm; background: rgba(255, 255, 255, 0.4); }
+.cover__logos img { display: block; height: 25mm; width: auto; }
 
 .cover__invite {
   margin-top: 8mm;
@@ -575,7 +574,7 @@ sup { font-size: 0.62em; line-height: 0; }
 .tiles--other .tile img { max-width: 88%; }
 
 .back__contact { display: flex; gap: 8mm; align-items: center; }
-.back__contact img { display: block; flex-shrink: 0; height: 13mm; width: auto; }
+.back__contact img { display: block; flex-shrink: 0; height: 22mm; width: auto; }
 .back__lines { font-size: 9pt; line-height: 1.8; }
 .back__lines i { color: #facc15; }
 .back__lines a { margin-right: 6mm; }

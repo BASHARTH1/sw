@@ -122,9 +122,7 @@ function coverPage() {
     <div class="cover__ghost">${wheel('340mm', { opacity: 0.07, inner: 40, gap: 1.5 })}</div>
     <div class="cover__glow"></div>
     <header class="cover__logos">
-      <img src="polytechnic-white.png" alt="Bahrain Polytechnic" />
-      <span></span>
-      <img src="main-logo-white.png" alt="Gulf University" />
+      <img src="sw2026-logo.png" alt="Bahrain Polytechnic, Sustainability Week 2026 and Gulf University" />
     </header>
     <div class="cover__invite">Proudly invite you to</div>
     <div class="cover__wheel">
@@ -237,7 +235,7 @@ function backPage() {
       <div class="tiles tiles--other">${tiles(PARTNER_ROWS[1])}</div>
     </div>
     <div class="back__contact">
-      <img src="main-logo-white.png" alt="Gulf University" />
+      <img src="sw2026-logo.png" alt="Bahrain Polytechnic, Sustainability Week 2026 and Gulf University" />
       <div class="back__lines">
         <div><i class="bi bi-geo-alt-fill"></i> Building 1964, Road 4363, Kingdom of Bahrain</div>
         <div>

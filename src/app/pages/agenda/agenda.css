@@ -153,8 +153,8 @@
 .agenda-hero__logo {
   display: block;
   width: auto;
-  height: 42px;
-  max-width: 62%;
+  height: 76px;
+  max-width: 68%;
   object-fit: contain;
 }
 
@@ -283,6 +283,6 @@
 @media (max-width: 760px) {
   .agenda-hero { padding: 14px 16px 56px; }
   .agenda-hero__bar { margin-bottom: 20px; }
-  .agenda-hero__logo { height: 34px; }
+  .agenda-hero__logo { height: 66px; }
   .agenda-hero__meta { flex-direction: column; }
 }
