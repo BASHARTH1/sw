@@ -9,11 +9,7 @@
 
 <div class="agenda" [class.agenda--ready]="ready()" [class.agenda--first]="firstReveal()">
   <header class="agenda-hero">
-    <div class="agenda-hero__bar">
-      <img class="agenda-hero__logo" src="sw2026-logo.png" alt="Bahrain Polytechnic, Sustainability Week 2026 and Gulf University" />
-      <!-- A full page load, so the home page starts exactly as it does for any other visitor. -->
-      <a class="agenda-hero__link" href="/">Full website <i class="bi bi-arrow-right"></i></a>
-    </div>
+    <img class="agenda-hero__logo" src="sw2026-logo.png" alt="Bahrain Polytechnic, Sustainability Week 2026 and Gulf University" />
     <span class="agenda-hero__eyebrow"><i class="bi bi-calendar-event"></i> 5-Day Agenda</span>
     <h2 class="agenda-hero__title">Sustainability Week 2026</h2>
     <p class="agenda-hero__theme">"Co-innovating, Leading, Sustaining…"</p>
@@ -21,10 +17,17 @@
       <li><i class="bi bi-geo-alt-fill"></i> 15<sup>th</sup>: The Art Hotel, Amwaj</li>
       <li><i class="bi bi-geo-alt-fill"></i> 16<sup>th</sup> – 19<sup>th</sup>: Gulf University &amp; Bahrain Polytechnic</li>
     </ul>
-    <a class="btn agenda-hero__pdf" href="Sustainability-Week-2026-Agenda.pdf" download>
-      <i class="bi bi-file-earmark-arrow-down-fill"></i>
-      Download as a PDF
-    </a>
+    <div class="agenda-hero__actions">
+      <a class="btn agenda-hero__pdf" href="Sustainability-Week-2026-Agenda.pdf" download>
+        <i class="bi bi-file-earmark-arrow-down-fill"></i>
+        Download as a PDF
+      </a>
+      <!-- A full page load, so the home page starts exactly as it does for any other visitor. -->
+      <a class="btn agenda-hero__site" href="/">
+        Full website
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
   </header>
   <main>
     <!-- The registration form lives on the home page, so the button is left out here. -->
