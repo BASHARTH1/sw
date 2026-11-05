@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { RegistrationService } from '../registration/registration.service';
 
 type SessionType = 'opening' | 'panel' | 'workshop' | 'session' | 'community' | 'competition' | 'awards' | 'exhibition';
@@ -44,6 +44,9 @@ const SDG_TITLES: Record<number, string> = {
 })
 export class ScheduleComponent {
   protected readonly reg = inject(RegistrationService);
+
+  /** The /agenda page has no registration form, so it turns the button off. */
+  readonly showRegister = input(true);
 
   protected readonly days: ScheduleDay[] = [
     {

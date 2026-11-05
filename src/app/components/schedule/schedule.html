@@ -36,10 +36,12 @@
             }
           </div>
         </div>
-        <button type="button" class="btn btn--primary" (click)="reg.openChooser()">
-          <i class="bi bi-pencil-square"></i>
-          Register Now
-        </button>
+        @if (showRegister()) {
+          <button type="button" class="btn btn--primary" (click)="reg.openChooser()">
+            <i class="bi bi-pencil-square"></i>
+            Register Now
+          </button>
+        }
       </div>
 
       <ol class="timeline">
