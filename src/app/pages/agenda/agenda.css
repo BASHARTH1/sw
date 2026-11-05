@@ -24,7 +24,7 @@
 }
 
 .intro__logo {
-  width: min(190px, 52vw);
+  width: min(360px, 86vw);
   height: auto;
   margin-bottom: 28px;
   animation: rise 0.6s ease-out backwards;
