@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, afterNextRender, inject, input, signal } from '@angular/core';
+import { Component, OnInit, inject, input, signal } from '@angular/core';
 import { RegistrationService } from '../registration/registration.service';
 
 type SessionType = 'opening' | 'panel' | 'workshop' | 'session' | 'community' | 'competition' | 'awards' | 'exhibition';
@@ -52,16 +52,6 @@ export class ScheduleComponent implements OnInit {
   /** The /agenda page opens on the current day of the event; outside the event it stays on Day 1. */
   readonly openOnToday = input(false);
 
-  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-
-  constructor() {
-    afterNextRender(() => {
-      if (this.openOnToday()) {
-        this.showActiveTab();
-      }
-    });
-  }
-
   ngOnInit() {
     if (this.openOnToday()) {
       // en-CA formats as YYYY-MM-DD. The date is Bahrain's, wherever the phone's clock is set.
@@ -70,14 +60,10 @@ export class ScheduleComponent implements OnInit {
     }
   }
 
-  /** On phones the tabs scroll sideways, so a later day's tab can start out of view. */
-  private showActiveTab() {
-    const tabs = this.host.nativeElement.querySelector<HTMLElement>('.day-tabs');
-    const active = this.host.nativeElement.querySelector<HTMLElement>('.day-tab--active');
-    if (tabs && active) {
-      const offset = active.getBoundingClientRect().left - tabs.getBoundingClientRect().left;
-      tabs.scrollLeft += offset - (tabs.clientWidth - active.offsetWidth) / 2;
-    }
+  /** "15th November, 2026" as "15th Nov", for tabs on narrow phones. */
+  protected shortDate(day: ScheduleDay): string {
+    const [date, month] = day.date.split(' ');
+    return `${date} ${month.slice(0, 3)}`;
   }
 
   protected readonly days: ScheduleDay[] = [

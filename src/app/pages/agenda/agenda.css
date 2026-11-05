@@ -207,6 +207,13 @@
 
 .agenda-hero__meta i { color: var(--gold-400); }
 
+.agenda-hero__pdf {
+  margin-top: 16px;
+  background: linear-gradient(135deg, var(--gold-400), var(--gold-600));
+  color: var(--blue-950);
+  box-shadow: 0 12px 28px -10px rgba(212, 160, 23, 0.6);
+}
+
 /* ---------------- schedule, on this page only ---------------- */
 :host ::ng-deep .schedule.section {
   padding-top: 0;
@@ -220,6 +227,7 @@
   position: relative;
   z-index: 2;
   margin-top: -36px;
+  background: rgba(255, 255, 255, 0.94);
 }
 
 /* Sessions are rendered fresh for each day, so these replay whenever a day tab is chosen. */
@@ -252,7 +260,8 @@
 .agenda--ready .agenda-hero__eyebrow,
 .agenda--ready .agenda-hero__title,
 .agenda--ready .agenda-hero__theme,
-.agenda--ready .agenda-hero__meta {
+.agenda--ready .agenda-hero__meta,
+.agenda--ready .agenda-hero__pdf {
   animation: rise 0.55s ease-out backwards;
 }
 
@@ -260,6 +269,7 @@
 .agenda--ready .agenda-hero__title   { animation-delay: 0.32s; }
 .agenda--ready .agenda-hero__theme   { animation-delay: 0.4s; }
 .agenda--ready .agenda-hero__meta    { animation-delay: 0.48s; }
+.agenda--ready .agenda-hero__pdf     { animation-delay: 0.56s; }
 
 .agenda--ready ::ng-deep .day-tabs,
 .agenda--ready ::ng-deep .day-panel {

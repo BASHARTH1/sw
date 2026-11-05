@@ -15,7 +15,8 @@
           [attr.aria-selected]="day.id === activeDayId()"
           (click)="selectDay(day.id)">
           <span class="day-tab-label">{{ day.label }}</span>
-          <span class="day-tab-date">{{ day.date.split(',')[0] }}</span>
+          <span class="day-tab-date day-tab-date--long">{{ day.date.split(',')[0] }}</span>
+          <span class="day-tab-date day-tab-date--short">{{ shortDate(day) }}</span>
         </button>
       }
     </div>
