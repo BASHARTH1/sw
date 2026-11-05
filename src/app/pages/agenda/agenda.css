@@ -1,30 +1,278 @@
-.agenda-bar {
+/* ---------------- intro ---------------- */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(96, 165, 250, 0.4), transparent 55%),
+    radial-gradient(ellipse at 75% 80%, rgba(212, 160, 23, 0.3), transparent 55%),
+    linear-gradient(135deg, #050a24 0%, #0b1437 35%, #1e3a8a 100%);
+  color: var(--white);
+  text-align: center;
+  transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.intro--leaving {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+.intro__logo {
+  width: min(190px, 52vw);
+  height: auto;
+  margin-bottom: 28px;
+  animation: rise 0.6s ease-out backwards;
+}
+
+.intro__wheel-wrap {
+  position: relative;
+  width: min(230px, 58vw);
+  aspect-ratio: 1;
+  margin-bottom: 26px;
+}
+
+.intro__wheel {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: wheelTurn 3s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.intro__wheel path {
+  transform-origin: 100px 100px;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 0.6;
+  animation: segmentIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation-delay: calc(var(--i) * 55ms + 150ms);
+}
+
+.intro__year {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-300);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  animation: rise 0.5s ease-out 0.9s backwards;
+}
+
+.intro__year strong {
+  color: var(--white);
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 7vw, 1.9rem);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+
+.intro__title {
+  margin: 0 0 8px;
+  color: var(--white);
+  font-size: clamp(1.8rem, 7.5vw, 3rem);
+  animation: rise 0.6s ease-out 1.15s backwards;
+}
+
+.intro__dates {
+  margin: 0;
+  color: var(--gold-300);
+  font-size: clamp(0.82rem, 3.4vw, 1rem);
+  font-weight: 500;
+  animation: rise 0.6s ease-out 1.4s backwards;
+}
+
+.intro__skip {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+}
+
+@keyframes wheelTurn {
+  from { transform: rotate(-70deg); }
+}
+
+@keyframes segmentIn {
+  from { opacity: 0; transform: scale(0.55); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-18px); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.4); }
+}
+
+@keyframes lineGrow {
+  from { transform: scaleY(0); }
+}
+
+/* ---------------- hero band ---------------- */
+.agenda-hero {
   position: relative;
   z-index: 1;
+  padding: 16px 20px 62px;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(96, 165, 250, 0.4), transparent 55%),
+    radial-gradient(ellipse at 75% 80%, rgba(212, 160, 23, 0.3), transparent 55%),
+    linear-gradient(135deg, #050a24 0%, #0b1437 35%, #1e3a8a 100%);
+  color: var(--white);
+  text-align: center;
+}
+
+.agenda-hero__bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 16px 20px 0;
+  margin: 0 auto 26px;
 }
 
-.agenda-bar__logo {
+.agenda-hero__logo {
   display: block;
   width: auto;
-  height: 48px;
+  height: 42px;
+  max-width: 62%;
+  object-fit: contain;
 }
 
-.agenda-bar__link {
+.agenda-hero__link {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
   gap: 6px;
-  color: var(--blue-800);
-  font-size: 0.86rem;
+  color: var(--white);
+  font-size: 0.84rem;
   font-weight: 600;
   text-decoration: none;
 }
 
-.agenda-bar__link:hover { color: var(--gold-700); }
+.agenda-hero__link:hover { color: var(--gold-300); }
+
+.agenda-hero__eyebrow {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--gold-300);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.agenda-hero__title {
+  margin: 0 0 6px;
+  color: var(--white);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+}
+
+.agenda-hero__theme {
+  margin: 0 0 14px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.agenda-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.82rem;
+}
+
+.agenda-hero__meta i { color: var(--gold-400); }
+
+/* ---------------- schedule, on this page only ---------------- */
+:host ::ng-deep .schedule.section {
+  padding-top: 0;
+}
+
+:host ::ng-deep .schedule .section-head {
+  display: none;
+}
+
+:host ::ng-deep .day-tabs {
+  position: relative;
+  z-index: 2;
+  margin-top: -36px;
+}
+
+/* Sessions are rendered fresh for each day, so these replay whenever a day tab is chosen. */
+.agenda--ready ::ng-deep .timeline-item {
+  animation: slideIn 0.45s ease-out backwards;
+  animation-delay: calc(var(--wait, 0s) + 60ms * var(--n, 0));
+}
+
+.agenda--ready ::ng-deep .timeline-dot {
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation-delay: calc(var(--wait, 0s) + 60ms * var(--n, 0) + 120ms);
+}
+
+.agenda--first { --wait: 0.7s; }
+
+.agenda--ready ::ng-deep .timeline-item:nth-child(2) { --n: 1; }
+.agenda--ready ::ng-deep .timeline-item:nth-child(3) { --n: 2; }
+.agenda--ready ::ng-deep .timeline-item:nth-child(4) { --n: 3; }
+.agenda--ready ::ng-deep .timeline-item:nth-child(5) { --n: 4; }
+.agenda--ready ::ng-deep .timeline-item:nth-child(6) { --n: 5; }
+.agenda--ready ::ng-deep .timeline-item:nth-child(7) { --n: 6; }
+.agenda--ready ::ng-deep .timeline-item:nth-child(8) { --n: 7; }
+
+.agenda--ready ::ng-deep .timeline::before {
+  transform-origin: top;
+  animation: lineGrow 0.8s ease-out 0.7s backwards;
+}
+
+/* First reveal, as the intro lifts. */
+.agenda--ready .agenda-hero__eyebrow,
+.agenda--ready .agenda-hero__title,
+.agenda--ready .agenda-hero__theme,
+.agenda--ready .agenda-hero__meta {
+  animation: rise 0.55s ease-out backwards;
+}
+
+.agenda--ready .agenda-hero__eyebrow { animation-delay: 0.25s; }
+.agenda--ready .agenda-hero__title   { animation-delay: 0.32s; }
+.agenda--ready .agenda-hero__theme   { animation-delay: 0.4s; }
+.agenda--ready .agenda-hero__meta    { animation-delay: 0.48s; }
+
+.agenda--ready ::ng-deep .day-tabs,
+.agenda--ready ::ng-deep .day-panel {
+  animation: rise 0.55s ease-out 0.5s backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agenda--ready ::ng-deep * { animation: none !important; }
+}
+
+@media (max-width: 760px) {
+  .agenda-hero { padding: 14px 16px 56px; }
+  .agenda-hero__bar { margin-bottom: 20px; }
+  .agenda-hero__logo { height: 34px; }
+  .agenda-hero__meta { flex-direction: column; }
+}

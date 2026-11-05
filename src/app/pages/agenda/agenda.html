@@ -1,11 +1,37 @@
-<header class="agenda-bar">
-  <img class="agenda-bar__logo" src="main-logo.png" alt="Gulf University Sustainability Week" />
-  <!-- A full page load, so the home page starts exactly as it does for any other visitor. -->
-  <a class="agenda-bar__link" href="/">
-    Full website <i class="bi bi-arrow-right"></i>
-  </a>
-</header>
-<main>
-  <!-- The registration form lives on the home page, so the button is left out here. -->
-  <app-schedule [showRegister]="false" />
-</main>
+@if (intro() !== 'done') {
+  <div class="intro" [class.intro--leaving]="intro() === 'leaving'" (click)="leaveIntro()">
+    <img class="intro__logo" src="main-logo-white.png" alt="Gulf University" />
+    <div class="intro__wheel-wrap">
+      <svg class="intro__wheel" viewBox="0 0 200 200" aria-hidden="true">
+        @for (segment of wheel; track $index) {
+          <path [attr.d]="segment.path" [attr.fill]="segment.color" [style.--i]="$index" />
+        }
+      </svg>
+      <span class="intro__year">SW<strong>2026</strong></span>
+    </div>
+    <h1 class="intro__title">Sustainability Week</h1>
+    <p class="intro__dates">Agenda &nbsp;·&nbsp; November 15<sup>th</sup> – 19<sup>th</sup>, 2026</p>
+    <button type="button" class="intro__skip">Skip <i class="bi bi-chevron-right"></i></button>
+  </div>
+}
+
+<div class="agenda" [class.agenda--ready]="ready()" [class.agenda--first]="firstReveal()">
+  <header class="agenda-hero">
+    <div class="agenda-hero__bar">
+      <img class="agenda-hero__logo" src="main-logo-white.png" alt="Gulf University" />
+      <!-- A full page load, so the home page starts exactly as it does for any other visitor. -->
+      <a class="agenda-hero__link" href="/">Full website <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <span class="agenda-hero__eyebrow"><i class="bi bi-calendar-event"></i> 5-Day Agenda</span>
+    <h2 class="agenda-hero__title">Sustainability Week 2026</h2>
+    <p class="agenda-hero__theme">"Co-innovating, Leading, Sustaining…"</p>
+    <ul class="agenda-hero__meta">
+      <li><i class="bi bi-geo-alt-fill"></i> 15<sup>th</sup>: The Art Hotel, Amwaj</li>
+      <li><i class="bi bi-geo-alt-fill"></i> 16<sup>th</sup> – 19<sup>th</sup>: Gulf University &amp; Bahrain Polytechnic</li>
+    </ul>
+  </header>
+  <main>
+    <!-- The registration form lives on the home page, so the button is left out here. -->
+    <app-schedule [showRegister]="false" />
+  </main>
+</div>
