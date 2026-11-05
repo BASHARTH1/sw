@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, ElementRef, OnInit, afterNextRender, inject, input, signal } from '@angular/core';
 import { RegistrationService } from '../registration/registration.service';
 
 type SessionType = 'opening' | 'panel' | 'workshop' | 'session' | 'community' | 'competition' | 'awards' | 'exhibition';
@@ -14,6 +14,7 @@ interface ScheduleDay {
   id: number;
   label: string;
   date: string;
+  isoDate: string;
   theme: string;
   sdgs: number[];
   items: ScheduleItem[];
@@ -42,17 +43,49 @@ const SDG_TITLES: Record<number, string> = {
   templateUrl: './schedule.html',
   styleUrl: './schedule.css'
 })
-export class ScheduleComponent {
+export class ScheduleComponent implements OnInit {
   protected readonly reg = inject(RegistrationService);
 
   /** The /agenda page has no registration form, so it turns the button off. */
   readonly showRegister = input(true);
+
+  /** The /agenda page opens on the current day of the event; outside the event it stays on Day 1. */
+  readonly openOnToday = input(false);
+
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  constructor() {
+    afterNextRender(() => {
+      if (this.openOnToday()) {
+        this.showActiveTab();
+      }
+    });
+  }
+
+  ngOnInit() {
+    if (this.openOnToday()) {
+      // en-CA formats as YYYY-MM-DD. The date is Bahrain's, wherever the phone's clock is set.
+      const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Bahrain' }).format(new Date());
+      this.activeDayId.set(this.days.find(d => d.isoDate === today)?.id ?? 1);
+    }
+  }
+
+  /** On phones the tabs scroll sideways, so a later day's tab can start out of view. */
+  private showActiveTab() {
+    const tabs = this.host.nativeElement.querySelector<HTMLElement>('.day-tabs');
+    const active = this.host.nativeElement.querySelector<HTMLElement>('.day-tab--active');
+    if (tabs && active) {
+      const offset = active.getBoundingClientRect().left - tabs.getBoundingClientRect().left;
+      tabs.scrollLeft += offset - (tabs.clientWidth - active.offsetWidth) / 2;
+    }
+  }
 
   protected readonly days: ScheduleDay[] = [
     {
       id: 1,
       label: 'Day 1',
       date: '15th November, 2026',
+      isoDate: '2026-11-15',
       theme: 'Advancing Sustainable Futures through Research and Innovation',
       sdgs: [4, 9, 11, 12, 17],
       items: [
@@ -67,6 +100,7 @@ export class ScheduleComponent {
       id: 2,
       label: 'Day 2',
       date: '16th November, 2026',
+      isoDate: '2026-11-16',
       theme: 'Smart Cities, Innovative Engineering and Digital Transformation for Sustainability',
       sdgs: [7, 9, 11, 12, 13],
       items: [
@@ -81,6 +115,7 @@ export class ScheduleComponent {
       id: 3,
       label: 'Day 3',
       date: '17th November, 2026',
+      isoDate: '2026-11-17',
       theme: 'Climate Action, Circular Economy Strategies in Design and Manufacturing',
       sdgs: [8, 9, 11, 12, 13, 14, 15],
       items: [
@@ -96,6 +131,7 @@ export class ScheduleComponent {
       id: 4,
       label: 'Day 4',
       date: '18th November, 2026',
+      isoDate: '2026-11-18',
       theme: 'Community, Social Impact & Environmental Action',
       sdgs: [1, 2, 3, 5, 8, 9, 10, 11, 12, 13],
       items: [
@@ -113,6 +149,7 @@ export class ScheduleComponent {
       id: 5,
       label: 'Day 5',
       date: '19th November, 2026',
+      isoDate: '2026-11-19',
       theme: 'Future Visions & Closing',
       sdgs: [4, 9, 12, 16, 17],
       items: [
