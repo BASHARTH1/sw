@@ -45,6 +45,9 @@
         <span class="admin-sub">{{ subs().length }} total submissions</span>
       </div>
       <div class="admin-head__actions">
+        <a class="admin-btn admin-btn--primary" href="/scan">
+          <i class="bi bi-qr-code-scan"></i> Scan tickets
+        </a>
         <button class="admin-btn" (click)="load()" [disabled]="loading()">
           <i class="bi bi-arrow-clockwise"></i> Refresh
         </button>
@@ -56,6 +59,25 @@
         </button>
       </div>
     </header>
+
+    <div class="admin-days" aria-label="Check-ins per day">
+      @for (d of days; track d.iso) {
+        <div class="admin-day" [class.is-today]="d.iso === today">
+          <span class="admin-day__label">{{ d.label }} · {{ d.short }}</span>
+          <strong class="admin-day__count">{{ dayCounts()[d.iso] || 0 }}</strong>
+          <span class="admin-day__sub">checked in</span>
+        </div>
+      }
+    </div>
+
+    <input
+      class="admin-input admin-search"
+      type="search"
+      placeholder="Search name, email or ticket ref…"
+      [value]="search()"
+      (input)="search.set($any($event.target).value)"
+      aria-label="Search registrations"
+    />
 
     <div class="admin-filters">
       @for (t of types; track t) {
@@ -93,7 +115,12 @@
           <div class="admin-row" (click)="toggle(s.id)">
             <span class="admin-date">{{ fmtDate(s.created_at) }}</span>
             <span><span class="admin-badge" [attr.data-type]="s.type">{{ s.type }}</span></span>
-            <span>{{ s.full_name || '—' }}</span>
+            <span>
+              {{ s.full_name || '—' }}
+              @if (inToday(s)) {
+                <i class="bi bi-check-circle-fill admin-in" title="Checked in today"></i>
+              }
+            </span>
             <span class="admin-email">{{ s.email || '—' }}</span>
             <span class="admin-caret">
               <i class="bi" [class.bi-chevron-down]="expandedId() !== s.id" [class.bi-chevron-up]="expandedId() === s.id"></i>
@@ -102,6 +129,32 @@
 
           @if (expandedId() === s.id) {
             <div class="admin-detail">
+              @if (s.ticket_code; as code) {
+                <div class="admin-ticket">
+                  <span class="admin-ticket__ref"><i class="bi bi-ticket-perforated"></i> Ref {{ shortRef(code) }}</span>
+                  <span class="admin-ticket__days">
+                    @for (d of days; track d.iso) {
+                      <span class="admin-ticket__day" [class.is-in]="daysIn(s).includes(d.iso)" [attr.title]="d.label">{{ d.short }}</span>
+                    }
+                  </span>
+                  <span class="admin-ticket__actions">
+                    <a class="admin-btn" [href]="ticketUrl(code)" target="_blank" rel="noopener" (click)="$event.stopPropagation()">
+                      <i class="bi bi-box-arrow-up-right"></i> Open ticket
+                    </a>
+                    <button class="admin-btn" (click)="copyTicket(s, $event)">
+                      <i class="bi" [class.bi-link-45deg]="copiedCode() !== code" [class.bi-check2]="copiedCode() === code"></i>
+                      {{ copiedCode() === code ? 'Copied' : 'Copy link' }}
+                    </button>
+                    @if (inToday(s)) {
+                      <span class="admin-ticket__done"><i class="bi bi-check-circle-fill"></i> In today</span>
+                    } @else {
+                      <button class="admin-btn admin-btn--primary" (click)="checkInNow(s, $event)" [disabled]="checkingIn() === code">
+                        <i class="bi bi-person-check"></i> Check in today
+                      </button>
+                    }
+                  </span>
+                </div>
+              }
               <dl>
                 @for (pair of entries(s.data); track pair[0]) {
                   <div class="admin-detail__item">

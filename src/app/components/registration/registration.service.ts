@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { supabase } from '../../core/supabase.client';
+import { newTicketCode, qrPng, rememberTicket, ticketUrl } from '../../core/tickets';
 
 export interface RegOption {
   title: string;
@@ -545,6 +546,8 @@ export class RegistrationService {
   readonly sectionIndex = signal(0);
   /** True while the submission is being saved to the database. */
   readonly saving = signal(false);
+  /** Ticket issued by the last successful submission, shown on the success screen. */
+  readonly ticket = signal<{ code: string; url: string; name: string | null; qr: string } | null>(null);
   /** Set when the submission fails so the UI can show a retry message. */
   readonly errorMsg = signal<string | null>(null);
 
@@ -656,9 +659,17 @@ export class RegistrationService {
     const fullName = pick('fullName') ?? pick('company') ?? pick('contact') ?? pick('organization');
     const email = pick('email');
 
-    const { error } = await supabase
-      .from('registrations')
-      .insert({ type, full_name: fullName, email, data: fd });
+    // The code is generated here (not by the database) because anonymous visitors
+    // cannot read rows back after inserting them.
+    const ticketCode = newTicketCode();
+    const row = { type, full_name: fullName, email, data: fd };
+    let { error } = await supabase.from('registrations').insert({ ...row, ticket_code: ticketCode });
+    let hasTicket = true;
+    if (error?.code === 'PGRST204') {
+      // The ticket_code column doesn't exist yet (supabase/tickets.sql not run) — still save the registration.
+      hasTicket = false;
+      ({ error } = await supabase.from('registrations').insert(row));
+    }
 
     this.saving.set(false);
 
@@ -666,6 +677,14 @@ export class RegistrationService {
       this.errorMsg.set('Sorry, we could not submit your registration. Please try again.');
       return;
     }
+    if (!hasTicket) {
+      this.submitted.set(true);
+      this.scrollDialogTop();
+      return;
+    }
+    rememberTicket({ code: ticketCode, name: fullName, type });
+    const url = ticketUrl(ticketCode);
+    this.ticket.set({ code: ticketCode, url, name: fullName, qr: await qrPng(url) });
     this.submitted.set(true);
     this.scrollDialogTop();
   }
@@ -804,6 +823,7 @@ export class RegistrationService {
     this.submitted.set(false);
     this.sectionIndex.set(0);
     this.saving.set(false);
+    this.ticket.set(null);
     this.errorMsg.set(null);
   }
 

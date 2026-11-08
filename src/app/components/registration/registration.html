@@ -290,7 +290,24 @@
             Your {{ reg.selectedType() }} registration has been received. A confirmation email will be sent
             to you upon review.
           </p>
-          <button type="button" class="btn reg-submit" (click)="reg.close()">Done</button>
+          @if (reg.ticket(); as t) {
+            <div class="reg-ticket">
+              <span class="reg-ticket__label"><i class="bi bi-ticket-perforated-fill"></i> Your entry ticket</span>
+              <img class="reg-ticket__qr" [src]="t.qr" alt="Your ticket QR code" width="200" height="200" />
+              @if (t.name) {
+                <strong class="reg-ticket__name">{{ t.name }}</strong>
+              }
+              <span class="reg-ticket__hint">Show this QR code at the entrance each day. Screenshot it or open your ticket page to save it.</span>
+            </div>
+            <div class="reg-ticket__actions">
+              <a class="btn reg-submit" [href]="t.url" target="_blank" rel="noopener">
+                <i class="bi bi-box-arrow-up-right"></i> Open my ticket
+              </a>
+              <button type="button" class="btn btn--outline" (click)="reg.close()">Done</button>
+            </div>
+          } @else {
+            <button type="button" class="btn reg-submit" (click)="reg.close()">Done</button>
+          }
         </div>
       }
     </div>

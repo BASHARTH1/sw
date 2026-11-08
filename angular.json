@@ -52,6 +52,11 @@
             ],
             "styles": [
               "src/styles.css"
+            ],
+            "allowedCommonJsDependencies": [
+              "qrcode",
+              "dijkstrajs",
+              "jsqr"
             ]
           },
           "configurations": {

@@ -1,0 +1,153 @@
+@if (checking()) {
+  <div class="sc-center"><i class="bi bi-arrow-repeat sc-spin"></i></div>
+} @else if (!authed()) {
+  <div class="sc-center">
+    <form class="sc-login" (ngSubmit)="login()">
+      <div class="sc-login__icon"><i class="bi bi-qr-code-scan"></i></div>
+      <h1>Ticket Scanner</h1>
+      <p>Staff sign-in (same account as the admin page).</p>
+
+      @if (error()) {
+        <p class="sc-error"><i class="bi bi-exclamation-triangle-fill"></i> {{ error() }}</p>
+      }
+
+      <label class="sc-label" for="sc-email">Email</label>
+      <input id="sc-email" class="sc-input" type="email" name="email" [(ngModel)]="email" autocomplete="username" required />
+
+      <label class="sc-label" for="sc-pass">Password</label>
+      <input
+        id="sc-pass"
+        class="sc-input"
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        autocomplete="current-password"
+        required
+      />
+
+      @if (loginError()) {
+        <p class="sc-error"><i class="bi bi-exclamation-triangle-fill"></i> {{ loginError() }}</p>
+      }
+
+      <button type="submit" class="sc-btn sc-btn--primary sc-btn--block" [disabled]="loggingIn()">
+        @if (loggingIn()) {
+          <i class="bi bi-arrow-repeat sc-spin-inline"></i> Signing in…
+        } @else {
+          Sign In
+        }
+      </button>
+    </form>
+  </div>
+} @else {
+  <div class="sc">
+    <header class="sc-head">
+      <div>
+        <h1>Check-in</h1>
+        <span class="sc-sub">
+          {{ todayLabel }}
+          @if (todayCount() !== null) {
+            · <strong>{{ todayCount() }}</strong> checked in today
+          }
+        </span>
+      </div>
+      <button type="button" class="sc-btn sc-btn--ghost" (click)="logout()" aria-label="Sign out">
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+    </header>
+
+    <div class="sc-viewport">
+      @if (state() === 'scanning' || state() === 'starting') {
+        <video #video class="sc-video" muted playsinline autoplay></video>
+        <div class="sc-frame" aria-hidden="true"></div>
+        @if (busy()) {
+          <div class="sc-busy"><i class="bi bi-arrow-repeat sc-spin-inline"></i> Checking…</div>
+        }
+      } @else {
+        <div class="sc-placeholder">
+          @if (state() === 'denied') {
+            <i class="bi bi-camera-video-off"></i>
+            <p>Camera access was blocked. Allow camera access for this site in your browser settings, then try again.</p>
+          } @else if (state() === 'unsupported') {
+            <i class="bi bi-exclamation-octagon"></i>
+            <p>This browser can't use the camera. Use Chrome or Safari on a phone, over HTTPS.</p>
+          } @else {
+            <i class="bi bi-qr-code-scan"></i>
+            <p>Point the camera at an attendee's QR ticket.</p>
+          }
+          <button type="button" class="sc-btn sc-btn--primary" (click)="startCamera()">
+            <i class="bi bi-camera-fill"></i> Start scanning
+          </button>
+        </div>
+      }
+
+      @if (result(); as r) {
+        <button
+          type="button"
+          class="sc-result"
+          [class.sc-result--ok]="r.status === 'ok'"
+          [class.sc-result--already]="r.status === 'already'"
+          [class.sc-result--invalid]="r.status === 'invalid'"
+          (click)="dismiss()"
+        >
+          @switch (r.status) {
+            @case ('ok') {
+              <i class="bi bi-check-circle-fill sc-result__icon"></i>
+              <span class="sc-result__title">Welcome!</span>
+              <strong class="sc-result__name">{{ r.full_name || 'Guest' }}</strong>
+              <span class="sc-result__type">{{ r.type }}</span>
+              <span class="sc-result__meta">Checked in · {{ dayLabel(r.event_day) }}</span>
+            }
+            @case ('already') {
+              <i class="bi bi-exclamation-circle-fill sc-result__icon"></i>
+              <span class="sc-result__title">Already checked in today</span>
+              <strong class="sc-result__name">{{ r.full_name || 'Guest' }}</strong>
+              <span class="sc-result__type">{{ r.type }}</span>
+              <span class="sc-result__meta">First scanned at {{ fmtTime(r.checked_in_at) }}</span>
+            }
+            @default {
+              <i class="bi bi-x-circle-fill sc-result__icon"></i>
+              <span class="sc-result__title">Invalid ticket</span>
+              <span class="sc-result__meta">This QR code doesn't match any registration.</span>
+            }
+          }
+          @if (r.status !== 'invalid' && r.checked_in_days.length) {
+            <span class="sc-result__days">
+              Days attended: {{ r.checked_in_days.length }} / 5
+            </span>
+          }
+          <span class="sc-result__tap">Tap to scan next</span>
+        </button>
+      }
+    </div>
+
+    @if (error()) {
+      <p class="sc-error sc-error--bar"><i class="bi bi-exclamation-triangle-fill"></i> {{ error() }}</p>
+    }
+
+    <div class="sc-controls">
+      @if (state() === 'scanning') {
+        <button type="button" class="sc-btn" (click)="stopCamera()"><i class="bi bi-stop-circle"></i> Stop camera</button>
+      }
+      <a class="sc-btn" href="/admin"><i class="bi bi-people"></i> Registrations</a>
+    </div>
+
+    <form class="sc-manual" (ngSubmit)="submitManual()">
+      <label class="sc-label" for="sc-manual">Can't scan? Paste the ticket link or code</label>
+      <div class="sc-manual__row">
+        <input
+          id="sc-manual"
+          class="sc-input"
+          type="text"
+          name="manual"
+          [(ngModel)]="manualCode"
+          placeholder="https://…/ticket/…"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
+        <button type="submit" class="sc-btn sc-btn--primary" [disabled]="busy() || !manualCode.trim()">Check in</button>
+      </div>
+      <small class="sc-hint">No phone with them? Find the person on the Registrations page and check them in there.</small>
+    </form>
+  </div>
+}

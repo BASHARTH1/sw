@@ -284,3 +284,56 @@
   .admin-row > span:nth-child(4) { display: none; }
   .admin-detail dl { grid-template-columns: 1fr; }
 }
+
+/* ---------- tickets & check-in ---------- */
+.admin-days {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.admin-day {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+}
+.admin-day.is-today { border-color: var(--blue-500); box-shadow: 0 0 0 1px var(--blue-500); }
+.admin-day__label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+.admin-day__count { font-size: 1.6rem; color: var(--ink); line-height: 1.2; }
+.admin-day__sub { font-size: 0.75rem; color: var(--muted); }
+
+.admin-search { display: block; margin-bottom: 14px; max-width: 420px; }
+
+.admin-in { color: #16a34a; margin-left: 4px; }
+
+.admin-ticket {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 12px 0 4px;
+}
+.admin-ticket__ref { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.85rem; color: var(--ink); }
+.admin-ticket__days { display: flex; gap: 4px; flex-wrap: wrap; }
+.admin-ticket__day {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  background: rgba(30, 58, 138, 0.07);
+}
+.admin-ticket__day.is-in { color: #15803d; background: #dcfce7; }
+.admin-ticket__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+.admin-ticket__actions a.admin-btn { text-decoration: none; }
+.admin-ticket__done { color: #15803d; font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
+.admin-head__actions a.admin-btn { text-decoration: none; }
+
+@media (max-width: 760px) {
+  .admin-days { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .admin-ticket__actions { margin-left: 0; }
+}

@@ -1,0 +1,154 @@
+<div class="tk-page">
+  <a class="tk-brand" href="/">
+    <img src="sw2026-logo.png" alt="Bahrain Polytechnic, Sustainability Week 2026 and Gulf University" />
+  </a>
+
+  @if (code() || notFound()) {
+    <!-- ---------- single ticket ---------- -->
+    @if (loading()) {
+      <div class="tk-card tk-card--center"><i class="bi bi-arrow-repeat tk-spin"></i></div>
+    } @else if (loadError()) {
+      <div class="tk-card tk-card--center">
+        <i class="bi bi-wifi-off tk-state-icon"></i>
+        <h1 class="tk-title">Couldn't load your ticket</h1>
+        <p class="tk-muted">Check your connection and try again.</p>
+        <button type="button" class="tk-btn tk-btn--primary" (click)="load(code()!)">
+          <i class="bi bi-arrow-clockwise"></i> Try again
+        </button>
+      </div>
+    } @else if (notFound()) {
+      <div class="tk-card tk-card--center">
+        <i class="bi bi-question-circle tk-state-icon"></i>
+        <h1 class="tk-title">Ticket not found</h1>
+        <p class="tk-muted">This link doesn't match any registration. Check that it was copied completely.</p>
+        <a class="tk-btn tk-btn--primary" routerLink="/ticket">Find my ticket</a>
+      </div>
+    } @else if (ticket(); as t) {
+      <article class="tk-card tk-ticket">
+        <header class="tk-ticket__head">
+          <span class="tk-ticket__eyebrow">Entry Ticket</span>
+          <h1 class="tk-ticket__event">Sustainability Week 2026</h1>
+          <p class="tk-ticket__dates">15<sup>th</sup> – 19<sup>th</sup> November 2026</p>
+        </header>
+
+        <div class="tk-ticket__body">
+          @if (qr(); as src) {
+            <img class="tk-ticket__qr" [src]="src" alt="Ticket QR code" width="260" height="260" />
+          }
+          <span class="tk-ticket__ref">Ref {{ shortRef(t.ticket_code) }}</span>
+          <strong class="tk-ticket__name">{{ t.full_name || 'Guest' }}</strong>
+          <span class="tk-ticket__type">{{ t.type }}</span>
+        </div>
+
+        <div class="tk-ticket__tear" aria-hidden="true"></div>
+
+        <section class="tk-ticket__days" aria-label="Check-in by day">
+          @for (d of days; track d.iso) {
+            <div
+              class="tk-day"
+              [class.is-in]="isCheckedIn(d.iso)"
+              [class.is-today]="d.iso === today"
+              [attr.title]="d.venue"
+            >
+              <span class="tk-day__label">{{ d.short }}</span>
+              <i class="bi" [class.bi-check-circle-fill]="isCheckedIn(d.iso)" [class.bi-circle]="!isCheckedIn(d.iso)"></i>
+            </div>
+          }
+        </section>
+
+        <p class="tk-ticket__hint">
+          <i class="bi bi-info-circle"></i>
+          Show this QR code at the entrance every day. One ticket is valid for all five days.
+        </p>
+      </article>
+
+      <div class="tk-actions">
+        <button type="button" class="tk-btn tk-btn--primary" (click)="downloadQr()">
+          <i class="bi bi-download"></i> Save QR image
+        </button>
+        @if (canShare) {
+          <button type="button" class="tk-btn" (click)="share()"><i class="bi bi-share"></i> Share</button>
+        } @else {
+          <button type="button" class="tk-btn" (click)="copyLink()">
+            <i class="bi" [class.bi-link-45deg]="!copied()" [class.bi-check2]="copied()"></i>
+            {{ copied() ? 'Link copied' : 'Copy link' }}
+          </button>
+        }
+        <button type="button" class="tk-btn" (click)="print()"><i class="bi bi-printer"></i> Print</button>
+      </div>
+
+      <p class="tk-footer-links">
+        <a href="/agenda"><i class="bi bi-calendar-event"></i> View the agenda</a>
+      </p>
+    }
+  } @else {
+    <!-- ---------- find my ticket ---------- -->
+    <div class="tk-card">
+      <h1 class="tk-title"><i class="bi bi-ticket-perforated-fill"></i> Find my ticket</h1>
+
+      @if (saved().length) {
+        <h2 class="tk-subtitle">On this device</h2>
+        <ul class="tk-list">
+          @for (s of saved(); track s.code) {
+            <li>
+              <a class="tk-list__item" [routerLink]="['/ticket', s.code]">
+                <span>
+                  <strong>{{ s.name || 'Ticket' }}</strong>
+                  <small>{{ s.type }} · Ref {{ shortRef(s.code) }}</small>
+                </span>
+                <i class="bi bi-chevron-right"></i>
+              </a>
+            </li>
+          }
+        </ul>
+        <h2 class="tk-subtitle">Look up another ticket</h2>
+      } @else {
+        <p class="tk-muted">Enter the email and name you registered with.</p>
+      }
+
+      <form class="tk-form" (ngSubmit)="find()">
+        <label class="tk-label" for="tk-email">Email</label>
+        <input id="tk-email" class="tk-input" type="email" name="email" [(ngModel)]="email" autocomplete="email" required />
+
+        <label class="tk-label" for="tk-name">Name used on the form</label>
+        <input id="tk-name" class="tk-input" type="text" name="name" [(ngModel)]="name" autocomplete="name" required />
+        <small class="tk-muted tk-small">For sponsors and exhibitors this may be the company or contact name.</small>
+
+        @if (findError()) {
+          <p class="tk-error"><i class="bi bi-exclamation-triangle-fill"></i> {{ findError() }}</p>
+        }
+
+        <button type="submit" class="tk-btn tk-btn--primary tk-btn--block" [disabled]="searching()">
+          @if (searching()) {
+            <i class="bi bi-arrow-repeat tk-spin-inline"></i> Searching…
+          } @else {
+            <i class="bi bi-search"></i> Find my ticket
+          }
+        </button>
+      </form>
+
+      @if (results(); as list) {
+        @if (list.length) {
+          <ul class="tk-list tk-list--results">
+            @for (s of list; track s.code) {
+              <li>
+                <a class="tk-list__item" [routerLink]="['/ticket', s.code]">
+                  <span>
+                    <strong>{{ s.name || 'Ticket' }}</strong>
+                    <small>{{ s.type }} · Ref {{ shortRef(s.code) }}</small>
+                  </span>
+                  <i class="bi bi-chevron-right"></i>
+                </a>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="tk-error">
+            <i class="bi bi-search"></i> No ticket matches that email and name. Check the spelling, or
+            <a href="/#register">register here</a>.
+          </p>
+        }
+      }
+    </div>
+  }
+</div>

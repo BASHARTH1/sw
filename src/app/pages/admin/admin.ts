@@ -1,6 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { supabase } from '../../core/supabase.client';
+import { EVENT_DAYS, checkIn, dayLabel, shortRef, ticketUrl, todayInBahrain } from '../../core/tickets';
 
 interface Submission {
   id: string;
@@ -8,7 +9,14 @@ interface Submission {
   type: string;
   full_name: string | null;
   email: string | null;
+  ticket_code: string | null;
   data: Record<string, unknown>;
+}
+
+interface CheckinRow {
+  ticket_code: string;
+  event_day: string;
+  checked_in_at: string;
 }
 
 @Component({
@@ -29,13 +37,47 @@ export class AdminComponent {
   protected readonly subs = signal<Submission[]>([]);
   protected readonly filterType = signal('All');
   protected readonly expandedId = signal<string | null>(null);
+  protected readonly search = signal('');
+  /** ticket_code -> days checked in (ISO dates). */
+  protected readonly checkins = signal<Record<string, string[]>>({});
+  protected readonly checkingIn = signal<string | null>(null);
+  protected readonly copiedCode = signal<string | null>(null);
+
+  protected readonly days = EVENT_DAYS;
+  protected readonly today = todayInBahrain();
+  protected readonly shortRef = shortRef;
+  protected readonly ticketUrl = ticketUrl;
+  protected readonly dayLabel = dayLabel;
+
+  /** Check-ins per event day, for the summary strip. */
+  protected readonly dayCounts = computed(() => {
+    const counts: Record<string, number> = {};
+    for (const list of Object.values(this.checkins())) {
+      for (const d of list) {
+        counts[d] = (counts[d] ?? 0) + 1;
+      }
+    }
+    return counts;
+  });
 
   protected readonly types = ['All', 'Keynote Speaker', 'Sponsor', 'Exhibitor', 'Participant', 'Guest', 'EcoBot Challenge'];
 
   protected readonly filtered = computed(() => {
     const t = this.filterType();
-    const list = this.subs();
-    return t === 'All' ? list : list.filter((s) => s.type === t);
+    const q = this.search().trim().toLowerCase();
+    let list = this.subs();
+    if (t !== 'All') {
+      list = list.filter((s) => s.type === t);
+    }
+    if (q) {
+      list = list.filter(
+        (s) =>
+          (s.full_name ?? '').toLowerCase().includes(q) ||
+          (s.email ?? '').toLowerCase().includes(q) ||
+          (s.ticket_code ?? '').toLowerCase().startsWith(q)
+      );
+    }
+    return list;
   });
 
   protected readonly counts = computed(() => {
@@ -89,13 +131,67 @@ export class AdminComponent {
     if (!error && data) {
       this.subs.set(data as Submission[]);
     }
+    await this.loadCheckins();
     this.loading.set(false);
+  }
+
+  private async loadCheckins(): Promise<void> {
+    const { data, error } = await supabase.from('checkins').select('ticket_code, event_day, checked_in_at');
+    if (error || !data) {
+      return;
+    }
+    const map: Record<string, string[]> = {};
+    for (const row of data as CheckinRow[]) {
+      (map[row.ticket_code] ??= []).push(row.event_day);
+    }
+    Object.values(map).forEach((list) => list.sort());
+    this.checkins.set(map);
+  }
+
+  protected daysIn(s: Submission): string[] {
+    return s.ticket_code ? (this.checkins()[s.ticket_code] ?? []) : [];
+  }
+
+  protected inToday(s: Submission): boolean {
+    return this.daysIn(s).includes(this.today);
+  }
+
+  protected async checkInNow(s: Submission, event: Event): Promise<void> {
+    event.stopPropagation();
+    const code = s.ticket_code;
+    if (!code || this.checkingIn()) {
+      return;
+    }
+    this.checkingIn.set(code);
+    try {
+      const res = await checkIn(code);
+      this.checkins.update((map) => ({ ...map, [code]: res.checked_in_days }));
+    } catch {
+      alert('Could not check in. Please try again.');
+    }
+    this.checkingIn.set(null);
+  }
+
+  protected async copyTicket(s: Submission, event: Event): Promise<void> {
+    event.stopPropagation();
+    const code = s.ticket_code;
+    if (!code) {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(ticketUrl(code));
+      this.copiedCode.set(code);
+      setTimeout(() => this.copiedCode.set(null), 2000);
+    } catch {
+      prompt('Copy the ticket link:', ticketUrl(code));
+    }
   }
 
   protected async logout(): Promise<void> {
     await supabase.auth.signOut();
     this.authed.set(false);
     this.subs.set([]);
+    this.checkins.set({});
     this.expandedId.set(null);
   }
 
@@ -121,7 +217,7 @@ export class AdminComponent {
     for (const r of rows) {
       Object.keys(r.data).forEach((k) => keys.add(k));
     }
-    const cols = ['created_at', 'type', 'full_name', 'email', ...keys];
+    const cols = ['created_at', 'type', 'full_name', 'email', 'ticket_url', 'days_checked_in', ...keys];
     const esc = (v: unknown) => {
       const s = Array.isArray(v) ? v.join('; ') : String(v ?? '');
       return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
@@ -133,6 +229,8 @@ export class AdminComponent {
         type: r.type,
         full_name: r.full_name,
         email: r.email,
+        ticket_url: r.ticket_code ? ticketUrl(r.ticket_code) : '',
+        days_checked_in: this.daysIn(r).map(dayLabel),
         ...r.data
       };
       lines.push(cols.map((c) => esc(flat[c])).join(','));
