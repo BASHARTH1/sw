@@ -1,3 +1,27 @@
+<!-- ambient background -->
+<div class="tk-aurora" aria-hidden="true">
+  <span class="tk-aurora__blob tk-aurora__blob--a"></span>
+  <span class="tk-aurora__blob tk-aurora__blob--b"></span>
+  <span class="tk-aurora__blob tk-aurora__blob--c"></span>
+</div>
+
+@if (confetti().length) {
+  <div class="tk-confetti" aria-hidden="true">
+    @for (c of confetti(); track $index) {
+      <span
+        [style.left.%]="c.left"
+        [style.background]="c.color"
+        [style.width.px]="c.size"
+        [style.height.px]="c.size * 0.45"
+        [style.animation-delay.s]="c.delay"
+        [style.animation-duration.s]="c.duration"
+        [style.--drift]="c.drift + 'px'"
+        [style.--spin]="c.spin + 'deg'"
+      ></span>
+    }
+  </div>
+}
+
 <div class="tk-page">
   <a class="tk-brand" href="/">
     <img src="sw2026-logo.png" alt="Bahrain Polytechnic, Sustainability Week 2026 and Gulf University" />
@@ -6,7 +30,10 @@
   @if (code() || notFound()) {
     <!-- ---------- single ticket ---------- -->
     @if (loading()) {
-      <div class="tk-card tk-card--center"><i class="bi bi-arrow-repeat tk-spin"></i></div>
+      <div class="tk-card tk-card--center tk-skeleton">
+        <i class="bi bi-ticket-perforated tk-skeleton__icon"></i>
+        <p class="tk-muted">Preparing your ticket…</p>
+      </div>
     } @else if (loadError()) {
       <div class="tk-card tk-card--center">
         <i class="bi bi-wifi-off tk-state-icon"></i>
@@ -24,47 +51,120 @@
         <a class="tk-btn tk-btn--primary" routerLink="/ticket">Find my ticket</a>
       </div>
     } @else if (ticket(); as t) {
-      <article class="tk-card tk-ticket">
-        <header class="tk-ticket__head">
-          <span class="tk-ticket__eyebrow">Entry Ticket</span>
-          <h1 class="tk-ticket__event">Sustainability Week 2026</h1>
-          <p class="tk-ticket__dates">15<sup>th</sup> – 19<sup>th</sup> November 2026</p>
-        </header>
+      <p class="tk-greeting">Hi {{ firstName(t.full_name) }}, you're in! <span aria-hidden="true">🌿</span></p>
 
-        <div class="tk-ticket__body">
-          @if (qr(); as src) {
-            <img class="tk-ticket__qr" [src]="src" alt="Ticket QR code" width="260" height="260" />
-          }
-          <span class="tk-ticket__ref">Ref {{ shortRef(t.ticket_code) }}</span>
-          <strong class="tk-ticket__name">{{ t.full_name || 'Guest' }}</strong>
-          <span class="tk-ticket__type">{{ t.type }}</span>
-        </div>
-
-        <div class="tk-ticket__tear" aria-hidden="true"></div>
-
-        <section class="tk-ticket__days" aria-label="Check-in by day">
-          @for (d of days; track d.iso) {
-            <div
-              class="tk-day"
-              [class.is-in]="isCheckedIn(d.iso)"
-              [class.is-today]="d.iso === today"
-              [attr.title]="d.venue"
-            >
-              <span class="tk-day__label">{{ d.short }}</span>
-              <i class="bi" [class.bi-check-circle-fill]="isCheckedIn(d.iso)" [class.bi-circle]="!isCheckedIn(d.iso)"></i>
+      <div
+        class="tk-scene"
+        (pointermove)="onPointerMove($event)"
+        (pointerleave)="onPointerLeave()"
+        (pointercancel)="onPointerLeave()"
+      >
+        <article
+          class="tk-ticket"
+          [class.is-tilting]="tilt().active"
+          [style.--rx]="tilt().rx + 'deg'"
+          [style.--ry]="tilt().ry + 'deg'"
+          [style.--mx]="tilt().mx + '%'"
+          [style.--my]="tilt().my + '%'"
+          aria-label="Sustainability Week 2026 entry ticket"
+        >
+          <!-- top part -->
+          <section class="tk-part tk-part--top">
+            <div class="tk-band" aria-hidden="true">
+              @for (c of sdgColors; track c) {
+                <span [style.background]="c"></span>
+              }
             </div>
-          }
-        </section>
 
-        <p class="tk-ticket__hint">
-          <i class="bi bi-info-circle"></i>
-          Show this QR code at the entrance every day. One ticket is valid for all five days.
-        </p>
-      </article>
+            <header class="tk-head">
+              <div class="tk-head__row">
+                <span class="tk-chip"><i class="bi bi-stars"></i> Admit One</span>
+                <span class="tk-head__no">No. {{ shortRef(t.ticket_code) }}</span>
+              </div>
+              <span class="tk-head__eyebrow">Entry Ticket</span>
+              <h1 class="tk-head__title">Sustainability Week <span class="tk-gold">2026</span></h1>
+              <p class="tk-head__theme">"Co-innovating, Leading, Sustaining…"</p>
+            </header>
+
+            <div class="tk-attendee">
+              <span class="tk-label">Attendee</span>
+              <strong class="tk-attendee__name">{{ t.full_name || 'Guest' }}</strong>
+              <span class="tk-foil-pill">{{ t.type }}</span>
+            </div>
+
+            <dl class="tk-meta">
+              <div>
+                <dt><i class="bi bi-calendar3"></i> Dates</dt>
+                <dd>15 – 19 Nov 2026</dd>
+              </div>
+              <div>
+                <dt><i class="bi bi-clock"></i> Access</dt>
+                <dd>All 5 days</dd>
+              </div>
+              <div class="tk-meta__wide">
+                <dt><i class="bi bi-geo-alt"></i> Venue</dt>
+                <dd>
+                  Day 1 · The Art Hotel, Amwaj<br />
+                  Days 2–5 · Gulf University &amp; Bahrain Polytechnic
+                </dd>
+              </div>
+            </dl>
+          </section>
+
+          <!-- stub -->
+          <section class="tk-part tk-part--stub">
+            <div class="tk-qr">
+              @if (qr(); as src) {
+                <img class="tk-qr__img" [src]="src" alt="Ticket QR code" width="240" height="240" />
+              }
+              <span class="tk-qr__corner tk-qr__corner--tl"></span>
+              <span class="tk-qr__corner tk-qr__corner--tr"></span>
+              <span class="tk-qr__corner tk-qr__corner--bl"></span>
+              <span class="tk-qr__corner tk-qr__corner--br"></span>
+            </div>
+
+            @if (inToday) {
+              <p class="tk-status tk-status--in"><i class="bi bi-check-circle-fill"></i> Checked in today — enjoy!</p>
+            } @else {
+              <p class="tk-status"><i class="bi bi-qr-code-scan"></i> Show this at the entrance</p>
+            }
+
+            <div class="tk-days" aria-label="Check-in by day">
+              @for (d of days; track d.iso; let i = $index) {
+                <div
+                  class="tk-day"
+                  [class.is-in]="isCheckedIn(d.iso)"
+                  [class.is-today]="d.iso === today"
+                  [attr.title]="d.venue"
+                >
+                  <span class="tk-day__num">{{ i + 1 }}</span>
+                  <span class="tk-day__label">{{ d.short }}</span>
+                  <i class="bi" [class.bi-check-lg]="isCheckedIn(d.iso)" [class.bi-dot]="!isCheckedIn(d.iso)"></i>
+                </div>
+              }
+            </div>
+
+            <!-- holographic seal -->
+            <svg class="tk-seal" viewBox="0 0 100 100" aria-hidden="true">
+              <defs>
+                <path id="tk-seal-circle" d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0" />
+              </defs>
+              <circle cx="50" cy="50" r="46" />
+              <text><textPath href="#tk-seal-circle">SUSTAINABILITY WEEK · 2026 · VALID ·</textPath></text>
+              <text x="50" y="57" text-anchor="middle" class="tk-seal__mid">SW</text>
+            </svg>
+          </section>
+
+        </article>
+      </div>
 
       <div class="tk-actions">
-        <button type="button" class="tk-btn tk-btn--primary" (click)="downloadQr()">
-          <i class="bi bi-download"></i> Save QR image
+        <button type="button" class="tk-btn tk-btn--primary" (click)="saveImage()" [disabled]="saving()">
+          @if (saving()) {
+            <i class="bi bi-arrow-repeat tk-spin-inline"></i> Saving…
+          } @else {
+            <i class="bi bi-download"></i> Save ticket
+          }
         </button>
         @if (canShare) {
           <button type="button" class="tk-btn" (click)="share()"><i class="bi bi-share"></i> Share</button>
@@ -107,10 +207,10 @@
       }
 
       <form class="tk-form" (ngSubmit)="find()">
-        <label class="tk-label" for="tk-email">Email</label>
+        <label class="tk-label-field" for="tk-email">Email</label>
         <input id="tk-email" class="tk-input" type="email" name="email" [(ngModel)]="email" autocomplete="email" required />
 
-        <label class="tk-label" for="tk-name">Name used on the form</label>
+        <label class="tk-label-field" for="tk-name">Name used on the form</label>
         <input id="tk-name" class="tk-input" type="text" name="name" [(ngModel)]="name" autocomplete="name" required />
         <small class="tk-muted tk-small">For sponsors and exhibitors this may be the company or contact name.</small>
 
