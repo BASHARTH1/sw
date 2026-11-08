@@ -293,7 +293,9 @@
           @if (reg.ticket(); as t) {
             <div class="reg-ticket">
               <span class="reg-ticket__label"><i class="bi bi-ticket-perforated-fill"></i> Your entry ticket</span>
-              <img class="reg-ticket__qr" [src]="t.qr" alt="Your ticket QR code" width="200" height="200" />
+              @if (t.qr) {
+                <img class="reg-ticket__qr" [src]="t.qr" alt="Your ticket QR code" width="200" height="200" />
+              }
               @if (t.name) {
                 <strong class="reg-ticket__name">{{ t.name }}</strong>
               }

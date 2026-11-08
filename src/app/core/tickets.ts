@@ -56,7 +56,9 @@ export function todayInBahrain(): string {
 
 /** QR as a PNG data URL. The library is loaded on demand to keep it off the home page's initial bundle. */
 export async function qrPng(text: string): Promise<string> {
-  const QRCode = await import('qrcode');
+  // qrcode is CommonJS: in production builds its functions sit on .default.
+  const mod = (await import('qrcode')) as typeof import('qrcode') & { default?: typeof import('qrcode') };
+  const QRCode = mod.default ?? mod;
   return QRCode.toDataURL(text, {
     errorCorrectionLevel: 'M',
     margin: 2,

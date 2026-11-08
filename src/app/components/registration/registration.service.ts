@@ -684,7 +684,9 @@ export class RegistrationService {
     }
     rememberTicket({ code: ticketCode, name: fullName, type });
     const url = ticketUrl(ticketCode);
-    this.ticket.set({ code: ticketCode, url, name: fullName, qr: await qrPng(url) });
+    // Never let a QR rendering problem hide the success screen — the ticket link still works.
+    const qr = await qrPng(url).catch(() => '');
+    this.ticket.set({ code: ticketCode, url, name: fullName, qr });
     this.submitted.set(true);
     this.scrollDialogTop();
   }
