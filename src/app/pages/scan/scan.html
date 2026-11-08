@@ -124,6 +124,15 @@
       <p class="sc-error sc-error--bar"><i class="bi bi-exclamation-triangle-fill"></i> {{ error() }}</p>
     }
 
+    @if (lastCheckIn(); as last) {
+      <button type="button" class="sc-btn sc-btn--undo" (click)="undoLast()" [disabled]="undoing()">
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Undo check-in: {{ last.name || 'Guest' }}
+      </button>
+    } @else if (undoneName()) {
+      <p class="sc-undone"><i class="bi bi-check2"></i> Check-in removed for {{ undoneName() }}.</p>
+    }
+
     <div class="sc-controls">
       @if (state() === 'scanning') {
         <button type="button" class="sc-btn" (click)="stopCamera()"><i class="bi bi-stop-circle"></i> Stop camera</button>

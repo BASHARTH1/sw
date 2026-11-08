@@ -2,7 +2,7 @@ import { Component, ElementRef, OnDestroy, signal, viewChild } from '@angular/co
 import { FormsModule } from '@angular/forms';
 import jsQR from 'jsqr';
 import { supabase } from '../../core/supabase.client';
-import { CheckInResult, checkIn, dayLabel, isDoorStaff, parseTicketCode, todayInBahrain } from '../../core/tickets';
+import { CheckInResult, checkIn, dayLabel, isDoorStaff, parseTicketCode, todayInBahrain, undoCheckIn } from '../../core/tickets';
 
 type ScanState = 'idle' | 'starting' | 'scanning' | 'denied' | 'unsupported';
 
@@ -44,6 +44,10 @@ export class ScanComponent implements OnDestroy {
   protected readonly result = signal<CheckInResult | null>(null);
   protected readonly error = signal<string | null>(null);
   protected readonly todayCount = signal<number | null>(null);
+  /** The most recent successful check-in, kept so a wrong scan can be undone. */
+  protected readonly lastCheckIn = signal<{ code: string; name: string | null } | null>(null);
+  protected readonly undoing = signal(false);
+  protected readonly undoneName = signal<string | null>(null);
   protected readonly todayLabel = dayLabel(todayInBahrain());
 
   private stream: MediaStream | null = null;
@@ -247,8 +251,10 @@ export class ScanComponent implements OnDestroy {
       const res = await checkIn(code);
       this.result.set(res);
       this.feedback(res.status);
+      this.undoneName.set(null);
       if (res.status === 'ok') {
         this.todayCount.update((n) => (n ?? 0) + 1);
+        this.lastCheckIn.set({ code, name: res.full_name });
       }
     } catch (e) {
       const msg = (e as { message?: string })?.message ?? '';
@@ -267,6 +273,26 @@ export class ScanComponent implements OnDestroy {
       this.clearDismiss();
       this.dismissTimer = setTimeout(() => this.dismiss(), AUTO_DISMISS_MS);
     }
+  }
+
+  /** Undo the last check-in made on this device (a wrong person was scanned or let through). */
+  protected async undoLast(): Promise<void> {
+    const last = this.lastCheckIn();
+    if (!last || this.undoing()) {
+      return;
+    }
+    this.undoing.set(true);
+    this.error.set(null);
+    try {
+      await undoCheckIn(last.code);
+      this.todayCount.update((n) => Math.max(0, (n ?? 1) - 1));
+      this.lastCheckIn.set(null);
+      this.undoneName.set(last.name || 'Guest');
+      this.dismiss();
+    } catch {
+      this.error.set('Could not undo the check-in. Please try again.');
+    }
+    this.undoing.set(false);
   }
 
   protected dismiss(): void {

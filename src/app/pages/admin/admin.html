@@ -134,7 +134,19 @@
                   <span class="admin-ticket__ref"><i class="bi bi-ticket-perforated"></i> Ref {{ shortRef(code) }}</span>
                   <span class="admin-ticket__days">
                     @for (d of days; track d.iso) {
-                      <span class="admin-ticket__day" [class.is-in]="daysIn(s).includes(d.iso)" [attr.title]="d.label">{{ d.short }}</span>
+                      @if (daysIn(s).includes(d.iso)) {
+                        <button
+                          type="button"
+                          class="admin-ticket__day is-in"
+                          [attr.title]="'Checked in ' + d.label + ' — click to undo'"
+                          [disabled]="checkingIn() === code"
+                          (click)="undoDay(s, d.iso, $event)"
+                        >
+                          {{ d.short }} <i class="bi bi-x"></i>
+                        </button>
+                      } @else {
+                        <span class="admin-ticket__day" [attr.title]="d.label">{{ d.short }}</span>
+                      }
                     }
                   </span>
                   <span class="admin-ticket__actions">
@@ -147,6 +159,9 @@
                     </button>
                     @if (inToday(s)) {
                       <span class="admin-ticket__done"><i class="bi bi-check-circle-fill"></i> In today</span>
+                      <button class="admin-btn" (click)="undoDay(s, today, $event)" [disabled]="checkingIn() === code">
+                        <i class="bi bi-arrow-counterclockwise"></i> Undo check-in
+                      </button>
                     } @else {
                       <button class="admin-btn admin-btn--primary" (click)="checkInNow(s, $event)" [disabled]="checkingIn() === code">
                         <i class="bi bi-person-check"></i> Check in today

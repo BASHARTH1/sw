@@ -1,7 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { supabase } from '../../core/supabase.client';
-import { EVENT_DAYS, checkIn, dayLabel, isDoorStaff, shortRef, ticketUrl, todayInBahrain } from '../../core/tickets';
+import { EVENT_DAYS, checkIn, dayLabel, isDoorStaff, shortRef, ticketUrl, todayInBahrain, undoCheckIn } from '../../core/tickets';
 
 interface Submission {
   id: string;
@@ -176,6 +176,27 @@ export class AdminComponent {
       this.checkins.update((map) => ({ ...map, [code]: res.checked_in_days }));
     } catch {
       alert('Could not check in. Please try again.');
+    }
+    this.checkingIn.set(null);
+  }
+
+  /** Remove a check-in made by mistake, after confirming. */
+  protected async undoDay(s: Submission, day: string, event: Event): Promise<void> {
+    event.stopPropagation();
+    const code = s.ticket_code;
+    if (!code || this.checkingIn()) {
+      return;
+    }
+    const who = s.full_name || 'this person';
+    if (!confirm(`Remove the ${dayLabel(day)} check-in for ${who}?`)) {
+      return;
+    }
+    this.checkingIn.set(code);
+    try {
+      const days = await undoCheckIn(code, day);
+      this.checkins.update((map) => ({ ...map, [code]: days }));
+    } catch {
+      alert('Could not undo the check-in. Please try again.');
     }
     this.checkingIn.set(null);
   }

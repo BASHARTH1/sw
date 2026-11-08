@@ -145,3 +145,12 @@ export async function checkIn(code: string): Promise<CheckInResult> {
   }
   return ((data ?? []) as CheckInResult[])[0];
 }
+
+/** Remove a ticket's check-in for one day (default today). Returns the days still checked in. */
+export async function undoCheckIn(code: string, day?: string): Promise<string[]> {
+  const { data, error } = await supabase.rpc('undo_check_in', { p_code: code, p_day: day ?? null });
+  if (error) {
+    throw error;
+  }
+  return (data ?? []) as string[];
+}
