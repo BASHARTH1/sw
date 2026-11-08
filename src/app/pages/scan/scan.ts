@@ -2,7 +2,7 @@ import { Component, ElementRef, OnDestroy, signal, viewChild } from '@angular/co
 import { FormsModule } from '@angular/forms';
 import jsQR from 'jsqr';
 import { supabase } from '../../core/supabase.client';
-import { CheckInResult, checkIn, dayLabel, parseTicketCode, todayInBahrain } from '../../core/tickets';
+import { CheckInResult, checkIn, dayLabel, isDoorStaff, parseTicketCode, todayInBahrain } from '../../core/tickets';
 
 type ScanState = 'idle' | 'starting' | 'scanning' | 'denied' | 'unsupported';
 
@@ -34,6 +34,8 @@ export class ScanComponent implements OnDestroy {
 
   protected readonly checking = signal(true);
   protected readonly authed = signal(false);
+  /** Door staff can only scan, so links to the admin page are hidden for them. */
+  protected readonly doorStaff = signal(false);
   protected readonly loggingIn = signal(false);
   protected readonly loginError = signal<string | null>(null);
 
@@ -69,6 +71,7 @@ export class ScanComponent implements OnDestroy {
     const { data } = await supabase.auth.getSession();
     if (data.session) {
       this.authed.set(true);
+      this.doorStaff.set(isDoorStaff(data.session.user));
       void this.loadCount();
     }
     this.checking.set(false);
@@ -80,7 +83,7 @@ export class ScanComponent implements OnDestroy {
     }
     this.loggingIn.set(true);
     this.loginError.set(null);
-    const { error } = await supabase.auth.signInWithPassword({ email: this.email.trim(), password: this.password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email: this.email.trim(), password: this.password });
     this.loggingIn.set(false);
     if (error) {
       this.loginError.set('Invalid email or password.');
@@ -88,6 +91,7 @@ export class ScanComponent implements OnDestroy {
     }
     this.password = '';
     this.authed.set(true);
+    this.doorStaff.set(isDoorStaff(data.user));
     void this.loadCount();
   }
 

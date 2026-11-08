@@ -1,7 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { supabase } from '../../core/supabase.client';
-import { EVENT_DAYS, checkIn, dayLabel, shortRef, ticketUrl, todayInBahrain } from '../../core/tickets';
+import { EVENT_DAYS, checkIn, dayLabel, isDoorStaff, shortRef, ticketUrl, todayInBahrain } from '../../core/tickets';
 
 interface Submission {
   id: string;
@@ -94,6 +94,10 @@ export class AdminComponent {
 
   private async restore(): Promise<void> {
     const { data } = await supabase.auth.getSession();
+    if (isDoorStaff(data.session?.user)) {
+      location.replace('/scan');
+      return;
+    }
     if (data.session) {
       this.authed.set(true);
       await this.load();
@@ -107,10 +111,14 @@ export class AdminComponent {
     }
     this.loading.set(true);
     this.loginError.set(null);
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: this.email.trim(),
       password: this.password
     });
+    if (!error && isDoorStaff(data.user)) {
+      location.replace('/scan');
+      return;
+    }
     if (error) {
       this.loginError.set('Invalid email or password.');
       this.loading.set(false);

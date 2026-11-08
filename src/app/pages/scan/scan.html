@@ -5,7 +5,7 @@
     <form class="sc-login" (ngSubmit)="login()">
       <div class="sc-login__icon"><i class="bi bi-qr-code-scan"></i></div>
       <h1>Ticket Scanner</h1>
-      <p>Staff sign-in (same account as the admin page).</p>
+      <p>Staff sign-in.</p>
 
       @if (error()) {
         <p class="sc-error"><i class="bi bi-exclamation-triangle-fill"></i> {{ error() }}</p>
@@ -128,7 +128,9 @@
       @if (state() === 'scanning') {
         <button type="button" class="sc-btn" (click)="stopCamera()"><i class="bi bi-stop-circle"></i> Stop camera</button>
       }
-      <a class="sc-btn" href="/admin"><i class="bi bi-people"></i> Registrations</a>
+      @if (!doorStaff()) {
+        <a class="sc-btn" href="/admin"><i class="bi bi-people"></i> Registrations</a>
+      }
     </div>
 
     <form class="sc-manual" (ngSubmit)="submitManual()">
@@ -147,7 +149,11 @@
         />
         <button type="submit" class="sc-btn sc-btn--primary" [disabled]="busy() || !manualCode.trim()">Check in</button>
       </div>
-      <small class="sc-hint">No phone with them? Find the person on the Registrations page and check them in there.</small>
+      @if (doorStaff()) {
+        <small class="sc-hint">No phone with them? Send them to the registration desk.</small>
+      } @else {
+        <small class="sc-hint">No phone with them? Find the person on the Registrations page and check them in there.</small>
+      }
     </form>
   </div>
 }

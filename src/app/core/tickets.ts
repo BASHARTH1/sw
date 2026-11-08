@@ -77,6 +77,14 @@ export function newTicketCode(): string {
   return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
 }
 
+/**
+ * Door staff accounts (app_metadata.role = 'door-staff', see supabase/door-staff.sql) may only scan.
+ * The database enforces this; the UI just keeps them on /scan.
+ */
+export function isDoorStaff(user: { app_metadata?: Record<string, unknown> } | null | undefined): boolean {
+  return user?.app_metadata?.['role'] === 'door-staff';
+}
+
 // ---------- tickets remembered on this device ----------
 
 export interface SavedTicket {
