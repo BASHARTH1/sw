@@ -222,6 +222,22 @@ export class AdminComponent {
     }
   }
 
+  /** Ticket email status for the row icon: green sent, red failed, orange not sent yet. */
+  protected mailState(s: Submission): 'sending' | 'sent' | 'error' | 'none' | 'na' {
+    const code = s.ticket_code;
+    if (!code || !s.email) {
+      return 'na';
+    }
+    if (this.emailing() === code) {
+      return 'sending';
+    }
+    const note = this.emailNote()[code];
+    if (note) {
+      return note.ok ? 'sent' : 'error';
+    }
+    return s.ticket_emailed_at ? 'sent' : 'none';
+  }
+
   /** Email this person their ticket from sw@gulfuniversity.edu.bh. */
   protected async emailTicket(s: Submission, event: Event): Promise<void> {
     event.stopPropagation();

@@ -120,11 +120,24 @@
               @if (inToday(s)) {
                 <i class="bi bi-check-circle-fill admin-in" title="Checked in today"></i>
               }
-              @if (s.ticket_emailed_at) {
-                <i class="bi bi-envelope-check admin-mailed" title="Ticket emailed"></i>
-              }
             </span>
-            <span class="admin-email">{{ s.email || '—' }}</span>
+            <span class="admin-email">
+              @switch (mailState(s)) {
+                @case ('sending') {
+                  <i class="bi bi-arrow-repeat admin-spin admin-mail admin-mail--sending" title="Sending ticket…"></i>
+                }
+                @case ('sent') {
+                  <i class="bi bi-envelope-check-fill admin-mail admin-mail--sent" title="Ticket emailed"></i>
+                }
+                @case ('error') {
+                  <i class="bi bi-envelope-exclamation-fill admin-mail admin-mail--error" title="Email failed — open to see why"></i>
+                }
+                @case ('none') {
+                  <i class="bi bi-envelope-fill admin-mail admin-mail--pending" title="Ticket not emailed yet"></i>
+                }
+              }
+              {{ s.email || '—' }}
+            </span>
             <span class="admin-caret">
               <i class="bi" [class.bi-chevron-down]="expandedId() !== s.id" [class.bi-chevron-up]="expandedId() === s.id"></i>
             </span>

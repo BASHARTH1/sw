@@ -342,7 +342,11 @@ button.admin-ticket__day:disabled { opacity: 0.6; cursor: wait; }
 .admin-ticket__actions a.admin-btn { text-decoration: none; }
 .admin-btn--mail { border-color: #d4a017; color: #7c5a0b; background: #fef9e7; }
 .admin-btn--mail:hover:not(:disabled) { background: #fdefb2; }
-.admin-mailed { color: #2545b3; margin-left: 4px; }
+.admin-mail { display: inline-block; margin-right: 6px; font-size: 0.95rem; vertical-align: -1px; }
+.admin-mail--sent { color: #16a34a; }
+.admin-mail--error { color: #dc2626; }
+.admin-mail--pending { color: #f59e0b; }
+.admin-mail--sending { color: #2545b3; }
 .admin-mailnote { flex-basis: 100%; font-size: 0.82rem; color: #15803d; }
 .admin-mailnote.is-error { color: #b91c1c; }
 .admin-ticket__done { color: #15803d; font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
