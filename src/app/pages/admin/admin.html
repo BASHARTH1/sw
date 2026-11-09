@@ -51,6 +51,14 @@
         <button class="admin-btn" (click)="load()" [disabled]="loading()">
           <i class="bi bi-arrow-clockwise"></i> Refresh
         </button>
+        <button
+          class="admin-btn admin-btn--mail"
+          (click)="emailAllUnsent()"
+          [disabled]="!unsent().length || bulk()?.running || !!emailing()"
+          title="Email the ticket to everyone who hasn't received it yet"
+        >
+          <i class="bi bi-send-fill"></i> Email all unsent ({{ unsent().length }})
+        </button>
         <button class="admin-btn" (click)="exportCsv()" [disabled]="!filtered().length">
           <i class="bi bi-download"></i> Export CSV
         </button>
@@ -59,6 +67,30 @@
         </button>
       </div>
     </header>
+
+    @if (bulk(); as b) {
+      <div class="admin-bulk" [class.is-done]="!b.running" role="status">
+        <div class="admin-bulk__text">
+          @if (b.running) {
+            <i class="bi bi-arrow-repeat admin-spin"></i>
+            Emailing tickets… <strong>{{ b.done }} / {{ b.total }}</strong> — keep this page open
+          } @else {
+            <i class="bi bi-envelope-check-fill"></i>
+            Finished: <strong>{{ b.sent }} sent</strong>
+            @if (b.done < b.total) { · {{ b.total - b.done }} not attempted }
+          }
+          @if (b.failed) {
+            <span class="admin-bulk__failed">· {{ b.failed }} failed (red Retry buttons below)</span>
+          }
+        </div>
+        <div class="admin-bulk__bar"><span [style.width.%]="(b.done / b.total) * 100"></span></div>
+        @if (b.running) {
+          <button class="admin-btn" (click)="stopEmailAll()"><i class="bi bi-stop-fill"></i> Stop</button>
+        } @else {
+          <button class="admin-btn admin-btn--ghost" (click)="bulk.set(null)"><i class="bi bi-x-lg"></i> Close</button>
+        }
+      </div>
+    }
 
     <div class="admin-days" aria-label="Check-ins per day">
       @for (d of days; track d.iso) {

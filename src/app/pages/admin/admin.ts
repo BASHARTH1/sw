@@ -48,6 +48,12 @@ export class AdminComponent {
   protected readonly emailing = signal<string | null>(null);
   /** Per ticket: result of the last email attempt in this session. */
   protected readonly emailNote = signal<Record<string, { ok: boolean; text: string }>>({});
+  /** Progress of "Email all unsent"; null when not running. */
+  protected readonly bulk = signal<{ done: number; total: number; sent: number; failed: number; running: boolean } | null>(null);
+  private stopBulk = false;
+
+  /** Registrations with an email address whose ticket hasn't been emailed yet. */
+  protected readonly unsent = computed(() => this.subs().filter((s) => s.ticket_code && s.email && !s.ticket_emailed_at));
 
   protected readonly days = EVENT_DAYS;
   protected readonly today = todayInBahrain();
@@ -241,10 +247,60 @@ export class AdminComponent {
   /** Email this person their ticket from sw@gulfuniversity.edu.bh. */
   protected async emailTicket(s: Submission, event: Event): Promise<void> {
     event.stopPropagation();
-    const code = s.ticket_code;
-    if (!code || !s.email || this.emailing()) {
+    if (!this.emailing() && !this.bulk()?.running) {
+      await this.sendTicket(s);
+    }
+  }
+
+  /**
+   * Email every ticket that hasn't been sent yet, one at a time.
+   * Paced to stay under Microsoft 365's limit of 30 messages a minute per mailbox.
+   */
+  protected async emailAllUnsent(): Promise<void> {
+    const list = this.unsent();
+    if (!list.length || this.emailing() || this.bulk()?.running) {
       return;
     }
+    if (!confirm(`Email tickets to ${list.length} ${list.length === 1 ? 'person' : 'people'} who haven't received one yet?\n\nThis takes about ${Math.max(1, Math.ceil((list.length * 2.2) / 60))} min. Keep this page open.`)) {
+      return;
+    }
+    this.stopBulk = false;
+    const progress = { done: 0, total: list.length, sent: 0, failed: 0, running: true };
+    this.bulk.set({ ...progress });
+    let failedInARow = 0;
+    for (const s of list) {
+      if (this.stopBulk) {
+        break;
+      }
+      const started = Date.now();
+      const ok = await this.sendTicket(s);
+      progress.done++;
+      progress[ok ? 'sent' : 'failed']++;
+      this.bulk.set({ ...progress });
+      // Stop early if every send is failing (e.g. a setup problem) instead of failing the whole list.
+      failedInARow = ok ? 0 : failedInARow + 1;
+      if (failedInARow >= 3) {
+        break;
+      }
+      const wait = 2200 - (Date.now() - started);
+      if (wait > 0 && progress.done < progress.total) {
+        await new Promise((r) => setTimeout(r, wait));
+      }
+    }
+    this.bulk.set({ ...progress, running: false });
+  }
+
+  protected stopEmailAll(): void {
+    this.stopBulk = true;
+  }
+
+  /** Send one ticket email; returns true when it went out. */
+  private async sendTicket(s: Submission): Promise<boolean> {
+    const code = s.ticket_code;
+    if (!code || !s.email) {
+      return false;
+    }
+    let ok = false;
     this.emailing.set(code);
     const note = (ok: boolean, text: string) => this.emailNote.update((m) => ({ ...m, [code]: { ok, text } }));
     try {
@@ -269,10 +325,12 @@ export class AdminComponent {
       const sentAt = body.sentAt || new Date().toISOString();
       this.subs.update((list) => list.map((x) => (x.id === s.id ? { ...x, ticket_emailed_at: sentAt } : x)));
       note(true, `Sent to ${body.to || s.email}`);
+      ok = true;
     } catch (e) {
       note(false, e instanceof Error ? e.message : 'Sending failed.');
     }
     this.emailing.set(null);
+    return ok;
   }
 
   protected async logout(): Promise<void> {
