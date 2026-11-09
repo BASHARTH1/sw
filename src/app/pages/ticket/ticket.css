@@ -503,6 +503,36 @@
 .tk-footer-links a { color: rgba(255, 255, 255, 0.8); text-decoration: none; font-size: 0.9rem; }
 .tk-footer-links a:hover { color: var(--white); }
 
+.tk-promo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  color: var(--white);
+  text-decoration: none;
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.16), rgba(37, 99, 235, 0.18));
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  animation: tk-rise 0.6s 0.55s both;
+  transition: transform 0.15s ease, border-color 0.2s ease;
+}
+.tk-promo:hover { transform: translateY(-2px); border-color: rgba(250, 204, 21, 0.7); }
+.tk-promo__icon {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  color: var(--blue-950);
+  background: linear-gradient(135deg, #fde68a, #facc15 50%, #d4a017);
+}
+.tk-promo__text { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.tk-promo__text strong { font-size: 0.95rem; }
+.tk-promo__text small { font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); }
+
 /* ---------- find form ---------- */
 .tk-form { display: flex; flex-direction: column; }
 .tk-label-field { font-size: 0.85rem; font-weight: 600; margin: 12px 0 6px; }
@@ -546,7 +576,7 @@
 
 @media print {
   :host { background: none; }
-  .tk-aurora, .tk-confetti, .tk-actions, .tk-footer-links, .tk-brand, .tk-greeting, .tk-seal { display: none; }
+  .tk-aurora, .tk-confetti, .tk-actions, .tk-promo, .tk-footer-links, .tk-brand, .tk-greeting, .tk-seal { display: none; }
   .tk-ticket { filter: none; transform: none; animation: none; }
   .tk-part { border: 1px solid #ccc; -webkit-mask: none; mask: none; }
   .tk-part::after { display: none; }

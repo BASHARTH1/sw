@@ -22,6 +22,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/ticket/ticket').then((m) => m.TicketComponent)
   },
   {
+    path: 'attending',
+    title: "I'm Attending | GU Sustainability Week 2026",
+    loadComponent: () => import('./pages/attending/attending').then((m) => m.AttendingComponent)
+  },
+  {
     path: 'scan',
     title: 'Ticket Scanner | GU Sustainability Week 2026',
     loadComponent: () => import('./pages/scan/scan').then((m) => m.ScanComponent)

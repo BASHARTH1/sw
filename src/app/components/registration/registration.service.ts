@@ -547,7 +547,7 @@ export class RegistrationService {
   /** True while the submission is being saved to the database. */
   readonly saving = signal(false);
   /** Ticket issued by the last successful submission, shown on the success screen. */
-  readonly ticket = signal<{ code: string; url: string; name: string | null; qr: string } | null>(null);
+  readonly ticket = signal<{ code: string; url: string; postUrl: string; name: string | null; qr: string } | null>(null);
   /** Set when the submission fails so the UI can show a retry message. */
   readonly errorMsg = signal<string | null>(null);
 
@@ -686,7 +686,8 @@ export class RegistrationService {
     const url = ticketUrl(ticketCode);
     // Never let a QR rendering problem hide the success screen — the ticket link still works.
     const qr = await qrPng(url).catch(() => '');
-    this.ticket.set({ code: ticketCode, url, name: fullName, qr });
+    const postUrl = '/attending?name=' + encodeURIComponent(fullName ?? '');
+    this.ticket.set({ code: ticketCode, url, postUrl, name: fullName, qr });
     this.submitted.set(true);
     this.scrollDialogTop();
   }

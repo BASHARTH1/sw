@@ -177,6 +177,15 @@
         <button type="button" class="tk-btn" (click)="print()"><i class="bi bi-printer"></i> Print</button>
       </div>
 
+      <a class="tk-promo" routerLink="/attending" [queryParams]="{ name: t.full_name || '' }">
+        <span class="tk-promo__icon"><i class="bi bi-person-badge"></i></span>
+        <span class="tk-promo__text">
+          <strong>Create your "I'm attending" post</strong>
+          <small>Add your photo and share it on LinkedIn, Instagram or X</small>
+        </span>
+        <i class="bi bi-arrow-right"></i>
+      </a>
+
       <p class="tk-footer-links">
         <a href="/agenda"><i class="bi bi-calendar-event"></i> View the agenda</a>
       </p>

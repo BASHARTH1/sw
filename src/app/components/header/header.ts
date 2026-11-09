@@ -18,7 +18,8 @@ export class HeaderComponent {
     { label: 'Schedule', href: '#schedule' },
     { label: 'Sponsors', href: '#sponsors' },
     { label: 'Register', href: '#register' },
-    { label: 'My Ticket', href: '/ticket' }
+    { label: 'My Ticket', href: '/ticket' },
+    { label: "I'm Attending", href: '/attending' }
   ];
 
   @HostListener('window:scroll')

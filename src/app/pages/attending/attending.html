@@ -1,0 +1,166 @@
+<div class="at-aurora" aria-hidden="true">
+  <span class="at-aurora__blob at-aurora__blob--a"></span>
+  <span class="at-aurora__blob at-aurora__blob--b"></span>
+</div>
+
+<div class="at-page">
+  <header class="at-head">
+    <a class="at-brand" href="/">
+      <img src="sw2026-logo.png" alt="Bahrain Polytechnic, Sustainability Week 2026 and Gulf University" />
+    </a>
+    <span class="at-eyebrow"><i class="bi bi-stars"></i> Make it official</span>
+    <h1 class="at-title">Share that you're attending</h1>
+    <p class="at-sub">
+      Add your name and a photo to create your personal <strong>"I'm attending"</strong> post for Sustainability Week 2026.
+    </p>
+  </header>
+
+  <div class="at-grid">
+    <!-- preview -->
+    <div class="at-preview">
+      <div
+        class="at-stage"
+        [class.is-over]="dragOver()"
+        [class.has-photo]="hasPhoto()"
+        (dragover)="onDragOver($event)"
+        (dragleave)="dragOver.set(false)"
+        (drop)="onDrop($event)"
+      >
+        <canvas
+          #canvas
+          class="at-canvas"
+          width="1080"
+          height="1350"
+          tabindex="0"
+          role="img"
+          [attr.aria-label]="hasPhoto() ? 'Preview of your post. Drag to reposition your photo, or use the arrow keys.' : 'Preview of your post. Activate to add your photo.'"
+          (pointerdown)="onPointerDown($event)"
+          (pointermove)="onPointerMove($event)"
+          (pointerup)="onPointerUp($event)"
+          (pointercancel)="onPointerUp($event)"
+          (wheel)="onWheel($event)"
+          (keydown)="onKey($event)"
+          (keydown.enter)="hasPhoto() || browse()"
+        ></canvas>
+        @if (!ready()) {
+          <div class="at-loading"><i class="bi bi-arrow-repeat at-spin"></i></div>
+        }
+        @if (dragOver()) {
+          <div class="at-drop"><i class="bi bi-image"></i> Drop your photo</div>
+        }
+      </div>
+      @if (hasPhoto()) {
+        <p class="at-hint"><i class="bi bi-arrows-move"></i> Drag the photo to reposition · pinch or use the slider to zoom</p>
+      }
+    </div>
+
+    <!-- controls -->
+    <form class="at-panel" (ngSubmit)="download()">
+      <div class="at-step">
+        <span class="at-step__num">1</span>
+        <div class="at-step__body">
+          <label class="at-label" for="at-name">Your name</label>
+          <input
+            id="at-name"
+            class="at-input"
+            type="text"
+            name="name"
+            maxlength="40"
+            [(ngModel)]="name"
+            (ngModelChange)="draw()"
+            autocomplete="name"
+            placeholder="e.g. Fatima Al-Khalifa"
+          />
+          <label class="at-label at-label--opt" for="at-org">Title or organisation <span>(optional)</span></label>
+          <input
+            id="at-org"
+            class="at-input"
+            type="text"
+            name="org"
+            maxlength="60"
+            [(ngModel)]="org"
+            (ngModelChange)="draw()"
+            autocomplete="organization"
+            placeholder="e.g. Student, Gulf University"
+          />
+        </div>
+      </div>
+
+      <div class="at-step">
+        <span class="at-step__num">2</span>
+        <div class="at-step__body">
+          <span class="at-label">Your photo</span>
+          <input #file type="file" accept="image/jpeg,image/png,image/webp,image/heic" hidden (change)="onFile($event)" />
+          @if (!hasPhoto()) {
+            <button type="button" class="at-dropzone" (click)="browse()">
+              <i class="bi bi-person-bounding-box"></i>
+              <span><strong>Choose a portrait photo</strong><small>or drop it on the preview · JPG, PNG or WebP</small></span>
+            </button>
+          } @else {
+            <div class="at-zoom">
+              <i class="bi bi-zoom-out"></i>
+              <input
+                type="range"
+                min="1"
+                max="4"
+                step="0.01"
+                [value]="zoom()"
+                (input)="onZoomInput($any($event.target).value)"
+                aria-label="Zoom photo"
+              />
+              <i class="bi bi-zoom-in"></i>
+            </div>
+            <div class="at-photo-actions">
+              <button type="button" class="at-link" (click)="browse()"><i class="bi bi-arrow-repeat"></i> Change photo</button>
+              <button type="button" class="at-link" (click)="removePhoto()"><i class="bi bi-trash3"></i> Remove</button>
+            </div>
+          }
+          <small class="at-privacy"><i class="bi bi-shield-lock"></i> Your photo stays on your device — nothing is uploaded or stored.</small>
+        </div>
+      </div>
+
+      <div class="at-step">
+        <span class="at-step__num">3</span>
+        <div class="at-step__body">
+          <span class="at-label">Save &amp; share</span>
+          <div class="at-actions">
+            <button type="submit" class="at-btn at-btn--primary" [disabled]="busy()">
+              @if (busy()) {
+                <i class="bi bi-arrow-repeat at-spin"></i> Preparing…
+              } @else {
+                <i class="bi bi-download"></i> Download post
+              }
+            </button>
+            @if (canShareFiles) {
+              <button type="button" class="at-btn" (click)="share()" [disabled]="busy()">
+                <i class="bi bi-share"></i> Share
+              </button>
+            }
+          </div>
+          @if (message(); as m) {
+            <p class="at-msg" [class.at-msg--error]="m.kind === 'error'">
+              <i class="bi" [class.bi-check-circle-fill]="m.kind === 'ok'" [class.bi-exclamation-circle-fill]="m.kind === 'error'"></i>
+              {{ m.text }}
+            </p>
+          }
+          <div class="at-caption">
+            <div class="at-caption__head">
+              <span>Suggested caption</span>
+              <button type="button" class="at-link" (click)="copyCaption()">
+                <i class="bi" [class.bi-clipboard]="!copied()" [class.bi-check2]="copied()"></i>
+                {{ copied() ? 'Copied' : 'Copy' }}
+              </button>
+            </div>
+            <p>{{ caption }}</p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <footer class="at-foot">
+    <a href="/"><i class="bi bi-house"></i> Sustainability Week 2026</a>
+    <a href="/ticket"><i class="bi bi-ticket-perforated"></i> My ticket</a>
+    <a href="/agenda"><i class="bi bi-calendar-event"></i> Agenda</a>
+  </footer>
+</div>

@@ -305,6 +305,9 @@
               <a class="btn reg-submit" [href]="t.url" target="_blank" rel="noopener">
                 <i class="bi bi-box-arrow-up-right"></i> Open my ticket
               </a>
+              <a class="btn btn--outline" [href]="t.postUrl" target="_blank" rel="noopener">
+                <i class="bi bi-person-badge"></i> Make my "I'm attending" post
+              </a>
               <button type="button" class="btn btn--outline" (click)="reg.close()">Done</button>
             </div>
           } @else {
