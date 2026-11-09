@@ -316,7 +316,7 @@ export class TicketComponent implements OnDestroy {
     spaced(ctx, 'ATTENDEE', W / 2, cy + 370, 5);
     ctx.fillStyle = '#0b1437';
     let size = 68;
-    const name = t.full_name || 'Guest';
+    const name = (t.full_name || 'Guest').toUpperCase();
     do {
       ctx.font = `700 ${size}px "Playfair Display", serif`;
       size -= 4;

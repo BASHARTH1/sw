@@ -263,7 +263,9 @@
 }
 .tk-attendee__name {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.5rem, 7vw, 1.95rem);
+  font-size: clamp(1.35rem, 6.4vw, 1.8rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   line-height: 1.15;
   color: var(--ink);
   word-break: break-word;
