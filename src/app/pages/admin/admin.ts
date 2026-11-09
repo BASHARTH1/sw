@@ -229,10 +229,6 @@ export class AdminComponent {
     if (!code || !s.email || this.emailing()) {
       return;
     }
-    const again = s.ticket_emailed_at ? `\n\nAlready emailed on ${this.fmtDate(s.ticket_emailed_at)}.` : '';
-    if (!confirm(`Email the ticket to ${s.full_name || 'this person'} <${s.email}>?${again}`)) {
-      return;
-    }
     this.emailing.set(code);
     const note = (ok: boolean, text: string) => this.emailNote.update((m) => ({ ...m, [code]: { ok, text } }));
     try {
