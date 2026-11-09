@@ -11,7 +11,7 @@ const SDG_COLORS = [
 const W = 1080;
 const H = 1350;
 /** Portrait circle on the artwork. */
-const PC = { x: W / 2, y: 690, r: 270 };
+const PC = { x: W / 2, y: 690, r: 258 };
 const MAX_BYTES = 15 * 1024 * 1024;
 
 export const ATTENDING_CAPTION =
@@ -383,7 +383,7 @@ export class AttendingComponent implements AfterViewInit, OnDestroy {
       size -= 2;
     } while (ctx.measureText(name).width > W - 140 && size > 34);
     ctx.fillStyle = this.name.trim() ? '#ffffff' : 'rgba(255,255,255,0.45)';
-    ctx.fillText(name, W / 2, 1058);
+    ctx.fillText(name, W / 2, 1084);
 
     const org = this.org.trim();
     if (org) {
@@ -393,11 +393,11 @@ export class AttendingComponent implements AfterViewInit, OnDestroy {
         os -= 1;
       } while (ctx.measureText(org).width > W - 180 && os > 20);
       ctx.fillStyle = '#facc15';
-      ctx.fillText(org, W / 2, 1106);
+      ctx.fillText(org, W / 2, 1130);
     }
 
     // event footer
-    const fy = org ? 1170 : 1150;
+    const fy = org ? 1192 : 1170;
     ctx.strokeStyle = 'rgba(255,255,255,0.25)';
     ctx.lineWidth = 2;
     ctx.beginPath();
@@ -407,17 +407,17 @@ export class AttendingComponent implements AfterViewInit, OnDestroy {
 
     ctx.fillStyle = '#ffffff';
     ctx.font = '700 40px "Playfair Display", Georgia, serif';
-    ctx.fillText('Sustainability Week 2026', W / 2, fy + 12);
+    ctx.fillText('Sustainability Week 2026', W / 2, fy + 10);
     ctx.fillStyle = 'rgba(255,255,255,0.85)';
     ctx.font = '500 27px Poppins, sans-serif';
-    ctx.fillText('15 – 19 November 2026  ·  Kingdom of Bahrain', W / 2, fy + 58);
+    ctx.fillText('15 – 19 November 2026  ·  Kingdom of Bahrain', W / 2, fy + 52);
     ctx.fillStyle = 'rgba(253,230,138,0.9)';
     ctx.font = 'italic 400 25px Poppins, sans-serif';
-    ctx.fillText('"Co-innovating, Leading, Sustaining…"', W / 2, fy + 100);
+    ctx.fillText('"Co-innovating, Leading, Sustaining…"', W / 2, fy + 90);
 
     ctx.fillStyle = 'rgba(255,255,255,0.55)';
     ctx.font = '500 22px Poppins, sans-serif';
-    ctx.fillText('sw.gulfuniversity.edu.bh   #SW2026', W / 2, H - 34);
+    ctx.fillText('sw.gulfuniversity.edu.bh   #SW2026', W / 2, H - 26);
   }
 
   // ---------- export ----------
