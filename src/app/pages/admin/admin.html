@@ -108,6 +108,7 @@
           <span>Type</span>
           <span>Name</span>
           <span>Email</span>
+          <span>Ticket email</span>
           <span></span>
         </div>
 
@@ -121,22 +122,35 @@
                 <i class="bi bi-check-circle-fill admin-in" title="Checked in today"></i>
               }
             </span>
-            <span class="admin-email">
+            <span class="admin-email">{{ s.email || '—' }}</span>
+            <span>
               @switch (mailState(s)) {
                 @case ('sending') {
-                  <i class="bi bi-arrow-repeat admin-spin admin-mail admin-mail--sending" title="Sending ticket…"></i>
+                  <button type="button" class="admin-send admin-send--sending" disabled (click)="$event.stopPropagation()">
+                    <i class="bi bi-arrow-repeat admin-spin"></i> Sending…
+                  </button>
                 }
                 @case ('sent') {
-                  <i class="bi bi-envelope-check-fill admin-mail admin-mail--sent" title="Ticket emailed"></i>
+                  <button type="button" class="admin-send admin-send--sent" (click)="emailTicket(s, $event)"
+                    [attr.title]="'Emailed' + (s.ticket_emailed_at ? ' ' + fmtDate(s.ticket_emailed_at) : '') + ' — click to resend'">
+                    <i class="bi bi-envelope-check-fill"></i> Sent
+                  </button>
                 }
                 @case ('error') {
-                  <i class="bi bi-envelope-exclamation-fill admin-mail admin-mail--error" title="Email failed — open to see why"></i>
+                  <button type="button" class="admin-send admin-send--error" (click)="emailTicket(s, $event)"
+                    [attr.title]="(emailNote()[s.ticket_code!]?.text || 'Sending failed') + ' — click to retry'">
+                    <i class="bi bi-envelope-exclamation-fill"></i> Retry
+                  </button>
                 }
                 @case ('none') {
-                  <i class="bi bi-envelope-fill admin-mail admin-mail--pending" title="Ticket not emailed yet"></i>
+                  <button type="button" class="admin-send admin-send--pending" (click)="emailTicket(s, $event)" title="Email this ticket now">
+                    <i class="bi bi-send-fill"></i> Send
+                  </button>
+                }
+                @default {
+                  <span class="admin-send-na" title="No email address">—</span>
                 }
               }
-              {{ s.email || '—' }}
             </span>
             <span class="admin-caret">
               <i class="bi" [class.bi-chevron-down]="expandedId() !== s.id" [class.bi-chevron-up]="expandedId() === s.id"></i>

@@ -196,7 +196,7 @@
 
 .admin-row {
   display: grid;
-  grid-template-columns: 1.4fr 1.2fr 1.3fr 1.6fr 40px;
+  grid-template-columns: 1.3fr 1.1fr 1.3fr 1.6fr 112px 40px;
   gap: 12px;
   align-items: center;
   padding: 13px 18px;
@@ -279,7 +279,7 @@
 .admin-empty i { font-size: 2.4rem; display: block; margin-bottom: 10px; opacity: 0.5; }
 
 @media (max-width: 720px) {
-  .admin-row { grid-template-columns: 1fr 1fr 30px; }
+  .admin-row { grid-template-columns: 1fr 1fr auto 30px; }
   .admin-row > span:nth-child(1),
   .admin-row > span:nth-child(4) { display: none; }
   .admin-detail dl { grid-template-columns: 1fr; }
@@ -342,11 +342,27 @@ button.admin-ticket__day:disabled { opacity: 0.6; cursor: wait; }
 .admin-ticket__actions a.admin-btn { text-decoration: none; }
 .admin-btn--mail { border-color: #d4a017; color: #7c5a0b; background: #fef9e7; }
 .admin-btn--mail:hover:not(:disabled) { background: #fdefb2; }
-.admin-mail { display: inline-block; margin-right: 6px; font-size: 0.95rem; vertical-align: -1px; }
-.admin-mail--sent { color: #16a34a; }
-.admin-mail--error { color: #dc2626; }
-.admin-mail--pending { color: #f59e0b; }
-.admin-mail--sending { color: #2545b3; }
+.admin-send {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.15s ease;
+}
+.admin-send:hover:not(:disabled) { filter: brightness(0.95); transform: translateY(-1px); }
+.admin-send:disabled { cursor: default; }
+.admin-send--pending { color: #9a3412; background: #ffedd5; border-color: #fdba74; }
+.admin-send--sent { color: #166534; background: #dcfce7; border-color: #86efac; }
+.admin-send--error { color: #991b1b; background: #fee2e2; border-color: #fca5a5; }
+.admin-send--sending { color: #1e3a8a; background: #dbeafe; border-color: #93c5fd; }
+.admin-send-na { color: var(--muted); }
 .admin-mailnote { flex-basis: 100%; font-size: 0.82rem; color: #15803d; }
 .admin-mailnote.is-error { color: #b91c1c; }
 .admin-ticket__done { color: #15803d; font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
