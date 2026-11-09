@@ -120,6 +120,9 @@
               @if (inToday(s)) {
                 <i class="bi bi-check-circle-fill admin-in" title="Checked in today"></i>
               }
+              @if (s.ticket_emailed_at) {
+                <i class="bi bi-envelope-check admin-mailed" title="Ticket emailed"></i>
+              }
             </span>
             <span class="admin-email">{{ s.email || '—' }}</span>
             <span class="admin-caret">
@@ -157,6 +160,21 @@
                       <i class="bi" [class.bi-link-45deg]="copiedCode() !== code" [class.bi-check2]="copiedCode() === code"></i>
                       {{ copiedCode() === code ? 'Copied' : 'Copy link' }}
                     </button>
+                    <button
+                      class="admin-btn"
+                      [class.admin-btn--mail]="!s.ticket_emailed_at"
+                      (click)="emailTicket(s, $event)"
+                      [disabled]="!s.email || emailing() === code"
+                      [attr.title]="s.email ? 'Send this ticket to ' + s.email : 'No email address on this registration'"
+                    >
+                      @if (emailing() === code) {
+                        <i class="bi bi-arrow-repeat admin-spin"></i> Sending…
+                      } @else if (s.ticket_emailed_at) {
+                        <i class="bi bi-envelope-check"></i> Resend email
+                      } @else {
+                        <i class="bi bi-envelope-paper"></i> Email ticket
+                      }
+                    </button>
                     @if (inToday(s)) {
                       <span class="admin-ticket__done"><i class="bi bi-check-circle-fill"></i> In today</span>
                       <button class="admin-btn" (click)="undoDay(s, today, $event)" [disabled]="checkingIn() === code">
@@ -168,6 +186,13 @@
                       </button>
                     }
                   </span>
+                  @if (emailNote()[code]; as n) {
+                    <span class="admin-mailnote" [class.is-error]="!n.ok">
+                      <i class="bi" [class.bi-check-circle-fill]="n.ok" [class.bi-exclamation-triangle-fill]="!n.ok"></i> {{ n.text }}
+                    </span>
+                  } @else if (s.ticket_emailed_at) {
+                    <span class="admin-mailnote"><i class="bi bi-envelope-check"></i> Emailed {{ fmtDate(s.ticket_emailed_at) }}</span>
+                  }
                 </div>
               }
               <dl>

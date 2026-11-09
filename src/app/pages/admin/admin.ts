@@ -1,7 +1,8 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { supabase } from '../../core/supabase.client';
-import { EVENT_DAYS, checkIn, dayLabel, isDoorStaff, shortRef, ticketUrl, todayInBahrain, undoCheckIn } from '../../core/tickets';
+import { EVENT_DAYS, checkIn, dayLabel, isDoorStaff, qrPng, shortRef, ticketUrl, todayInBahrain, undoCheckIn } from '../../core/tickets';
+import { renderTicketImage } from '../../core/ticket-image';
 
 interface Submission {
   id: string;
@@ -10,6 +11,7 @@ interface Submission {
   full_name: string | null;
   email: string | null;
   ticket_code: string | null;
+  ticket_emailed_at?: string | null;
   data: Record<string, unknown>;
 }
 
@@ -42,6 +44,10 @@ export class AdminComponent {
   protected readonly checkins = signal<Record<string, string[]>>({});
   protected readonly checkingIn = signal<string | null>(null);
   protected readonly copiedCode = signal<string | null>(null);
+  /** ticket_code currently being emailed. */
+  protected readonly emailing = signal<string | null>(null);
+  /** Per ticket: result of the last email attempt in this session. */
+  protected readonly emailNote = signal<Record<string, { ok: boolean; text: string }>>({});
 
   protected readonly days = EVENT_DAYS;
   protected readonly today = todayInBahrain();
@@ -214,6 +220,47 @@ export class AdminComponent {
     } catch {
       prompt('Copy the ticket link:', ticketUrl(code));
     }
+  }
+
+  /** Email this person their ticket from sw@gulfuniversity.edu.bh. */
+  protected async emailTicket(s: Submission, event: Event): Promise<void> {
+    event.stopPropagation();
+    const code = s.ticket_code;
+    if (!code || !s.email || this.emailing()) {
+      return;
+    }
+    const again = s.ticket_emailed_at ? `\n\nAlready emailed on ${this.fmtDate(s.ticket_emailed_at)}.` : '';
+    if (!confirm(`Email the ticket to ${s.full_name || 'this person'} <${s.email}>?${again}`)) {
+      return;
+    }
+    this.emailing.set(code);
+    const note = (ok: boolean, text: string) => this.emailNote.update((m) => ({ ...m, [code]: { ok, text } }));
+    try {
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      if (!token) {
+        throw new Error('Your session has expired. Please sign in again.');
+      }
+      // The full ticket as an image, attached to the email. JPEG keeps it small; skip it if drawing fails.
+      const image = await qrPng(ticketUrl(code))
+        .then((qr) => renderTicketImage({ ticket_code: code, full_name: s.full_name, type: s.type }, qr, 'image/jpeg'))
+        .catch(() => null);
+      const res = await fetch('/api/send-ticket', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ code, image })
+      });
+      const body = (await res.json().catch(() => ({}))) as { error?: string; sentAt?: string; to?: string };
+      if (!res.ok) {
+        throw new Error(body.error || `Sending failed (${res.status}).`);
+      }
+      const sentAt = body.sentAt || new Date().toISOString();
+      this.subs.update((list) => list.map((x) => (x.id === s.id ? { ...x, ticket_emailed_at: sentAt } : x)));
+      note(true, `Sent to ${body.to || s.email}`);
+    } catch (e) {
+      note(false, e instanceof Error ? e.message : 'Sending failed.');
+    }
+    this.emailing.set(null);
   }
 
   protected async logout(): Promise<void> {
