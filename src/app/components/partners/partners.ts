@@ -19,7 +19,7 @@ export class PartnersComponent {
       [{ name: 'King Hamad Global Center for Coexistence and Tolerance', logo: 'partners/king-hamad-global-center.png' }],
       [{ name: 'Southern Governorate', logo: 'partners/southern-governorate.png' }],
       [{ name: 'Ministry of Municipalities Affairs and Agriculture', logo: 'partners/ministry-of-municipalities-affairs-and-agriculture.png' }],
-      [{ name: 'Ministry of Youth and Sport Affairs', logo: 'partners/ministry-of-youth-and-sport-affairs.png' }],
+      [{ name: 'Ministry of Youth Affairs', logo: 'partners/ministry-of-youth-affairs.png' }],
       [{ name: 'Ministry of Information', logo: 'partners/ministry-of-information.png' }],
       [{ name: 'Ministry of Transportation and Telecommunications', logo: 'partners/ministry-of-transportation-and-telecommunications.png' }],
       [{ name: 'Ministry of Health', logo: 'partners/ministry-of-health.png' }],
