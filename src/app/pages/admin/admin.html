@@ -89,6 +89,39 @@
                   {{ copiedCode() === a.code ? 'Copied' : 'Copy link' }}
                 </button>
               </div>
+              @if (a.email) {
+                @if (addedSub(); as s) {
+                  <div class="admin-added__actions">
+                    @switch (mailState(s)) {
+                      @case ('sending') {
+                        <button type="button" class="admin-send admin-send--sending admin-added__mail" disabled>
+                          <i class="bi bi-arrow-repeat admin-spin"></i> Sending to {{ a.email }}…
+                        </button>
+                      }
+                      @case ('sent') {
+                        <button type="button" class="admin-send admin-send--sent admin-added__mail" (click)="emailAdded()" title="Click to resend">
+                          <i class="bi bi-envelope-check-fill"></i> Ticket emailed to {{ a.email }}
+                        </button>
+                      }
+                      @case ('error') {
+                        <button type="button" class="admin-send admin-send--error admin-added__mail" (click)="emailAdded()">
+                          <i class="bi bi-envelope-exclamation-fill"></i> Failed — retry
+                        </button>
+                      }
+                      @default {
+                        <button type="button" class="admin-send admin-send--pending admin-added__mail" (click)="emailAdded()">
+                          <i class="bi bi-send-fill"></i> Email ticket to {{ a.email }}
+                        </button>
+                      }
+                    }
+                  </div>
+                  @if (emailNote()[a.code]; as n) {
+                    @if (!n.ok) {
+                      <p class="admin-error">{{ n.text }}</p>
+                    }
+                  }
+                }
+              }
               <div class="admin-added__actions">
                 <button type="button" class="admin-btn admin-btn--add" (click)="addAnother()"><i class="bi bi-person-plus-fill"></i> Add another</button>
                 <button type="button" class="admin-btn admin-btn--ghost" (click)="closeAdd()">Done</button>
@@ -104,6 +137,9 @@
 
               <label class="admin-label" for="add-org">Organization</label>
               <input id="add-org" class="admin-input" name="org" [(ngModel)]="addOrg" autocomplete="off" />
+
+              <label class="admin-label" for="add-email">Email <span class="admin-opt">(optional — to email them the ticket)</span></label>
+              <input id="add-email" class="admin-input" type="email" name="email" [(ngModel)]="addEmail" autocomplete="off" placeholder="name@example.com" />
 
               <span class="admin-label">Type</span>
               <div class="admin-typepick" role="radiogroup" aria-label="Registration type">

@@ -56,9 +56,10 @@ export class AdminComponent {
   protected readonly addOpen = signal(false);
   protected readonly adding = signal(false);
   protected readonly addError = signal<string | null>(null);
-  protected readonly added = signal<{ code: string; name: string } | null>(null);
+  protected readonly added = signal<{ code: string; name: string; email: string } | null>(null);
   protected addName = '';
   protected addOrg = '';
+  protected addEmail = '';
   protected addType = 'Guest';
 
   /** Registrations with an email address whose ticket hasn't been emailed yet. */
@@ -240,6 +241,7 @@ export class AdminComponent {
   protected openAdd(): void {
     this.addName = '';
     this.addOrg = '';
+    this.addEmail = '';
     this.addError.set(null);
     this.added.set(null);
     this.addOpen.set(true);
@@ -261,12 +263,18 @@ export class AdminComponent {
       this.addError.set('Please enter a name.');
       return;
     }
+    const email = this.addEmail.trim().toLowerCase();
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.addError.set('Please check the email address, or leave it empty.');
+      return;
+    }
     this.adding.set(true);
     this.addError.set(null);
     const { data, error } = await supabase.rpc('admin_add_registration', {
       p_name: name,
       p_org: this.addOrg.trim(),
-      p_type: this.addType
+      p_type: this.addType,
+      ...(email ? { p_email: email } : {})
     });
     this.adding.set(false);
     if (error || !data) {
@@ -277,15 +285,29 @@ export class AdminComponent {
       );
       return;
     }
-    this.added.set({ code: data as string, name });
+    this.added.set({ code: data as string, name, email });
     this.filterType.set('All');
     this.search.set('');
-    void this.load();
+    await this.load();
+  }
+
+  /** The just-added person's row, once the list has reloaded. */
+  protected addedSub(): Submission | undefined {
+    const a = this.added();
+    return a ? this.subs().find((s) => s.ticket_code === a.code) : undefined;
+  }
+
+  protected async emailAdded(): Promise<void> {
+    const s = this.addedSub();
+    if (s && !this.emailing() && !this.bulk()?.running) {
+      await this.sendTicket(s);
+    }
   }
 
   protected addAnother(): void {
     this.addName = '';
     this.addOrg = '';
+    this.addEmail = '';
     this.added.set(null);
   }
 

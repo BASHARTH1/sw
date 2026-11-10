@@ -445,6 +445,8 @@ button.admin-ticket__day:disabled { opacity: 0.6; cursor: wait; }
 }
 .admin-added__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .admin-added__actions .admin-btn--primary { width: auto; margin-top: 0; text-decoration: none; }
+.admin-added__mail { padding: 9px 16px; font-size: 0.85rem; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.admin-opt { font-weight: 400; color: var(--muted); }
 .admin-mono { font-family: ui-monospace, Menlo, Consolas, monospace; color: var(--ink); }
 
 .admin-bulk {
