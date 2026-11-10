@@ -73,13 +73,19 @@ export class ScheduleComponent implements OnInit {
       date: '15th November, 2026',
       isoDate: '2026-11-15',
       theme: 'Advancing Sustainable Futures through Research and Innovation',
-      sdgs: [4, 9, 11, 12, 17],
+      sdgs: [4, 5, 9, 10, 11, 12, 17],
       items: [
-        { slot: 'Morning',     type: 'opening',     sdgs: [],           title: 'Event Inauguration: Opening Ceremony & Keynote Address  ·  SW2026 Conference / ICSDI 2nd Edition (Day 1)' },
-        { slot: 'Morning',     type: 'session',     sdgs: [4, 9],       title: 'Expert Talk: The Role of Universities in Driving SDG 9.5' },
-        { slot: 'Mid-day',     type: 'panel',       sdgs: [9, 11, 17],  title: 'Panel Discussion: Bridging Academia, Industry and Policy for SDGs in the era of AI' },
-        { slot: 'Afternoon',   type: 'workshop',    sdgs: [9, 12],      title: 'Workshop: Design Thinking for Sustainable Solutions' },
-        { slot: 'Afternoon',   type: 'exhibition',  sdgs: [9, 12],      title: 'Exhibition Launch: Sustainability & Innovation Expo 2026' }
+        { slot: '09:00–10:00', type: 'opening',     sdgs: [],                title: 'Participants Registration & Welcome' },
+        { slot: '10:00–10:25', type: 'opening',     sdgs: [],                title: 'Event Inauguration: Opening Ceremony & Speeches  ·  SW2026 & ICSDI Conference Inaugural  ·  Opening & Welcoming Speeches by Prof. Mohanad Al Firas (GU President), Prof. Ciarán Ó Catháin (CEO, Bahrain Polytechnic), Dr. Omar Blibech (Director of the SDM-C, GU) and Dr. Meryem Fati (Vice President for Academic Affairs, GU)  ·  Official Launch of Gulf University\'s "Sustainable Family Award" Initiative' },
+        { slot: '10:25–10:45', type: 'session',     sdgs: [],                title: 'Keynote Speeches, Session 01: Prof. Sherine Farouk (ADU, UAE), "Beyond Innovation: The Power of Partnerships to Shape a Sustainable Future"  ·  Dr. Rossilah Jamil (UTM, Malaysia), "From Profit to Purpose: HRM as a Catalyst for Social Sustainability and Inclusive Workplace"' },
+        { slot: '10:45–11:00', type: 'awards',      sdgs: [],                title: 'Honoring Distinguished Guests & Partners' },
+        { slot: '11:00–11:30', type: 'exhibition',  sdgs: [],                title: 'SW2026 Exhibition Tour & Networking Break' },
+        { slot: '11:30–11:50', type: 'session',     sdgs: [],                title: 'Keynote Speeches, Session 02: Dr. Laura Strachan (PMU, KSA), "The \'Paper Park\' Paradox: Structural Misalignments in Global Biodiversity Conservation"  ·  Ms. Anna Schmidt-Fiedler (AMU, Poland), Head of Social Innovations and Sustainability Office, International Project COCO' },
+        { slot: '12:05–12:40', type: 'panel',       sdgs: [9, 11, 17],       title: 'Panel Discussion: Bridging Academia, Industry and Policy for SDGs in the Era of AI  ·  Chair: Dr. Meryem Fati, VPAA, GU' },
+        { slot: '12:45–13:20', type: 'panel',       sdgs: [4, 5, 9, 10, 12], title: 'Panel Discussion & Interactive Session: Systems Thinking Design, Intellectual Property, Educational and Social Innovation for Sustainability  ·  Chair: Dr. Tamer Alkadash, GU' },
+        { slot: '13:25–14:00', type: 'awards',      sdgs: [],                title: 'Honoring Panelists & Speakers' },
+        { slot: '14:00–15:30', type: 'community',   sdgs: [],                title: 'Networking Lunch & Concluding Discussions' },
+        { slot: '16:00–17:00', type: 'community',   sdgs: [11, 13, 15],      title: 'Community Environmental Action: Daily Tree Planting & Urban Greening Campaign in Partnership with the Ministry of Municipalities Affairs and Agriculture and STC Bahrain' }
       ]
     },
     {
@@ -87,14 +93,22 @@ export class ScheduleComponent implements OnInit {
       label: 'Day 2',
       date: '16th November, 2026',
       isoDate: '2026-11-16',
-      theme: 'Smart Cities, Innovative Engineering and Digital Transformation for Sustainability',
-      sdgs: [7, 9, 11, 12, 13],
+      theme: 'SW2026 Conference / ICSDI 2nd Edition: Digital Transformation, Artificial Intelligence & Emerging Technologies',
+      sdgs: [4, 5, 7, 8, 9, 10, 11, 12, 13, 16, 17],
       items: [
-        { slot: 'Morning',     type: 'session',     sdgs: [9, 7, 11],   title: 'Presentation: AI & IoT Applications in Energy Efficiency and Sustainable Built Environments' },
-        { slot: 'Mid-day',     type: 'panel',       sdgs: [9, 11, 13],  title: 'Panel Discussion: Green Infrastructure and Resilient Urban Systems' },
-        { slot: 'Afternoon',   type: 'session',     sdgs: [9, 13],      title: 'Research Showcase: Innovative Engineering Solutions for Sustainable Development' },
-        { slot: 'Afternoon',   type: 'competition', sdgs: [9, 12],      title: 'Competition Launch: Sustainable Innovation Challenge' },
-        { slot: 'Parallel',    type: 'session',     sdgs: [],           title: 'Parallel Sessions: SW2026 Conference / ICSDI 2nd Edition (Day 2)' }
+        { slot: 'All day',     type: 'opening',     sdgs: [],                           title: 'ICSDI 2026 — International Conference on Sustainable Development & Innovation: In-Person Sessions at Bahrain Polytechnic (16 November) and Online Sessions (17 November)' },
+        { slot: '09:30–10:30', type: 'session',     sdgs: [4, 5, 7, 8, 9, 10, 11, 13],  title: 'Paper Session, Track A: Digital Transformation, Artificial Intelligence & Emerging Technologies (5 papers)' },
+        { slot: '09:30–10:15', type: 'session',     sdgs: [7, 8, 9, 10, 13, 16, 17],    title: 'Paper Session, Track B: Digital Transformation, Artificial Intelligence & Emerging Technologies / Energy, Green Technologies & Sustainable Infrastructure (4 papers)' },
+        { slot: '09:30–10:30', type: 'session',     sdgs: [5, 7, 8],                    title: 'Paper Session, Track C: Innovation, Entrepreneurship & Cross-Sector Collaboration / Energy, Green Technologies & Sustainable Infrastructure / Sustainable Business, Economics & Finance (5 papers)' },
+        { slot: '11:15–12:15', type: 'session',     sdgs: [4, 8, 9, 12, 17],            title: 'Paper Session, Track D: Innovation, Entrepreneurship & Cross-Sector Collaboration / Sustainable Business, Economics & Finance (5 papers)' },
+        { slot: '11:15–12:15', type: 'session',     sdgs: [8, 12, 16],                  title: 'Paper Session, Track E: Innovation, Entrepreneurship & Cross-Sector Collaboration (5 papers)' },
+        { slot: '11:15–12:15', type: 'session',     sdgs: [8, 9, 16],                   title: 'Paper Session, Track F: Innovation, Entrepreneurship & Cross-Sector Collaboration (5 papers)' },
+        { slot: '13:30–14:30', type: 'session',     sdgs: [4, 8, 9],                    title: 'Paper Session, Track G: Innovation, Entrepreneurship & Cross-Sector Collaboration (5 papers)' },
+        { slot: '13:30–14:30', type: 'session',     sdgs: [4, 8, 9, 10, 16],            title: 'Paper Session, Track H: Innovation, Entrepreneurship & Cross-Sector Collaboration / Sustainable Business, Economics & Finance (5 papers)' },
+        { slot: '13:30–14:30', type: 'session',     sdgs: [4, 8, 9, 10, 16],            title: 'Paper Session, Track I: Innovation, Entrepreneurship & Cross-Sector Collaboration / Health, Education, Society & Inclusive Development (5 papers)' },
+        { slot: '15:15–16:00', type: 'session',     sdgs: [4, 8, 9],                    title: 'Paper Session, Track J: Health, Education, Society & Inclusive Development (4 papers)' },
+        { slot: '15:15–16:15', type: 'session',     sdgs: [4, 8, 9, 10, 16],            title: 'Paper Session, Track K: Health, Education, Society & Inclusive Development (5 papers)' },
+        { slot: '15:15–15:45', type: 'session',     sdgs: [4, 8, 9, 10],                title: 'Paper Session, Track L: Health, Education, Society & Inclusive Development (3 papers)' }
       ]
     },
     {
@@ -102,15 +116,18 @@ export class ScheduleComponent implements OnInit {
       label: 'Day 3',
       date: '17th November, 2026',
       isoDate: '2026-11-17',
-      theme: 'Climate Action, Circular Economy Strategies in Design and Manufacturing',
-      sdgs: [8, 9, 11, 12, 13, 14, 15],
+      theme: 'Climate Action, Circular Economy Strategies, Digitalization and Innovative Design and Manufacturing',
+      sdgs: [6, 7, 8, 9, 11, 12, 13, 14, 15],
       items: [
-        { slot: 'Morning',     type: 'workshop',    sdgs: [12, 13],     title: 'Workshop: Sustainable Materials & Life Cycle Assessment' },
-        { slot: 'Mid-day',     type: 'panel',       sdgs: [8, 9, 12],   title: 'Panel Discussion: Industry Perspectives on Sustainable Production & Consumption' },
-        { slot: 'Afternoon',   type: 'workshop',    sdgs: [12],         title: 'Hands-on Activity: Upcycling Design Lab' },
-        { slot: 'Afternoon',   type: 'session',     sdgs: [14],         title: 'Demo-Based Session: From Source to Sea — Demonstrating Water Pollution & Microplastics Impact' },
-        { slot: 'Afternoon',   type: 'workshop',    sdgs: [15],         title: 'Workshop: Living Materials & Urban Biodiversity — Demonstrating Nature-Integrated Technologies' },
-        { slot: 'Until 4 PM',  type: 'community',   sdgs: [11, 13],     title: 'Community Engagement Session: Campus Sustainability Awareness Campaign' }
+        { slot: '10:00–10:30', type: 'workshop',    sdgs: [12, 13],            title: 'Workshop & Interactive Session: Sustainable Materials & Life Cycle Assessment  ·  Facilitator: Dr. Mahmood Hammad, Bahrain Polytechnic' },
+        { slot: '10:30–11:00', type: 'panel',       sdgs: [8, 9, 12],          title: 'Panel Discussion: Industry Perspectives on Renewable Energy, Sustainable Production & Consumption  ·  Chair: Prof. Isa S. Qamber' },
+        { slot: '11:00–11:30', type: 'workshop',    sdgs: [12, 13],            title: 'Hands-on Activity: Upcycling Design Lab  ·  Nidukki Bahrain & Zero Waste Bahrain' },
+        { slot: '11:30–12:00', type: 'session',     sdgs: [6, 14],             title: 'Demo-Based Session: From Source to Sea — Demonstrating Water Pollution & Microplastics Impact  ·  Facilitator: Ms. Sandra Job, GU' },
+        { slot: '12:20–13:00', type: 'session',     sdgs: [9, 12, 13, 15],     title: 'Presentation: Circular Economy and Sustainable Materials Innovation — Critical Resource Recovery and Next-Generation Recycling Technologies  ·  Facilitator: Dr. Wajid Ali Khan, Bahrain Polytechnic' },
+        { slot: '13:00–13:30', type: 'workshop',    sdgs: [6, 7, 9, 11],       title: 'Workshop: AI & IoT Applications in Energy Efficiency, Sanitation and Sustainable Built Environments  ·  Facilitator: Dr. Walid Elfezzani, GU' },
+        { slot: '13:30–14:00', type: 'panel',       sdgs: [6, 9, 11, 13, 15],  title: 'Panel Discussion & Presentation: Smart Cities, Green Infrastructure, Clean Water and Resilient Urban Systems  ·  Chair: Dr. Aseel Al-Ayash, GU' },
+        { slot: '14:45–15:45', type: 'exhibition',  sdgs: [8, 9, 11, 12, 13],  title: 'Innovative Ideas & Entrepreneur Projects Showcase: Innovative Projects and Engineering Solutions for Sustainable Development  ·  Facilitator: Dr. Ahmad Alastal, GU' },
+        { slot: '15:45–16:30', type: 'community',   sdgs: [11, 13],            title: 'Community Engagement Session: Campus Sustainability Awareness Campaign — GU Sustainability Club "The SDGs Quiz Wall" Challenge  ·  Coordinator: GUSC President & Members' }
       ]
     },
     {
@@ -118,17 +135,18 @@ export class ScheduleComponent implements OnInit {
       label: 'Day 4',
       date: '18th November, 2026',
       isoDate: '2026-11-18',
-      theme: 'Community, Social Impact & Environmental Action',
-      sdgs: [1, 2, 3, 5, 8, 9, 10, 11, 12, 13],
+      theme: 'Community, Socioeconomic Impact & Environmental Action',
+      sdgs: [1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13],
       items: [
-        { slot: 'Morning',     type: 'community',   sdgs: [11, 13],        title: 'Community Service: Green Mobility Day — Zero Car Campus Initiative' },
-        { slot: 'Mid-day',     type: 'community',   sdgs: [13, 15],        title: 'On-Campus / Field Activity: Tree Planting & Urban Greening Campaign' },
-        { slot: 'Afternoon',   type: 'session',     sdgs: [13, 11],        title: 'Expert Talk: Climate Action and Local Community Resilience' },
-        { slot: 'Afternoon',   type: 'panel',       sdgs: [17, 11],        title: 'Panel Discussion: Public–Private Partnerships for Sustainable Communities' },
-        { slot: 'Afternoon',   type: 'workshop',    sdgs: [1, 2, 5],       title: 'Workshop: Design for Social Impact — Inclusive Design for Empowerment, Sustainable Living & Food Security Lab Supporting Women and Communities' },
-        { slot: 'Afternoon',   type: 'session',     sdgs: [3],             title: 'Demo Session: Healthy Spaces in Action — Demonstrating Indoor Environmental Quality (IEQ) for Well-being' },
-        { slot: 'Afternoon',   type: 'session',     sdgs: [10],            title: 'Think-Tank: Inclusive Innovation Lab — Bridging Research & Technology for Reduced Inequalities' },
-        { slot: 'Afternoon',   type: 'exhibition',  sdgs: [9, 11, 17],     title: 'Exhibition: Sustainable Solutions for Society' }
+        { slot: '08:00–10:00', type: 'community',   sdgs: [],                  title: 'Off-Campus Activity (GU Sustainability Club): Guided Educational Tour and Awareness Session on Marine Conservation and the Protection of Life Below Water  ·  Tubli Bay Reserve / Bahrain Mangroves Tour' },
+        { slot: '10:00–10:30', type: 'community',   sdgs: [3, 11, 12, 13],     title: 'Institutional Community Engagement Initiatives: "Green Mobility Day – Zero-Car Campus" & "Sustainable Family Award" Projects  ·  Moderator: Ms. Noor Ali AlSoufi, Bahrain Polytechnic' },
+        { slot: '10:30–11:00', type: 'panel',       sdgs: [8, 9, 11],          title: 'Panel Discussion: Innovative Collaborative Initiatives for Economic Growth & Sustainable Communities  ·  Chair: Dr. Qais Almaamari, GU' },
+        { slot: '11:00–11:30', type: 'workshop',    sdgs: [7, 9, 11, 13],      title: 'Workshop: Climate Action and Community Resilience through Sustainable Infrastructure and Energy Systems  ·  Facilitator: Dr. Abdulla Ali Desmal, Bahrain Polytechnic' },
+        { slot: '11:30–12:00', type: 'workshop',    sdgs: [1, 2, 3, 5],        title: 'Workshop: Design for Social Impact — Inclusive Design for Empowerment: Sustainable Living & Food Security Lab Supporting Women and Healthy Communities  ·  Facilitator: Dr. Naglaa El Gammal, GU' },
+        { slot: '12:20–12:50', type: 'session',     sdgs: [3, 11],             title: 'Demo Session: Healthy Spaces in Action — Demonstrating Indoor Environmental Quality (IEQ) for Healthy Buildings & Well-being  ·  Facilitator: Dr. Farrukh Hafeez, Bahrain Polytechnic' },
+        { slot: '12:50–13:30', type: 'session',     sdgs: [3, 5, 8, 10],       title: 'Think-Tank: Inclusive Innovation Lab — Bridging Research & Technology for Healthy Communities & Reduced Inequalities  ·  Moderator: Dr. Nithin Kalorth, Bahrain Polytechnic' },
+        { slot: '14:30–15:00', type: 'community',   sdgs: [5, 8, 9, 10, 12],   title: 'Campus Boost Initiative: Empowering People, Individual Innovation and Community Sustainability — Productive Families Exhibition, Clothing Swap and Donation Drive (KISWA Bahrain)  ·  Coordinators: Ms. Heba Nasseb & Mr. Ali Abdulla, GU' },
+        { slot: '15:00–17:00', type: 'community',   sdgs: [],                  title: 'Off-Campus Activity (GU Students & Participants): Guided Field Trip and Nature Walk  ·  Karzakan Forest, Bahrain' }
       ]
     },
     {
@@ -137,15 +155,15 @@ export class ScheduleComponent implements OnInit {
       date: '19th November, 2026',
       isoDate: '2026-11-19',
       theme: 'Future Visions & Closing',
-      sdgs: [4, 9, 12, 16, 17],
+      sdgs: [4, 9, 10, 12, 16, 17],
       items: [
-        { slot: 'Morning',     type: 'session',     sdgs: [9, 4],   title: 'Research Showcase: From Concept to Impact — Student & Research Projects' },
-        { slot: 'Mid-day',     type: 'competition', sdgs: [9, 12],  title: 'Competition Finals: Sustainable Innovation Challenge Awards' },
-        { slot: 'Afternoon',   type: 'session',     sdgs: [9],      title: 'Expert Talk: Future Trends in Sustainable Engineering and Design' },
-        { slot: 'Afternoon',   type: 'session',     sdgs: [16],     title: 'Ethics, Governance & Accountability in Sustainable Development: Building Trustworthy Systems' },
-        { slot: 'Afternoon',   type: 'panel',       sdgs: [9, 17],  title: 'Closing Panel: Strong Partnerships in Scaling Innovation for Global Sustainability Impact' },
-        { slot: 'Afternoon',   type: 'session',     sdgs: [4, 9],   title: 'Special Talk: Recognition of Excellence in Sustainability & Innovation' },
-        { slot: 'Afternoon',   type: 'awards',      sdgs: [],       title: 'Closing Ceremony, Honoring & Awards' }
+        { slot: '10:00–10:30', type: 'session',     sdgs: [4, 9],          title: 'Expert Talk & Research Showcase: Future Trends in Sustainable Engineering and Design  ·  Chair: Prof. Nikolaos Vasilikos, Bahrain Polytechnic' },
+        { slot: '10:30–11:00', type: 'session',     sdgs: [4, 10, 16, 17], title: 'Special Talk: Advancing Peaceful Coexistence, Tolerance, and Social Sustainability through Education and Innovation  ·  Moderator: Prof. Firas Mohamed, GU' },
+        { slot: '11:00–11:30', type: 'session',     sdgs: [16],            title: 'Presentation: Ethics, Governance & Accountability in Sustainable Development — Building Trustworthy Systems  ·  Facilitator: Dr. Siddiq Balal, GU' },
+        { slot: '11:30–12:00', type: 'session',     sdgs: [10, 16, 17],    title: 'Special Session: Sustainable Leadership & Social Innovation for Advancing the SDGs  ·  Facilitator: Dr. Heba Alsaleh, GU' },
+        { slot: '12:20–12:50', type: 'panel',       sdgs: [4, 9, 17],      title: 'Closing Panel: Advancing Sustainable Innovation through Strategic Partnerships, Knowledge Sharing, and Research Preservation  ·  Chair: Dr. Mahmood AlZghool' },
+        { slot: '12:50–14:30', type: 'competition', sdgs: [9, 12],         title: 'Competition Finals: Sustainable Innovation "EcoBot" Challenge Awards  ·  Coordinators: Dr. Ahmad Assi, GU & Dr. Mahmood Hammad, Bahrain Polytechnic' },
+        { slot: '14:30–15:30', type: 'awards',      sdgs: [],              title: 'Closing Ceremony, Honouring & Awards' }
       ]
     }
   ];
