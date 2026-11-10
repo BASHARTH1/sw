@@ -51,6 +51,9 @@
         <button class="admin-btn" (click)="load()" [disabled]="loading()">
           <i class="bi bi-arrow-clockwise"></i> Refresh
         </button>
+        <button class="admin-btn admin-btn--add" (click)="openAdd()">
+          <i class="bi bi-person-plus-fill"></i> Add person
+        </button>
         <button
           class="admin-btn admin-btn--mail"
           (click)="emailAllUnsent()"
@@ -67,6 +70,67 @@
         </button>
       </div>
     </header>
+
+    @if (addOpen()) {
+      <div class="admin-modal" (click)="closeAdd()">
+        <div class="admin-modal__card" role="dialog" aria-modal="true" aria-labelledby="add-title" (click)="$event.stopPropagation()">
+          <button type="button" class="admin-modal__close" (click)="closeAdd()" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+          @if (added(); as a) {
+            <div class="admin-added">
+              <div class="admin-added__icon"><i class="bi bi-check-lg"></i></div>
+              <h2 id="add-title">{{ a.name }} is registered</h2>
+              <p>Their ticket is ready — ref <strong class="admin-mono">{{ shortRef(a.code) }}</strong>.</p>
+              <div class="admin-added__actions">
+                <a class="admin-btn admin-btn--primary" [href]="ticketUrl(a.code)" target="_blank" rel="noopener">
+                  <i class="bi bi-ticket-perforated"></i> Open ticket
+                </a>
+                <button type="button" class="admin-btn" (click)="copyLink(a.code)">
+                  <i class="bi" [class.bi-link-45deg]="copiedCode() !== a.code" [class.bi-check2]="copiedCode() === a.code"></i>
+                  {{ copiedCode() === a.code ? 'Copied' : 'Copy link' }}
+                </button>
+              </div>
+              <div class="admin-added__actions">
+                <button type="button" class="admin-btn admin-btn--add" (click)="addAnother()"><i class="bi bi-person-plus-fill"></i> Add another</button>
+                <button type="button" class="admin-btn admin-btn--ghost" (click)="closeAdd()">Done</button>
+              </div>
+            </div>
+          } @else {
+            <form (ngSubmit)="addPerson()">
+              <h2 id="add-title"><i class="bi bi-person-plus-fill"></i> Add person</h2>
+              <p class="admin-modal__sub">Register someone who didn't sign up. They get a ticket straight away.</p>
+
+              <label class="admin-label" for="add-name">Full name</label>
+              <input id="add-name" class="admin-input" name="name" [(ngModel)]="addName" required autocomplete="off" autofocus />
+
+              <label class="admin-label" for="add-org">Organization</label>
+              <input id="add-org" class="admin-input" name="org" [(ngModel)]="addOrg" autocomplete="off" />
+
+              <span class="admin-label">Type</span>
+              <div class="admin-typepick" role="radiogroup" aria-label="Registration type">
+                @for (t of types.slice(1); track t) {
+                  <label class="admin-typepick__opt" [class.is-on]="addType === t">
+                    <input type="radio" name="type" [value]="t" [(ngModel)]="addType" />
+                    {{ t }}
+                  </label>
+                }
+              </div>
+
+              @if (addError()) {
+                <p class="admin-error"><i class="bi bi-exclamation-triangle-fill"></i> {{ addError() }}</p>
+              }
+
+              <button type="submit" class="admin-btn admin-btn--primary admin-modal__submit" [disabled]="adding()">
+                @if (adding()) {
+                  <i class="bi bi-arrow-repeat admin-spin"></i> Adding…
+                } @else {
+                  <i class="bi bi-ticket-perforated-fill"></i> Register &amp; create ticket
+                }
+              </button>
+            </form>
+          }
+        </div>
+      </div>
+    }
 
     @if (bulk(); as b) {
       <div class="admin-bulk" [class.is-done]="!b.running" role="status">

@@ -52,6 +52,15 @@ export class AdminComponent {
   protected readonly bulk = signal<{ done: number; total: number; sent: number; failed: number; running: boolean } | null>(null);
   private stopBulk = false;
 
+  // "Add person" form
+  protected readonly addOpen = signal(false);
+  protected readonly adding = signal(false);
+  protected readonly addError = signal<string | null>(null);
+  protected readonly added = signal<{ code: string; name: string } | null>(null);
+  protected addName = '';
+  protected addOrg = '';
+  protected addType = 'Guest';
+
   /** Registrations with an email address whose ticket hasn't been emailed yet. */
   protected readonly unsent = computed(() => this.subs().filter((s) => s.ticket_code && s.email && !s.ticket_emailed_at));
 
@@ -219,6 +228,68 @@ export class AdminComponent {
     if (!code) {
       return;
     }
+    try {
+      await navigator.clipboard.writeText(ticketUrl(code));
+      this.copiedCode.set(code);
+      setTimeout(() => this.copiedCode.set(null), 2000);
+    } catch {
+      prompt('Copy the ticket link:', ticketUrl(code));
+    }
+  }
+
+  protected openAdd(): void {
+    this.addName = '';
+    this.addOrg = '';
+    this.addError.set(null);
+    this.added.set(null);
+    this.addOpen.set(true);
+  }
+
+  protected closeAdd(): void {
+    if (!this.adding()) {
+      this.addOpen.set(false);
+    }
+  }
+
+  /** Register someone who didn't sign up; they get a ticket straight away. */
+  protected async addPerson(): Promise<void> {
+    const name = this.addName.trim();
+    if (this.adding()) {
+      return;
+    }
+    if (!name) {
+      this.addError.set('Please enter a name.');
+      return;
+    }
+    this.adding.set(true);
+    this.addError.set(null);
+    const { data, error } = await supabase.rpc('admin_add_registration', {
+      p_name: name,
+      p_org: this.addOrg.trim(),
+      p_type: this.addType
+    });
+    this.adding.set(false);
+    if (error || !data) {
+      this.addError.set(
+        error?.code === 'PGRST202'
+          ? 'Run supabase/admin-add.sql in Supabase first.'
+          : `Could not add this person${error?.message ? `: ${error.message}` : '.'}`
+      );
+      return;
+    }
+    this.added.set({ code: data as string, name });
+    this.filterType.set('All');
+    this.search.set('');
+    void this.load();
+  }
+
+  protected addAnother(): void {
+    this.addName = '';
+    this.addOrg = '';
+    this.added.set(null);
+  }
+
+  protected async copyLink(code: string): Promise<void> {
     try {
       await navigator.clipboard.writeText(ticketUrl(code));
       this.copiedCode.set(code);
