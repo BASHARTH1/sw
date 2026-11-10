@@ -202,6 +202,44 @@
       }
     </div>
 
+    <section class="admin-posts">
+      <button type="button" class="admin-posts__head" (click)="postsOpen.set(!postsOpen())" [attr.aria-expanded]="postsOpen()">
+        <span class="admin-posts__icon"><i class="bi bi-megaphone-fill"></i></span>
+        <span class="admin-posts__text">
+          <strong>{{ posters().length }}</strong> {{ posters().length === 1 ? 'person has' : 'people have' }} made an "I'm attending" post
+          <small>{{ posts().length }} downloads &amp; shares in total · from sw.gulfuniversity.edu.bh/attending</small>
+        </span>
+        <i class="bi" [class.bi-chevron-down]="!postsOpen()" [class.bi-chevron-up]="postsOpen()"></i>
+      </button>
+      @if (postsOpen()) {
+        @if (!posters().length) {
+          <p class="admin-posts__empty">No posts yet.</p>
+        } @else {
+          <div class="admin-posts__actions">
+            <button class="admin-btn" (click)="exportPostsCsv()"><i class="bi bi-download"></i> Export CSV</button>
+          </div>
+          <div class="admin-posts__list">
+            <div class="admin-posts__row admin-posts__row--head">
+              <span>Name</span><span>Organization</span><span>Last made</span><span>Times</span>
+            </div>
+            @for (p of posters(); track $index) {
+              <div class="admin-posts__row">
+                <span class="admin-posts__name">{{ p.name }}</span>
+                <span>{{ p.organization || '—' }}</span>
+                <span class="admin-date">{{ fmtDate(p.last) }}</span>
+                <span>
+                  {{ p.times }}
+                  @if (p.shared) {
+                    <i class="bi bi-share-fill admin-posts__shared" title="Shared from their phone"></i>
+                  }
+                </span>
+              </div>
+            }
+          </div>
+        }
+      }
+    </section>
+
     <input
       class="admin-input admin-search"
       type="search"

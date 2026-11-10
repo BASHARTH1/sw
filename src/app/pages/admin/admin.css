@@ -449,6 +449,71 @@ button.admin-ticket__day:disabled { opacity: 0.6; cursor: wait; }
 .admin-opt { font-weight: 400; color: var(--muted); }
 .admin-mono { font-family: ui-monospace, Menlo, Consolas, monospace; color: var(--ink); }
 
+/* ---------- "I'm attending" posts ---------- */
+.admin-posts {
+  margin-bottom: 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fffbeb, #eff6ff);
+  border: 1px solid #fde68a;
+  overflow: hidden;
+}
+.admin-posts__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 18px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  color: var(--ink);
+  cursor: pointer;
+}
+.admin-posts__icon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  color: var(--blue-950, #0b1437);
+  background: linear-gradient(135deg, #fde68a, #facc15 50%, #d4a017);
+}
+.admin-posts__text { flex: 1; min-width: 0; font-size: 0.95rem; }
+.admin-posts__text strong { font-size: 1.25rem; margin-right: 2px; }
+.admin-posts__text small { display: block; font-size: 0.78rem; color: var(--muted); }
+.admin-posts__empty { margin: 0; padding: 0 18px 16px; font-size: 0.88rem; color: var(--muted); }
+.admin-posts__actions { padding: 0 18px 10px; }
+.admin-posts__list { max-height: 360px; overflow-y: auto; border-top: 1px solid rgba(212, 160, 23, 0.3); background: rgba(255, 255, 255, 0.6); }
+.admin-posts__row {
+  display: grid;
+  grid-template-columns: 1.3fr 1.5fr 1.2fr 70px;
+  gap: 12px;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+.admin-posts__row--head {
+  position: sticky;
+  top: 0;
+  border-top: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: #fffdf5;
+}
+.admin-posts__name { font-weight: 600; }
+.admin-posts__shared { margin-left: 6px; color: #2545b3; font-size: 0.75rem; }
+@media (max-width: 720px) {
+  .admin-posts__row { grid-template-columns: 1fr 1fr 50px; }
+  .admin-posts__row > span:nth-child(3) { display: none; }
+}
+
 .admin-bulk {
   display: flex;
   flex-wrap: wrap;

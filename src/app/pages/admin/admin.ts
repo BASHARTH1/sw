@@ -15,6 +15,23 @@ interface Submission {
   data: Record<string, unknown>;
 }
 
+interface AttendingPost {
+  created_at: string;
+  name: string;
+  organization: string | null;
+  action: 'download' | 'share';
+  device_id: string | null;
+}
+
+/** One person who made an "I'm attending" post (repeat downloads merged). */
+interface Poster {
+  name: string;
+  organization: string | null;
+  last: string;
+  times: number;
+  shared: boolean;
+}
+
 interface CheckinRow {
   ticket_code: string;
   event_day: string;
@@ -61,6 +78,29 @@ export class AdminComponent {
   protected addOrg = '';
   protected addEmail = '';
   protected addType = 'Guest';
+
+  /** "I'm attending" posts made on /attending. */
+  protected readonly posts = signal<AttendingPost[]>([]);
+  protected readonly postsOpen = signal(false);
+  /** Unique people, newest first: same device + same name counts once. */
+  protected readonly posters = computed<Poster[]>(() => {
+    const map = new Map<string, Poster>();
+    for (const p of this.posts()) {
+      const key = (p.device_id ?? p.created_at) + '|' + p.name.trim().toLowerCase();
+      const cur = map.get(key);
+      if (cur) {
+        cur.times++;
+        cur.shared ||= p.action === 'share';
+        cur.organization ||= p.organization;
+        if (p.created_at > cur.last) {
+          cur.last = p.created_at;
+        }
+      } else {
+        map.set(key, { name: p.name, organization: p.organization, last: p.created_at, times: 1, shared: p.action === 'share' });
+      }
+    }
+    return [...map.values()].sort((a, b) => b.last.localeCompare(a.last));
+  });
 
   /** Registrations with an email address whose ticket hasn't been emailed yet. */
   protected readonly unsent = computed(() => this.subs().filter((s) => s.ticket_code && s.email && !s.ticket_emailed_at));
@@ -161,8 +201,19 @@ export class AdminComponent {
     if (!error && data) {
       this.subs.set(data as Submission[]);
     }
-    await this.loadCheckins();
+    await Promise.all([this.loadCheckins(), this.loadPosts()]);
     this.loading.set(false);
+  }
+
+  private async loadPosts(): Promise<void> {
+    const { data, error } = await supabase
+      .from('attending_posts')
+      .select('created_at, name, organization, action, device_id')
+      .order('created_at', { ascending: false })
+      .limit(5000);
+    if (!error && data) {
+      this.posts.set(data as AttendingPost[]);
+    }
   }
 
   private async loadCheckins(): Promise<void> {
@@ -431,6 +482,7 @@ export class AdminComponent {
     this.authed.set(false);
     this.subs.set([]);
     this.checkins.set({});
+    this.posts.set([]);
     this.expandedId.set(null);
   }
 
@@ -444,6 +496,23 @@ export class AdminComponent {
 
   protected fmtDate(value: string): string {
     return new Date(value).toLocaleString();
+  }
+
+  protected exportPostsCsv(): void {
+    const esc = (v: unknown) => {
+      const s = String(v ?? '');
+      return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    const lines = ['name,organization,last_made,times,shared'];
+    for (const p of this.posters()) {
+      lines.push([p.name, p.organization, p.last, p.times, p.shared ? 'yes' : 'no'].map(esc).join(','));
+    }
+    const url = URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'im-attending-posts.csv';
+    a.click();
+    URL.revokeObjectURL(url);
   }
 
   protected exportCsv(): void {

@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { supabase } from '../../core/supabase.client';
 
 /** The 17 UN SDG colours, used for the ring around the portrait. */
 const SDG_COLORS = [
@@ -18,6 +19,9 @@ export const ATTENDING_CAPTION =
   "I'm attending Sustainability Week 2026! 🌿 Co-innovating, Leading, Sustaining… " +
   'Join me 15–19 November 2026 in Bahrain, hosted by Gulf University & Bahrain Polytechnic. ' +
   'https://sw.gulfuniversity.edu.bh #SW2026 #SustainabilityWeek #SDGs #GulfUniversity #BahrainPolytechnic';
+
+/** Random id kept on this device, so repeat downloads by one person count once. */
+const DEVICE_KEY = 'sw2026.device';
 
 /**
  * /attending — "I'm attending" social post generator.
@@ -463,10 +467,37 @@ export class AttendingComponent implements AfterViewInit, OnDestroy {
       a.click();
       setTimeout(() => URL.revokeObjectURL(url), 2000);
       this.message.set({ kind: 'ok', text: 'Saved! Post it with the caption below.' });
+      this.record('download');
     } catch {
       this.message.set({ kind: 'error', text: "The image couldn't be created. Please try again." });
     }
     this.busy.set(false);
+  }
+
+  /**
+   * Note that this person made a post, so the team can see who is coming.
+   * Only the name and organisation are saved, never the photo. Failures are ignored.
+   */
+  private record(action: 'download' | 'share'): void {
+    let deviceId: string | null = null;
+    try {
+      deviceId = localStorage.getItem(DEVICE_KEY);
+      if (!deviceId) {
+        deviceId = crypto.randomUUID();
+        localStorage.setItem(DEVICE_KEY, deviceId);
+      }
+    } catch {
+      // private mode: record without a device id
+    }
+    void supabase
+      .from('attending_posts')
+      .insert({
+        name: this.name.trim().slice(0, 80),
+        organization: this.org.trim().slice(0, 120) || null,
+        action,
+        device_id: deviceId
+      })
+      .then(() => undefined, () => undefined);
   }
 
   protected get canShareFiles(): boolean {
@@ -490,6 +521,7 @@ export class AttendingComponent implements AfterViewInit, OnDestroy {
       void navigator.clipboard?.writeText(this.caption).catch(() => undefined);
       await navigator.share({ files: [file], text: this.caption, title: "I'm attending Sustainability Week 2026" });
       this.message.set({ kind: 'ok', text: 'Shared! The caption is also copied — paste it into your post.' });
+      this.record('share');
     } catch (e) {
       if ((e as DOMException)?.name !== 'AbortError') {
         this.message.set({ kind: 'error', text: "Sharing didn't open. Use Download instead." });
