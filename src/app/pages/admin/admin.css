@@ -541,3 +541,22 @@ button.admin-ticket__day:disabled { opacity: 0.6; cursor: wait; }
   .admin-days { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .admin-ticket__actions { margin-left: 0; }
 }
+
+.admin-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 6px 12px;
+  border: 1px solid #c7d2fe;
+  border-radius: 8px;
+  background: #eef2ff;
+  color: #1e3a8a;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.admin-file:hover { background: #e0e7ff; }

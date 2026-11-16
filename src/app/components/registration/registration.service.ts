@@ -13,7 +13,7 @@ export interface RegOption {
   featured?: boolean;
 }
 
-export type FieldType = 'text' | 'email' | 'tel' | 'textarea' | 'radio' | 'checkbox' | 'list';
+export type FieldType = 'text' | 'email' | 'tel' | 'textarea' | 'radio' | 'checkbox' | 'list' | 'file';
 
 export interface FormField {
   id: string;
@@ -30,6 +30,8 @@ export interface FormField {
   maxItems?: number;
   /** For 'list' fields: name of one entry, e.g. "member". */
   itemLabel?: string;
+  /** For 'file' fields: the file types the picker offers. */
+  accept?: string;
 }
 
 export interface FormSection {
@@ -43,6 +45,28 @@ export interface RegForm {
 }
 
 type Step = 'choose' | 'form';
+
+/** Private Supabase Storage bucket for EcoBot files (see supabase/ecobot-files.sql). */
+export const ECOBOT_BUCKET = 'ecobot-files';
+const MAX_FILE_BYTES = 20 * 1024 * 1024;
+const FILE_TYPES: Record<string, string> = {
+  pdf: 'application/pdf',
+  ppt: 'application/vnd.ms-powerpoint',
+  pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  pps: 'application/vnd.ms-powerpoint',
+  ppsx: 'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+  doc: 'application/msword',
+  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  odp: 'application/vnd.oasis.opendocument.presentation',
+  odt: 'application/vnd.oasis.opendocument.text',
+  key: 'application/vnd.apple.keynote',
+  pages: 'application/vnd.apple.pages'
+};
+const FILE_ACCEPT = Object.keys(FILE_TYPES).map((e) => '.' + e).join(',');
+
+function fileExt(name: string): string {
+  return (name.split('.').pop() || '').toLowerCase();
+}
 
 const SECTORS = [
   'Government Agency',
@@ -529,6 +553,13 @@ export class RegistrationService {
               type: 'textarea',
               required: true,
               hint: 'Identify the sustainability challenge and the relevant SDG(s).'
+            },
+            {
+              id: 'conceptFile',
+              label: 'Attach your proposal or slides',
+              type: 'file',
+              hint: 'Optional. PDF, PowerPoint or Word, up to 20 MB.',
+              accept: FILE_ACCEPT
             }
           ]
         }
@@ -553,6 +584,11 @@ export class RegistrationService {
 
   /** Plain mutable object bound through ngModel; replaced on each open. */
   formData: Record<string, string | string[]> = {};
+
+  /** Files picked in 'file' fields, uploaded on submit. */
+  readonly files = signal<Record<string, File>>({});
+  /** Per-field problem with the picked file (wrong type, too big). */
+  readonly fileErrors = signal<Record<string, string>>({});
 
   get currentForm(): RegForm | null {
     const type = this.selectedType();
@@ -612,6 +648,8 @@ export class RegistrationService {
     }
     this.selectedType.set(title);
     this.formData = {};
+    this.files.set({});
+    this.fileErrors.set({});
     this.attempted.set(false);
     this.submitted.set(false);
     this.sectionIndex.set(0);
@@ -662,6 +700,11 @@ export class RegistrationService {
     // The code is generated here (not by the database) because anonymous visitors
     // cannot read rows back after inserting them.
     const ticketCode = newTicketCode();
+    if (!(await this.uploadFiles(ticketCode))) {
+      this.saving.set(false);
+      this.errorMsg.set('Sorry, we could not upload your file. Please try again, or remove the file and submit without it.');
+      return;
+    }
     const row = { type, full_name: fullName, email, data: fd };
     let { error } = await supabase.from('registrations').insert({ ...row, ticket_code: ticketCode });
     let hasTicket = true;
@@ -764,6 +807,61 @@ export class RegistrationService {
     }
   }
 
+  pickFile(field: FormField, input: HTMLInputElement): void {
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) {
+      return;
+    }
+    const errors = { ...this.fileErrors() };
+    delete errors[field.id];
+    if (!FILE_TYPES[fileExt(file.name)]) {
+      errors[field.id] = 'Please choose a PDF, PowerPoint or Word file.';
+    } else if (file.size > MAX_FILE_BYTES) {
+      errors[field.id] = 'This file is larger than 20 MB. Please choose a smaller file (or save it as PDF).';
+    } else {
+      this.files.update((f) => ({ ...f, [field.id]: file }));
+    }
+    this.fileErrors.set(errors);
+  }
+
+  removeFile(field: FormField): void {
+    this.files.update((f) => {
+      const next = { ...f };
+      delete next[field.id];
+      return next;
+    });
+  }
+
+  fileSize(bytes: number): string {
+    return bytes >= 1024 * 1024 ? (bytes / 1024 / 1024).toFixed(1) + ' MB' : Math.max(1, Math.round(bytes / 1024)) + ' KB';
+  }
+
+  /** Upload picked files to Storage under the ticket code; their paths go into formData. */
+  private async uploadFiles(ticketCode: string): Promise<boolean> {
+    for (const [fieldId, file] of Object.entries(this.files())) {
+      const ext = fileExt(file.name);
+      const base =
+        file.name
+          .slice(0, file.name.length - ext.length - 1)
+          .normalize('NFKD')
+          .replace(/[^\w.-]+/g, '_')
+          .replace(/^_+|_+$/g, '')
+          .slice(0, 80) || 'file';
+      const path = `${ticketCode}/${fieldId}-${base}.${ext}`;
+      const { error } = await supabase.storage
+        .from(ECOBOT_BUCKET)
+        // Re-wrap with the right MIME type: some browsers report none (e.g. for .key), which the bucket would reject.
+        .upload(path, new Blob([file], { type: FILE_TYPES[ext] }), { contentType: FILE_TYPES[ext], upsert: false });
+      if (error) {
+        console.error('File upload failed', error);
+        return false;
+      }
+      this.formData[fieldId] = `${ECOBOT_BUCKET}/${path}`;
+    }
+    return true;
+  }
+
   /** Key under which the free-text value for a field's "Other" option is stored. */
   otherKey(fieldId: string): string {
     return `${fieldId}__other`;
@@ -822,6 +920,8 @@ export class RegistrationService {
 
   private reset(): void {
     this.formData = {};
+    this.files.set({});
+    this.fileErrors.set({});
     this.attempted.set(false);
     this.submitted.set(false);
     this.sectionIndex.set(0);

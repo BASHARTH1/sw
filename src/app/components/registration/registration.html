@@ -131,7 +131,7 @@
               @for (field of section.fields; track field.id) {
                 <div
                   class="reg-field"
-                  [class.reg-field--full]="field.type === 'textarea' || field.type === 'radio' || field.type === 'checkbox' || field.type === 'list'"
+                  [class.reg-field--full]="field.type === 'textarea' || field.type === 'radio' || field.type === 'checkbox' || field.type === 'list' || field.type === 'file'"
                   [class.reg-field--invalid]="reg.showError(field)"
                 >
                   <label class="reg-field__label">
@@ -225,6 +225,42 @@
                         <button type="button" class="reg-list__add" (click)="reg.addListItem(field)">
                           <i class="bi bi-plus-lg"></i> Add {{ field.itemLabel }}
                         </button>
+                      }
+                    }
+                    @case ('file') {
+                      @if (reg.files()[field.id]; as file) {
+                        <div class="reg-file reg-file--picked">
+                          <i class="bi bi-file-earmark-check-fill reg-file__icon"></i>
+                          <span class="reg-file__text">
+                            <strong>{{ file.name }}</strong>
+                            <small>{{ reg.fileSize(file.size) }} · uploads when you submit</small>
+                          </span>
+                          <button
+                            type="button"
+                            class="reg-list__remove"
+                            [attr.aria-label]="'Remove ' + file.name"
+                            (click)="reg.removeFile(field)"
+                          >
+                            <i class="bi bi-trash3"></i>
+                          </button>
+                        </div>
+                      } @else {
+                        <label class="reg-file">
+                          <input
+                            type="file"
+                            class="reg-file__input"
+                            [accept]="field.accept ?? ''"
+                            (change)="reg.pickFile(field, $any($event.target))"
+                          />
+                          <i class="bi bi-cloud-arrow-up reg-file__icon"></i>
+                          <span class="reg-file__text">
+                            <strong>Choose a file</strong>
+                            <small>PDF, PPT/PPTX, DOC/DOCX</small>
+                          </span>
+                        </label>
+                      }
+                      @if (reg.fileErrors()[field.id]; as err) {
+                        <span class="reg-field__error">{{ err }}</span>
                       }
                     }
                     @default {

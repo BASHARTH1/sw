@@ -1,6 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { supabase } from '../../core/supabase.client';
+import { ECOBOT_BUCKET } from '../../components/registration/registration.service';
 import { EVENT_DAYS, checkIn, dayLabel, isDoorStaff, qrPng, shortRef, ticketUrl, todayInBahrain, undoCheckIn } from '../../core/tickets';
 import { renderTicketImage } from '../../core/ticket-image';
 
@@ -492,6 +493,26 @@ export class AdminComponent {
 
   protected entries(data: Record<string, unknown>): Array<[string, string]> {
     return Object.entries(data).map(([k, v]) => [k, Array.isArray(v) ? v.join(', ') : String(v ?? '')]);
+  }
+
+  /** Uploaded files are stored in the registration data as "ecobot-files/<ticket>/<name>". */
+  protected isFile(value: string): boolean {
+    return value.startsWith(ECOBOT_BUCKET + '/');
+  }
+
+  protected fileName(value: string): string {
+    return (value.split('/').pop() ?? '').replace(/^conceptFile-/, '');
+  }
+
+  protected async openFile(value: string): Promise<void> {
+    const { data, error } = await supabase.storage
+      .from(ECOBOT_BUCKET)
+      .createSignedUrl(value.slice(ECOBOT_BUCKET.length + 1), 600, { download: this.fileName(value) });
+    if (error || !data) {
+      alert('Could not open the file: ' + (error?.message ?? 'unknown error'));
+      return;
+    }
+    location.href = data.signedUrl;
   }
 
   protected fmtDate(value: string): string {

@@ -1027,6 +1027,49 @@ button.reg-link {
 
 .reg-list__add:hover { background: var(--rc-soft); }
 
+.reg-file {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1.5px dashed var(--rc);
+  border-radius: var(--radius-md);
+  background: var(--rc-soft);
+  cursor: pointer;
+}
+
+.reg-file:hover,
+.reg-file:focus-within { border-style: solid; }
+
+.reg-file--picked { cursor: default; border-style: solid; background: #fff; }
+
+.reg-file__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.reg-file__icon { font-size: 1.6rem; color: var(--rc); flex-shrink: 0; }
+
+.reg-file__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.reg-file__text strong {
+  overflow: hidden;
+  font-size: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reg-file__text small { font-size: 0.76rem; color: #64748b; }
+
 .reg-field__error {
   display: block;
   margin-top: 6px;
